@@ -1,0 +1,9 @@
+# python run_sing.py submit --sparsity 0.5  --target sing_octo --task_name c4 --model_name llama7b_qv_wolayer_lr1e-4-reglr0.05-epoch20-warmup10-50% --file train_c4_lr1e-4-reglr0.05-epoch20-warmup10-50%-qv
+# python run_sing.py submit --sparsity 0.5  --target sing_octo --task_name c4 --model_name llama7b_qv_wolayer_lr2e-5-reglr0.05-epoch20-warmup10-50% --file train_c4_lr2e-5-reglr0.05-epoch20-warmup10-50%-qv
+# python run_sing.py submit --sparsity 0.3  --target sing_octo --task_name c4 --model_name llama7b_qv_wolayer_lr5e-5-reglr0.1-epoch20-warmup10-30% --file train_c4_lr5e-5-reglr0.1-epoch20-warmup10-30%-qv
+#python run_sing.py submit --sparsity 0.5  --target sing_octo --task_name c4 --model_name llama7b_qv_wolayer_lr5e-5-reglr0.1-epoch20-warmup10-50% --file train_c4_lr5e-5-reglr0.1-epoch20-warmup10-50%-qv
+# python run_sing.py submit --sparsity 0.3  --target sing_octo --task_name c4 --model_name llama7b_qv_wolayer_lr5e-5-reglr0.05-epoch20-warmup10-30% --file train_c4_lr5e-5-reglr0.05-epoch20-warmup10-30%-qv
+# python run_sing.py submit --sparsity 0.5  --target sing_octo --task_name c4 --model_name llama7b_qv_wolayer_lr5e-5-reglr0.05-epoch20-warmup10-50% --file train_c4_lr5e-5-reglr0.05-epoch20-warmup10-50%-qv
+python run_sing.py submit --sparsity 0.5 --target sing_octo --task_name wikitext2 --model_name llama7b_qv_wolayer_lr5e-5-reglr0.05-epoch40-warmup20-50%-wolora --file train_wikitext2_lr5e-5-reglr0.05-epoch40-warmup20-50%-wolora
+
+# python run_sing.py submit --sparsity 0.5 --target sing_octo --task_name wikitext2 --model_name llama7b_qv_wolayer_lr5e-5-reglr0.05-epoch40-warmup20-50%-kvqof --file train_wikitext2_lr5e-5-reglr0.05-epoch40-warmup20-50%-kvqof

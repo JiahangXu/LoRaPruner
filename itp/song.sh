@@ -1,0 +1,30 @@
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name gpt4alpaca --model_name alpaca7b_alpacagpt4_lr5e-6-reglr0.05-epoch5-warmup2-30% --file train_alpaca7b_alpacagpt4_lr5e-6-reglr0.05-epoch5-warmup2-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name alpaca --model_name alpacaclean_lr5e-5-reglr0.05-epoch5-warmup2-30% --file train_alpacaclean_lr5e-5-reglr0.05-epoch5-warmup2-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name gpt4alpaca --model_name alpacagpt4_lr2e-5-reglr0.1-epoch10-warmup5-30% --file train_alpacagpt4_lr2e-5-reglr0.1-epoch10-warmup5-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name gpt4alpaca --model_name alpacagpt4_lr5e-5-reglr0.1-epoch10-warmup5-30% --file train_alpacagpt4_lr5e-5-reglr0.1-epoch10-warmup5-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name c4 --model_name c4_lr5e-5-reglr0.1-epoch30-warmup15-30% --file train_c4_lr5e-5-reglr0.1-epoch30-warmup15-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name math10k --model_name math_lr2e-5reglr0.1-epoch30-warmup15-30% --file train_math_lr2e-5reglr0.1-epoch30-warmup15-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name math10k --model_name math_lr5e-5reglr0.1-epoch30-warmup15-30% --file train_math_lr5e-5reglr0.1-epoch30-warmup15-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name gpt4alpaca --model_name alpacagpt4_lr5e-5-reglr0.05-epoch10-warmup5-30% --file train_alpacagpt4_lr5e-5-reglr0.05-epoch10-warmup5-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name gpt4alpaca --model_name alpacagpt4_lr5e-5-reglr0.05-epoch5-warmup2-30% --file train_alpacagpt4_lr5e-5-reglr0.05-epoch5-warmup2-30%-qv-gate
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name gpt4alpaca --model_name c4_lr5e-5-reglr0.1-epoch20-warmup10-30% --file train_c4_lr5e-5-reglr0.1-epoch20-warmup10-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name c4 --model_name prompt_c4_lr5e-5-reglr0.1-epoch20-warmup10-30% --file train_c4_lr5e-5-reglr0.1-epoch20-warmup10-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name gpt4alpaca --model_name prompt_gpt4alpaca_lr5e-5-reglr0.05-epoch5-warmup2-30% --file train_alpacagpt4_lr5e-5-reglr0.05-epoch5-warmup2-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name math10k --model_name prompt_math_lr5e-5-reglr0.05-epoch20-warmup10-30% --file train_math_lr5e-5reglr0.05-epoch20-warmup10-30%-qv
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name arc-c --model_name prompt_alpaca_llama7b_wolayer-s30.0-lr5e-05-reglr0.05 --file eval_arcc_llama7bcot_wolayer-s30.0-lr5e-05-reglr0.05-warmup10
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name arc-e --model_name prompt_alpaca_llama7b_wolayer-s30.0-lr5e-05-reglr0.05 --file eval_arce_llama7bcot_wolayer-s30.0-lr5e-05-reglr0.05-warmup10
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name piqa --model_name prompt_alpaca_llama7b_wolayer-s30.0-lr5e-05-reglr0.05 --file eval_piqa_llama7bcot_wolayer-s30.0-lr5e-05-reglr0.05-warmup10
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name storycloze --model_name prompt_alpaca_llama7b_wolayer-s30.0-lr5e-05-reglr0.05 --file eval_storycloze_llama7bcot_wolayer-s30.0-lr5e-05-reglr0.05-warmup10
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name wikitext2 --model_name prompt_alpaca_llama7b-s30.0-lr5e-05-reglr0.05 --file eval_c4_llama7b_wolayer-s50.0-lr0.0001-reglr0.05-warmup10
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name wikitext2 --model_name alpacagpt4_gateclose_llama7b-s30.0-lr5e-05-reglr0.05 --file train_alpacagpt4_lr5e-5-reglr0.05-epoch5-warmup2-30%-qv-gate2
+# python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name wikitext2 --model_name threshold0.5_lagST_layer_gate_alpacagpt4_llama7b-s30.0-lr5e-05-reglr0.05 --file train_alpacagpt4_lr5e-5-reglr0.05-epoch5-warmup2-30%-qv-gate2
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name arc-c --model_name alpacagpt4_llama7b_layergate-s30.0-lr5e-05-reglr0.05 --file eval_llama7b_arcc
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name arc-e --model_name alpacagpt4_llama7b_layergate-s30.0-lr5e-05-reglr0.05 --file eval_llama7b_arce
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name boolq --model_name alpacagpt4_llama7b_layergate-s30.0-lr5e-05-reglr0.05 --file eval_llama7b_boolqa
+#python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name hellaswag --model_name hellaswag_llama7b_layergate-s30.0-lr5e-05-reglr0.05 --file eval_llama7b_hellaswag
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name obqa --model_name alpacagpt4_llama7b_layergate-s30.0-lr5e-05-reglr0.05 --file eval_llama7b_obqa
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name piqa --model_name alpacagpt4_llama7b_layergate-s30.0-lr5e-05-reglr0.05 --file eval_llama7b_piqa
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name storycloze --model_name alpacagpt4_llama7b_layergate-s30.0-lr5e-05-reglr0.05 --file eval_llama7b_storycloze
+# python run_sing.py submit --sparsity 0.3 --target sing_research --task_name winogrande --model_name alpacagpt4_llama7b_layergate-s30.0-lr5e-05-reglr0.05 --file eval_llama7b_winogrande
+
+python run_sing.py submit --sparsity 0.3 --target sing_research --task_name wikitext2 --model_name threshold0.5_lagST_layer_gate_alpacagpt4_llama7b-s30.0-lr5e-05-reglr0.05 --file train_alpacagpt4_lr5e-5-reglr0.05-epoch5-warmup2-30%-qv-gate2

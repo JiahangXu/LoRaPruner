@@ -1,0 +1,144 @@
+diff --git .amltconfig .amltconfig
+index ef675a7..75dfb5a 100755
+--- .amltconfig
++++ .amltconfig
+@@ -1 +1 @@
+-{"project_name": "loraPruner", "storage_account_name": "fastnn", "container_name": "amulet", "blob_storage_account_name": "fastnn", "registry_name": "projects", "local_path": "/data/data6/v-songguo/LoRaPruner", "default_output_dir": "/data/data6/v-songguo/LoRaPruner/amlt", "project_uuid": "7313121669.87620-df693766-276f-434e-9187-5ea2bb636a71", "version": "9.11.7"}
+\ No newline at end of file
++{"project_name": "lorapruner", "storage_account_name": "fastnn", "container_name": "amulet", "blob_storage_account_name": "fastnn", "registry_name": "projects", "local_path": "/data/data0/lzhani/LoRaPruner", "default_output_dir": "/data/data0/lzhani/LoRaPruner/amlt", "project_uuid": "7309336234.30768-7be8fa32-960d-4ecd-8ea7-2e7b0bec1c86", "version": "9.19.2.dev0+g616a767c.d20230727"}
+\ No newline at end of file
+diff --git itp/modules/target.py itp/modules/target.py
+index 9a3f449..b09d730 100755
+--- itp/modules/target.py
++++ itp/modules/target.py
+@@ -27,7 +27,7 @@ environment:
+   - pip install tqdm
+   - pip install mlflow azureml-mlflow
+   - pip install protobuf==3.19.0
+-  - pip install deepspeed
++  - pip install deepspeed==0.7.7 
+   - pip install evaluate 
+   - pip install datasets==2.8.0 
+   - pip install sentencepiece==0.1.97 
+@@ -66,7 +66,7 @@ environment:
+   - pip install tqdm
+   - pip install mlflow azureml-mlflow
+   - pip install protobuf==3.19.0
+-  - pip install deepspeed 
++  - pip install deepspeed==0.7.7 
+   - pip install evaluate 
+   - pip install datasets==2.8.0 
+   - pip install sentencepiece==0.1.97 
+diff --git itp/run_sing.py itp/run_sing.py
+index be7ef4e..69a6bd6 100755
+--- itp/run_sing.py
++++ itp/run_sing.py
+@@ -43,33 +43,29 @@ job_eight_nodes = \
+     env:
+       {{DEBUG: 1}}
+ """
+-job_one_node = \
++job_two_nodes = \
+ """- name: {job_name}
+-  #sku: NCv2:2x16G4-P100
+-  #process_count_per_node: 4
+-  sku: NDAMv4:80G1-A100
++  sku: G2
+   priority: high
++ # process_count_per_node: 1
++#   execution_mode: managed
+   command:
+-  - bash run_wiki.sh
++  #- bash setup2.sh
++  #- python sleep.py
++  - bash ./scripts/prompt_training/{file}.sh
+   submit_args: 
+     env:
+       {{DEBUG: 1}}
+ """
+-job_template_four_nodes = \
++job_one_node = \
+ """- name: {job_name}
+-  sku: NCv2:2x16G4-P100
+-  #sku: 2xG8
+-  process_count_per_node: 4
++  sku: NDAMv4:80G1-A100
+   priority: high
+   command:
+-  - echo " node_rank" $${{NODE_RANK}} " master_addr " $${{MASTER_ADDR}} "master_port " $${{MASTER_PORT}} " nodes"
+-  - python -m torch.distributed.launch 
+-    --nproc_per_node=4 --node_rank=$${{NODE_RANK}} --nnodes=2 --use_env
+-    --master_addr=$${{MASTER_ADDR}} --master_port=$${{MASTER_PORT}}  
+-    run_clm.py 
++  - bash run_wiki.sh
+   submit_args: 
+     env:
+-        {{DEBUG: 1}}
++      {{DEBUG: 1}}
+ """
+ # --nproc_per_node=8 --node_rank=$${{NODE_RANK}} --nnodes=4 
+ #     --master_addr=$${{MASTER_ADDR}} --master_port=$${{MASTER_PORT}}  
+@@ -99,10 +95,7 @@ def main():
+     "storycloze",
+     "arc-e",
+     "arc-c",
+-    "boolq",
+-    "hellaswag",
+-    "obqa",
+-    "winogrande"
++    "hellaswag"
+     ])
+     parser.add_argument("--ckpt_dir", type=str, required=False)
+     # parser.add_argument("--constraint", type=float, required=True,
+diff --git models/l0_module.py models/l0_module.py
+index a1cf31b..f96ae40 100755
+--- models/l0_module.py
++++ models/l0_module.py
+@@ -268,8 +268,10 @@ class L0Module(Module):
+         if all_head_score is not None:
+             for i in range(len(all_head_score)):
+                 if all_head_score[i] < 0.5:
++                #if all_head_score[i] ==0:
+                     head_score[i] = (1 - (0.0 - all_head_score[i].detach() + all_head_score[i]) * (1 - head_score[i]))
+                 elif all_head_score[i] >= 0.5:
++                #elif all_head_score[i]!=0:
+                     head_score[i] = (1 - (1.0 - all_head_score[i].detach() + all_head_score[i]) * (1 - head_score[i]))
+         #else:
+         head_score = head_score.reshape(-1)
+@@ -280,8 +282,10 @@ class L0Module(Module):
+         if all_int_score is not None:
+             for i in range(len(all_int_score)):
+                 if all_int_score[i] < 0.5:
++                #if all_int_score[i] == 0:
+                     int_score[i] = (1 - (0.0 - all_int_score[i].detach() + all_int_score[i]) * (1 - int_score[i]))
+                 elif all_int_score[i] >= 0.5 :
++                #elif all_int_score[i]!=0 :
+                     int_score[i] = (1 - (1.0 - all_int_score[i].detach() + all_int_score[i]) * (1 - int_score[i]))
+         #else:
+         int_score = int_score.reshape(-1)
+diff --git models/modeling_llama.py models/modeling_llama.py
+index 582e088..a6c7bd1 100755
+--- models/modeling_llama.py
++++ models/modeling_llama.py
+@@ -355,8 +355,10 @@ class LlamaMLP(nn.Module):
+         gate_output = self.gate_proj(x)
+         up_output = self.up_proj(x)
+         if intermediate_z is not None and mlp_z < 0.5:
++        #if intermediate_z is not None and mlp_z ==0:
+             intermediate_z = (1.0 - (1.0 - intermediate_z) * (0.0 - mlp_z.detach() + mlp_z))
+         elif intermediate_z is not None and mlp_z >= 0.5:
++        #elif intermediate_z is not None and mlp_z!=0:
+             intermediate_z = (1.0 - (1.0 - intermediate_z) * (1.0 - mlp_z.detach() + mlp_z))
+         if intermediate_z is not None:
+             gate_output = gate_output.mul(intermediate_z)
+@@ -462,8 +464,10 @@ class LlamaAttention(nn.Module):
+             )
+         attn_output = attn_output.view(bsz, self.num_heads, q_len, self.head_dim)
+         if head_z is not None and head_layer_z < 0.5:
++        #if head_z is not None and head_layer_z == 0:
+             head_z = (1.0 - (1.0 - head_z) * (0.0 - head_layer_z.detach() + head_layer_z))
+         elif head_z is not None and head_layer_z >= 0.5:
++        #elif head_z is not None and head_layer_z !=0:
+             head_z = (1.0 - (1.0 - head_z) * (1.0 - head_layer_z.detach() + head_layer_z))
+         
+         if head_z is not None:
