@@ -354,10 +354,10 @@ class LlamaMLP(nn.Module):
             return None
         gate_output = self.gate_proj(x)
         up_output = self.up_proj(x)
-        if intermediate_z is not None and mlp_z < 0.5:
+        if intermediate_z is not None and mlp_z is not None and mlp_z < 0.5:
         #if intermediate_z is not None and mlp_z ==0:
             intermediate_z = (1.0 - (1.0 - intermediate_z) * (0.0 - mlp_z.detach() + mlp_z))
-        elif intermediate_z is not None and mlp_z >= 0.5:
+        elif intermediate_z is not None and mlp_z is not None and mlp_z >= 0.5:
         #elif intermediate_z is not None and mlp_z!=0:
             intermediate_z = (1.0 - (1.0 - intermediate_z) * (1.0 - mlp_z.detach() + mlp_z))
         if intermediate_z is not None:
@@ -463,13 +463,13 @@ class LlamaAttention(nn.Module):
                 f" {attn_output.size()}"
             )
         attn_output = attn_output.view(bsz, self.num_heads, q_len, self.head_dim)
-        if head_z is not None and head_layer_z < 0.5:
+        if head_z is not None and head_layer_z is not None and head_layer_z < 0.5:
         #if head_z is not None and head_layer_z == 0:
             head_z = (1.0 - (1.0 - head_z) * (0.0 - head_layer_z.detach() + head_layer_z))
-        elif head_z is not None and head_layer_z >= 0.5:
+        elif head_z is not None and head_layer_z is not None and head_layer_z >= 0.5:
         #elif head_z is not None and head_layer_z !=0:
             head_z = (1.0 - (1.0 - head_z) * (1.0 - head_layer_z.detach() + head_layer_z))
-        
+
         if head_z is not None:
             attn_output *= head_z
         attn_output = attn_output.transpose(1, 2)

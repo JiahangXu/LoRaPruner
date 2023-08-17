@@ -22,7 +22,8 @@ from torch.optim import AdamW
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase
 from transformers.trainer import Trainer
 from transformers.trainer_pt_utils import nested_concat, nested_numpify, nested_truncate, IterableDatasetShard
-from transformers.trainer_utils import (EvalPrediction, EvalLoopOutput, TrainOutput,has_length, speed_metrics, denumpify_detensorize)
+from transformers.trainer_utils import (EvalPrediction, EvalLoopOutput, TrainOutput,seed_worker,
+                                        has_length, speed_metrics, denumpify_detensorize)
 from transformers.utils import logging
 from transformers.training_args import TrainingArguments
 from utils.deepspeed_utils import is_deepspeed_zero3_enabled, deepspeed_init
@@ -67,6 +68,8 @@ class Eval_Counter():
 
     def clear(self):
         self.eval_score = 0
+
+
 class CEloss_Counter():
     def __init__(self):
         self.epoch = 0
@@ -90,6 +93,7 @@ class CEloss_Counter():
 
     def clear(self):
         self.eval_score = 10e4
+
 
 class CoFiTrainer(Trainer):
     def __init__(
@@ -258,6 +262,20 @@ class CoFiTrainer(Trainer):
         self._train_batch_size = self.args.train_batch_size
         import datetime
         now = datetime.datetime.now()
+        self.args.output_dir = '/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}'.format(
+            self.additional_args.task_name,
+            self.additional_args.target_sparsity*100,
+            self.args.learning_rate,
+            self.additional_args.reg_learning_rate,
+            self.additional_args.lagrangian_warmup_epochs,
+            now.year, now.month, now.day, now.hour, now.minute
+        )
+        logger.info(f"Output dir: {self.args.output_dir}")
+        print("Output dir: ", self.args.output_dir)
+        # if not os.path.exists(self.args.output_dir):
+        #     os.makedirs(self.args.output_dir)
+        print("building folder finish")
+
         if has_length(train_dataloader):
             len_dataloader = len(train_dataloader)
             num_update_steps_per_epoch = len_dataloader // args.gradient_accumulation_steps
@@ -367,6 +385,7 @@ class CoFiTrainer(Trainer):
                 train_dataloader.sampler.set_epoch(epoch)
 
             epoch_iterator = train_dataloader
+            print("training on unprompted train dataset")
 
             # Reset the past mems state at the beginning of each epoch if necessary.
             if self.args.past_index >= 0:
@@ -386,7 +405,7 @@ class CoFiTrainer(Trainer):
                 if self.start_prune:
                     zs = self.l0_module.forward(training=True) #! get the zs
                     self.fill_inputs_with_zs(zs, inputs) #! use the zs
-                    
+
                 # self.zs is not None when finetune
                 if self.zs is not None:
                     self.fill_inputs_with_zs(self.zs, inputs)
@@ -406,7 +425,6 @@ class CoFiTrainer(Trainer):
                         len(epoch_iterator) <= self.args.gradient_accumulation_steps
                         and (step + 1) == len(epoch_iterator)
                 ):
-                    #self.evaluate()
                     torch.nn.utils.clip_grad_norm_(
                         model.parameters(), self.args.max_grad_norm)
 
@@ -468,7 +486,10 @@ class CoFiTrainer(Trainer):
                         # self.log(logs)
                         if self.args.local_rank == 0:
                             for k, v in logs.items():
-                                mlflow.log_metric(k, v, step=self.state.global_step)
+                                try:
+                                    mlflow.log_metric(k, v, step=self.state.global_step)
+                                except:
+                                    pass
 
                         try:
                             self.l0_module.eval()
@@ -478,50 +499,15 @@ class CoFiTrainer(Trainer):
                             pruned_model_size_info = {}
 
                         logger.info(f"{logs}, {pruned_model_size_info}")
-                if (not self.start_saving_best) and (loss_terms["expected_sparsity"] - self.additional_args.target_sparsity >= -self.additional_args.sparsity_epsilon):
-                    self.start_saving_best = True
-                    logger.info(f"Starting saving the best from epoch {int(self.epoch)} and step {self.global_step}")
-                if self.start_saving_best:
-                    best_so_far = self.celoss_counter.update(
-                        self.epoch, self.global_step, ce_loss_step)
-                    if best_so_far:
-                        lora_weights = {}
-                        for n, m in model.named_parameters():
-                            if 'lora_' in n:
-                                gather = lora.should_gather(m)
-                                with gather:
-                                    lora_weights[n.replace('module.','')] = m.data
                         if self.args.local_rank == 0:
-                            if not os.path.exists('/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}/best'.format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch)):
-                                os.makedirs('/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}/best'.format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch))
-                                print("building folder finish")
-                                torch.save(lora_weights,'/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}/best/lora_weights.pt'.format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch))
-                            else:
-                                torch.save(lora_weights,'/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}/best/lora_weights.pt'.format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch))
-                            if self.zs == None:
-                                self.save_model_mask('/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}/best'.format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch))
-                    self.start_saving_best = False
-                    # if best_so_far:
-                    #     best_dir = os.path.join(self.args.output_dir, "best")
-                    #     if not os.path.exists(best_dir):
-                    #         os.makedirs(best_dir)
+                            for k, v in pruned_model_size_info.items():
+                                try:
+                                    mlflow.log_metric(k, v, step=self.state.global_step)
+                                except:
+                                    pass
 
-                    #     if self.l0_module is not None:
-                    #         zs = self.l0_module.forward(training=False)
-                    #         torch.save(zs, os.path.join(best_dir, "zs.pt"))
-                    #         torch.save(self.l0_module, os.path.join(
-                    #             best_dir, "l0_module.pt"))
-                    #     best_celoss_score_log = {
-                    #         "best_eval_score_so_far": self.eval_counter.best_eval_score,
-                    #         "best_step": self.eval_counter.global_step,
-                    #         "best_epoch": self.eval_counter.epoch
-                    #     }
-                    #     # self.log(best_eval_score_log)
-                    #     if self.args.local_rank == 0:
-                    #         for k, v in best_eval_score_log.items():
-                    #             mlflow.log_metric(k, v, step=self.global_step)
-                    #     logger.info(f"Saving the best model so far: [Epoch {int(self.epoch)} | Step: {self.global_step} | Model size: {output.metrics['remaining_params'] if 'remaining_params' in output.metrics else 'Full' } | Score: {round(eval_score, 5)}]")
-                    #     self.model.save_pretrained(best_dir)
+                        logger.info(f"{logs}, {pruned_model_size_info}")
+
                 epoch_pbar.update(1)
                 torch.cuda.empty_cache()
                 if self.args.max_steps > 0 and self.global_step >= self.args.max_steps:
@@ -540,24 +526,17 @@ class CoFiTrainer(Trainer):
                     with gather:
                         lora_weights[n.replace('module.','')] = m.data
             if self.args.local_rank == 0:
-                if not os.path.exists('/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}'.format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch)):
-                    os.makedirs('/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}'.format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch))
-                    print("building folder finish")
-                    torch.save(lora_weights,'/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}/lora_weights.pt'.format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch))
-                else:
-                    torch.save(lora_weights,'/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}/lora_weights.pt'.format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch))
-                if self.zs == None:
-                    self.save_model_mask('/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}'.format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch))
-            # if self.args.local_rank == 0:
-            #     torch.save(lora_weights,'/scratch/amlt_code/output/epoch{}/lora_weights.pt'.format(epoch))
-            #     source_url = "/scratch/amlt_code/output/epoch{}/*".format(epoch)
-            #     destination_path = "https://fastnn.blob.core.windows.net/teamdrive/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}/".format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch)
-            #     recursive = "--recursive=true"
-            #     command = f"/scratch/amlt_code/azcopy cp '{source_url}' '{destination_path}?sv=2021-10-04&ss=btqf&srt=sco&st=2023-06-30T07%3A49%3A55Z&se=2023-07-30T07%3A49%3A00Z&sp=rwdxl&sig=BYFbX6XXaPVmwU4LSetgaOU%2FEq9vDVfQXESAq%2Fr7dmw%3D' '{recursive}'"
-            #     subprocess.run(command, shell=True)
-            #     tmp = "/scratch/amlt_code/output/epoch{}".format(epoch)
-            #     if self.zs == None:
-            #         self.save_model_mask('/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}/epoch{}'.format(self.additional_args.task_name, self.additional_args.target_sparsity*100, self.args.learning_rate, self.additional_args.reg_learning_rate, self.additional_args.lagrangian_warmup_epochs, now.year, now.month, now.day, now.hour, now.minute, epoch))
+                try:
+                    epoch_output_dir = '{}/epoch{}'.format(self.args.output_dir, epoch)
+                    print("Epoch folder: ", epoch_output_dir)
+                    if not os.path.exists(epoch_output_dir):
+                        os.makedirs(epoch_output_dir)
+                    torch.save(lora_weights,'{}/lora_weights.pt'.format(epoch_output_dir))
+                    if self.zs == None and self.l0_module is not None:
+                        self.save_model_mask(epoch_output_dir)
+                except:
+                    print("Save epoch results failed. Skip it.")
+
             logger.info(
                 f"Epoch {epoch} finished. Took {round(epoch_end - epoch_start, 2)} seconds.")
 
@@ -654,7 +633,7 @@ class CoFiTrainer(Trainer):
             zs = self.l0_module.forward(training=False)
         if zs is not None:
             pruned_model_size_info = self.l0_module.calculate_model_size(zs)
-        if self.zs is not None:
+        if self.zs is not None and self.l0_module is not None:
             pruned_model_size_info = self.l0_module.calculate_model_size(self.zs)
             print("[Finetuning Phase] pruned model size info", pruned_model_size_info)
 
@@ -664,6 +643,8 @@ class CoFiTrainer(Trainer):
                     logger.info(f"Putting zs {zs.keys()} into inputs:")
                 self.fill_inputs_with_zs(zs, inputs) #! use the zs
             if self.zs is not None:
+                if ii == 0:
+                    logger.info(f"Putting zs {self.zs.keys()} into inputs:")
                 self.fill_inputs_with_zs(self.zs, inputs)
             batch_size = inputs[list(inputs.keys())[0]].shape[0]
 
@@ -852,7 +833,10 @@ class CoFiTrainer(Trainer):
             # self.log(loggable_output_metrics)
             if self.args.local_rank == 0:
                 for k, v in loggable_output_metrics.items():
-                    mlflow.log_metric(k, v, step=self.global_step)
+                    try:
+                        mlflow.log_metric(k, v, step=self.global_step)
+                    except:
+                        pass
             logger.info(loggable_output_metrics)
             print_keys = [f"{dataset_name}_{item}" for item in [
                 'step', "eval_loss", "eval_accuracy"
@@ -861,30 +845,33 @@ class CoFiTrainer(Trainer):
             ]]
             logger.info(f"Evaluating: {', '.join([f'{k}: {v}' for k, v in output_metrics.items() if k in print_keys])}")
 
-        if self.start_saving_best:
-            best_so_far = self.eval_counter.update(
-                self.epoch, self.global_step, eval_score)
-            if best_so_far:
-                best_dir = os.path.join(self.args.output_dir, "best")
-                if not os.path.exists(best_dir):
-                    os.makedirs(best_dir)
+        # if self.start_saving_best:
+        #     best_so_far = self.eval_counter.update(
+        #         self.epoch, self.global_step, eval_score)
+        #     if best_so_far:
+        #         best_dir = os.path.join(self.args.output_dir, "best")
+        #         if not os.path.exists(best_dir):
+        #             os.makedirs(best_dir)
 
-                if self.l0_module is not None:
-                    zs = self.l0_module.forward(training=False)
-                    torch.save(zs, os.path.join(best_dir, "zs.pt"))
-                    torch.save(self.l0_module, os.path.join(
-                        best_dir, "l0_module.pt"))
-                best_eval_score_log = {
-                    "best_eval_score_so_far": self.eval_counter.best_eval_score,
-                    "best_step": self.eval_counter.global_step,
-                    "best_epoch": self.eval_counter.epoch
-                }
-                # self.log(best_eval_score_log)
-                if self.args.local_rank == 0:
-                    for k, v in best_eval_score_log.items():
-                        mlflow.log_metric(k, v, step=self.global_step)
-                logger.info(f"Saving the best model so far: [Epoch {int(self.epoch)} | Step: {self.global_step} | Model size: {output.metrics['remaining_params'] if 'remaining_params' in output.metrics else 'Full' } | Score: {round(eval_score, 5)}]")
-                self.model.save_pretrained(best_dir)
+        #         if self.l0_module is not None:
+        #             zs = self.l0_module.forward(training=False)
+        #             torch.save(zs, os.path.join(best_dir, "zs.pt"))
+        #             torch.save(self.l0_module, os.path.join(
+        #                 best_dir, "l0_module.pt"))
+        #         best_eval_score_log = {
+        #             "best_eval_score_so_far": self.eval_counter.best_eval_score,
+        #             "best_step": self.eval_counter.global_step,
+        #             "best_epoch": self.eval_counter.epoch
+        #         }
+        #         # self.log(best_eval_score_log)
+        #         if self.args.local_rank == 0:
+        #             for k, v in best_eval_score_log.items():
+        #                 try:
+        #                     mlflow.log_metric(k, v, step=self.global_step)
+        #                 except:
+        #                     pass
+        #         logger.info(f"Saving the best model so far: [Epoch {int(self.epoch)} | Step: {self.global_step} | Model size: {output.metrics['remaining_params'] if 'remaining_params' in output.metrics else 'Full' } | Score: {round(eval_score, 5)}]")
+        #         self.model.save_pretrained(best_dir)
 
         self.control = self.callback_handler.on_evaluate(self.args, self.state, self.control, output_metrics)
         self._memory_tracker.stop_and_update_metrics(output_metrics)

@@ -363,6 +363,12 @@ class L0Module(Module):
             num_zeros = round(expected_num_zeros)
         except:
             pdb.set_trace()
+        if len(loga.shape) == 0: # layerz
+            if num_zeros > 0:
+                return torch.tensor(0).to(loga.device)
+            else:
+                return torch.tensor(1).to(loga.device)
+            
         soft_mask = torch.sigmoid(loga / self.temperature * self.magical_number)
         if num_zeros > 0:
             if soft_mask.ndim == 0:
@@ -413,9 +419,11 @@ class L0Module(Module):
 
         results = {}
         # Not multiplied with each other
-        results["layers"] = layer_z.reshape(-1).astype(int).tolist()
-        results["mlp_layers"] = mlp_z.reshape(-1).astype(int).tolist()
-        results["head_layers"] = head_layer_z.reshape(-1).astype(int).tolist()
+        if "layer" in self.pruning_type:
+            results["layers"] = head_layer_z.reshape(-1).astype(int).tolist()
+        if "mlp_layer" in self.pruning_type:
+            results["mlp_layers"] = mlp_z.reshape(-1).astype(int).tolist()
+            results["head_layers"] = head_layer_z.reshape(-1).astype(int).tolist()
         results["hidden_dims"] = remaining_hidden_dims
         results["intermediate_dims"] = remaining_intermediate_nums
         results["head_nums"] = remaining_head_nums
@@ -423,9 +431,11 @@ class L0Module(Module):
         results["remaining_params"] = remaining_model_size
         results["pruned_model_sparsity"] = pruned_model_size / self.prunable_model_size
         
-        logger.info(f"remaining_layers: {layer_z}")
-        logger.info(f"remaining_mlp_layers: {mlp_z}")
-        logger.info(f"remaining_head_layers: {head_layer_z}")
+        if "layer" in self.pruning_type:
+            logger.info(f"remaining_layers: {head_layer_z}")
+        if "mlp_layer" in self.pruning_type:
+            logger.info(f"remaining_mlp_layers: {mlp_z}")
+            logger.info(f"remaining_head_layers: {head_layer_z}")
         logger.info(f"remaining_hidden_dims: {remaining_hidden_dims}")
         logger.info(f"remaining_intermediate_nums: {remaining_intermediate_nums}")
         logger.info(f"remaining_head_nums: {remaining_head_nums}")
@@ -434,7 +444,7 @@ class L0Module(Module):
 
         return results
 
-        
+
 
     def forward(self, training=True,):
         zs = {f"{type}_z": [] for type in self.types}

@@ -80,7 +80,7 @@ def main():
         f"Process rank: {training_args.local_rank}, device: {training_args.device}, n_gpu: {training_args.n_gpu}"
         + f"distributed training: {bool(training_args.local_rank != -1)}, 16-bits training: {training_args.fp16}"
     )
-    logger.info(f"Training/evaluation parameters {training_args}")
+    logger.info(f"Training/evaluation parameters {training_args} \n {additional_args}")
 
     # Detecting last checkpoint.
     last_checkpoint = None
@@ -108,19 +108,20 @@ def main():
             #finetuning_task=data_args.task_name,
             cache_dir=model_args.cache_dir,
             revision=model_args.model_revision,
-            use_auth_token=True if model_args.use_auth_token else None,
+            use_auth_token="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",
         )
         config.use_cache = False
         lora_ckpt = None
         config = set_lora_args(config, model_args)
+        # comment line117-118 when runing Finetune !!!!!!!!!!!!!!!
         if additional_args.pretrained_pruned_model is not None:
-            lora_ckpt = os.path.join(additional_args.pretrained_pruned_model,'lora_weights.pt')
+            lora_ckpt = os.path.join(additional_args.pretrained_pruned_model, 'lora_weights.pt')
         tokenizer = LlamaTokenizer.from_pretrained(
             model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,
             cache_dir=model_args.cache_dir,
             use_fast=model_args.use_fast_tokenizer,
             revision=model_args.model_revision,
-            use_auth_token=True if model_args.use_auth_token else None,
+            use_auth_token="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",
             padding_side="left",
             truncation_side="left",
         )
@@ -138,7 +139,7 @@ def main():
                 config=config,
                 cache_dir=model_args.cache_dir,
                 revision=model_args.model_revision,
-                use_auth_token=True if model_args.use_auth_token else None,
+                use_auth_token="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",
                 ignore_mismatched_sizes=model_args.ignore_mismatched_sizes,
                 lora_ckpt = lora_ckpt
             )
@@ -160,9 +161,15 @@ def main():
     zs = None
     if additional_args.pretrained_pruned_model is not None:
         zs = load_zs(os.path.join(additional_args.pretrained_pruned_model,'zs.pt'))
-        zs['mlp_z'] = zs ['layer_z']
-        zs['head_layer_z'] = zs['layer_z']
-        zs.pop('layer_z')
+        for key in zs:
+            zs[key] = zs[key].detach()
+        # l0_module = torch.load(os.path.join(additional_args.pretrained_pruned_model,'l0_module.pt'), map_location="cpu")
+        # zs = l0_module.forward(training=False)
+        # l0_module = None
+        if "layer_z" in zs:
+            zs['head_layer_z'] = zs['layer_z']
+            zs['mlp_z'] = zs['layer_z']
+            zs.pop('layer_z')
         #model = load_model(additional_args.pretrained_pruned_model, OPTForCausalLM, zs)
         print(
             f"Model Size after pruning: {calculate_parameters(model)}")

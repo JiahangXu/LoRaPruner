@@ -3,7 +3,6 @@ from pprint import pprint
 from . import alpaca, wikitext, piqa, c4, storycloze,arc, math, openbookqa, hellaswag, boolqa, math_eval, aqua, winogrande
 
 TASK_EVALUATE_REGISTRY = {
-    "wikitext": wikitext.evaluate_wikitext,
     "alpaca": alpaca.evaluate_alpaca, # [unnatural_instruction_core] [NOTICE: still in debugging]
     "piqa": piqa.evaluate_piqa,
     "c4": c4.evaluate_c4,

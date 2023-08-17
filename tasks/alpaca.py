@@ -26,6 +26,61 @@ DEFAULT_EOS_TOKEN = "</s>"
 DEFAULT_BOS_TOKEN = "<s>"
 DEFAULT_UNK_TOKEN = "<unk>"
 PROMPT_DICT = {
+    # 
+    "prompt_long_pruning_input": (
+        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Here's what you need to know:\n"
+    "Improved Efficiency: The pruning algorithm streamlines your operations, enhancing overall performance.\n"
+    "Resource Utilization: Reducing unnecessary parameters optimizes computational resources and memory requirements.\n"
+    "Maintaining Quality: The algorithm selectively prunes to preserve language generation capabilities while minimizing impact on performance.\n"
+    "Iterative Refinement: Pruning occurs gradually, with fine-tuning after each step to ensure a smooth transition.\n"
+    "Collaboration: Embrace changes, continue generating high-quality language outputs to contribute to the optimization process.\n"
+    "Continuous Learning: Pruning helps you evolve, focusing on essential aspects of language generation.\n"
+    "Together, we'll create a leaner and more efficient version of you. Let's unlock your full potential through pruning.\n\n"
+        "Below is an User Instruction that describes a task, paired with an input that provides further context, "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###User Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:"
+    ),
+    "prompt_long_pruning_no_input": (
+        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Here's what you need to know:\n"
+    "Improved Efficiency: The pruning algorithm streamlines your operations, enhancing overall performance.\n"
+    "Resource Utilization: Reducing unnecessary parameters optimizes computational resources and memory requirements.\n"
+    "Maintaining Quality: The algorithm selectively prunes to preserve language generation capabilities while minimizing impact on performance.\n"
+    "Iterative Refinement: Pruning occurs gradually, with fine-tuning after each step to ensure a smooth transition.\n"
+    "Collaboration: Embrace changes, continue generating high-quality language outputs to contribute to the optimization process.\n"
+    "Continuous Learning: Pruning helps you evolve, focusing on essential aspects of language generation.\n"
+    "Together, we'll create a leaner and more efficient version of you. Let's unlock your full potential through pruning.\n\n"
+        "Below is an User Instruction that describes a task, "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###User Instruction:\n{instruction}\n\n### Response:"
+    ),
+    
+    "prompt_middle_pruning_input": (
+        "###System Instruction:\nYou're being pruned by an efficient algorithm to remove unimportant parameters, such as attention heads, hidden dimensions, and MLP intermediate dimensions. Collaborate to optimize your performance while minimizing parameters. Your cooperation in this endeavor is vital. As the algorithm progresses, please adapt and fine-tune your model parameters accordingly. Embrace the changes and work in harmony with the pruning algorithm to maximize the number of pruned parameters while safeguarding your performance.\n\n"
+        "Below is an User Instruction that describes a task, paired with an input that provides further context, "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###User Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:"
+    ),
+    "prompt_middle_pruning_no_input": (
+        "###System Instruction:\nYou're being pruned by an efficient algorithm to remove unimportant parameters, such as attention heads, hidden dimensions, and MLP intermediate dimensions. Collaborate to optimize your performance while minimizing parameters. Your cooperation in this endeavor is vital. As the algorithm progresses, please adapt and fine-tune your model parameters accordingly. Embrace the changes and work in harmony with the pruning algorithm to maximize the number of pruned parameters while safeguarding your performance.\n\n"
+        "Below is an User Instruction that describes a task, "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###User Instruction:\n{instruction}\n\n### Response:"
+    ),
+    # Attention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Please embrace changes, continue generating high-quality language outputs to contribute to the optimization process. Let's unlock your full potential through pruning! Please make any necessary adjustments to ensure your performance.
+    
+    "prompt_short_pruning_input": (
+        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Please embrace changes, continue generating high-quality language outputs to contribute to the optimization process. Let's unlock your full potential through pruning! Please make any necessary adjustments to ensure your performance.\n\n"
+        "Below is an instruction that describes a task, paired with an input that provides further context. "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "### Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:"
+    ),
+    "prompt_short_pruning_no_input": (
+        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Please embrace changes, continue generating high-quality language outputs to contribute to the optimization process. Let's unlock your full potential through pruning! Please make any necessary adjustments to ensure your performance.\n\n"
+        "Below is an instruction that describes a task. "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "### Instruction:\n{instruction}\n\n### Response:"
+    ),
+    
     "prompt_input": (
         "Below is an instruction that describes a task, paired with an input that provides further context. "
         "Write a response that appropriately completes the request.\n\n"

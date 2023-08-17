@@ -3,13 +3,15 @@ import sys
 import os
 import sys
 import time
+import torch
 from transformers import HfArgumentParser, TrainingArguments
 from args import DataTrainingArguments
 from models.model_args import ModelArguments
 from utils.utils import calculate_parameters
 from args import AdditionalArguments
 from tasks import get_task_evaluater
-
+import mlflow
+mlflow.autolog()
 
 def set_lora_args(config, modeling_args):
     config.use_lora = modeling_args.use_lora
@@ -51,7 +53,7 @@ def main():
         config = set_lora_args(config, model_args)
         lora_ckpt = None
         if additional_args.pretrained_pruned_model is not None:
-            lora_ckpt = os.path.join(additional_args.pretrained_pruned_model,'lora_weights.pt')
+            lora_ckpt = os.path.join(additional_args.pretrained_pruned_model, 'lora_weights.pt')
 
         model = model_class.from_pretrained(
             model_class,
@@ -78,13 +80,35 @@ def main():
     model = model.eval()
 
     # calculate sparsity
-    model_size = calculate_parameters(model)
-    full_model_size = calculate_parameters(model_class(model.config))
-    sparsity = 1 - round(model_size / full_model_size, 3)
+    zs = None
+    if additional_args.pretrained_pruned_model is not None:
+        from models.l0_module import L0Module
+        from utils.cofi_utils import load_zs
+        # model initialize
+        config = LlamaConfig.from_pretrained(
+            model_args.config_name if model_args.config_name else model_args.model_name_or_path,
+            cache_dir=model_args.cache_dir,
+            revision=model_args.model_revision,
+            use_auth_token=True if model_args.use_auth_token else None,
+        )
+        config.use_cache = False
+        l0_module = L0Module(config=config, pruning_type="structured_heads+structured_mlp+hidden+mlp_layer+head_layer")
+        zs = load_zs(os.path.join(additional_args.pretrained_pruned_model, 'zs.pt'))
+        
+        if "layer_z" in zs:
+            zs['head_layer_z'] = zs['layer_z']
+            zs['mlp_z'] = zs['layer_z']
+            zs.pop('layer_z')
 
-    print(f"Model path: {model_args.model_name_or_path}")
-    print(f"Model size: {model_size}")
-    print(f"Sparsity: {sparsity}")
+        sparsity_info = l0_module.calculate_model_size(zs)
+
+        print(f"Model path: {additional_args.pretrained_pruned_model}")
+        print(f"Sparsity: {sparsity_info['pruned_model_sparsity']}")
+        print(f"mlp_layers: {sparsity_info['mlp_layers']}")
+        print(f"head_layers: {sparsity_info['head_layers']}")
+        print(f"hidden_dims: {sparsity_info['hidden_dims']}")
+        print(f"intermediate_dims: {sparsity_info['intermediate_dims']}")
+        print(f"head_nums: {sparsity_info['head_nums']}")
 
     # do evaluation
     for dataset_name in dataset_name_list:
@@ -97,24 +121,15 @@ def main():
         print(f"Task: {dataset_name};", "Eval time:", time.time() - start_time)
         for key in metrics:
             print(f"{key}: {round(metrics[key], 4)}")
+            mlflow.log_metric("result", round(metrics[key], 4))
         print()
 
 
 if __name__ == '__main__':
     '''
     example command:
-
-    # wikitext-2
-    python evaluation.py --output_dir ./ --model_name_or_path /home/jiahangxu/working/llama/7B_converted --dataset_name wikitext --dataset_config_name wikitext-2-raw-v1 --max_seq_length 1024
-
-    # wikitext-103
-    python evaluation.py --output_dir ./ --model_name_or_path /home/jiahangxu/working/llama/7B_converted --dataset_name wikitext --dataset_config_name wikitext-103-raw-v1 --max_seq_length 1024
-
-    # piqa
-    python evaluation.py --output_dir ./ --model_name_or_path /home/jiahangxu/working/llama/7B_converted --dataset_name piqa
-
-    # math related
-    python evaluation.py --output_dir ./ --model_name_or_path /home/jiahangxu/working/llama/7B_converted --dataset_name gsm8k --max_eval_samples 2
+    
+    ./scripts/evaluation
 
     '''
     main()
