@@ -7,9 +7,9 @@ from tqdm import tqdm
 import torch
 import torch.nn.functional as F
 import os
+from .utils import PROMPT_WITH_TYPE
 metric = evaluate.load("accuracy")
 max_length = 2048
-batch_size = 5
 
 
 def chunks(iter, n):
@@ -53,7 +53,8 @@ class Reorderer:
         return res
 
 
-def _loglikelihood_tokens(requests, model, additional_args, disable_tqdm = False):
+def _loglikelihood_tokens(requests, model, additional_args, disable_tqdm = False, batch_size = 5):
+        print("batch size:", batch_size)
         # TODO: implement some kind of efficient-request-middleware that lumps together requests with the same context
         res = []
         dataset_inps = []
@@ -125,15 +126,18 @@ def _loglikelihood_tokens(requests, model, additional_args, disable_tqdm = False
         nsamples = len(dataset_inps)
         dataset_logits = []
         if additional_args.pretrained_pruned_model is not None:
-            zs = torch.load(os.path.join(additional_args.pretrained_pruned_model,'zs.pt'), map_location="cpu")
-            zs['head_layer_z'] = zs['layer_z']
-            zs['mlp_z'] = zs['layer_z']
-            zs.pop('layer_z')
+            l0_module = torch.load(os.path.join(additional_args.pretrained_pruned_model,'l0_module.pt'), map_location="cpu")
+            zs = l0_module.forward(training=False)
+            if "layer_z" in zs:
+                zs['head_layer_z'] = zs['layer_z']
+                zs['mlp_z'] = zs['layer_z']
+                zs.pop('layer_z')
             for key in zs:
                 zs[key] = zs[key].cuda().detach().half()
         for i in tqdm(range(nsamples), desc='Last Layer'):
             if additional_args.pretrained_pruned_model is not None:
-                outputs = model(dataset_inps[i],head_z=zs['head_z'],intermediate_z=zs['intermediate_z'],hidden_z=zs['hidden_z'],mlp_z=zs['mlp_z'],head_layer_z=zs['head_layer_z'])
+                outputs = model(dataset_inps[i], **zs)
+
             else:
                 outputs = model(dataset_inps[i])
             hidden_states = outputs[0]
@@ -229,7 +233,8 @@ def _loglikelihood_tokens(requests, model, additional_args, disable_tqdm = False
         return re_ord.get_original(res)
 
 
-def get_piqa_dataset(model_args, data_args, training_args):
+def get_piqa_dataset(model_args, data_args, training_args, prompt=""):
+    print(prompt)
     if "llama" in model_args.model_name_or_path:
         from models.tokenization_llama import LlamaTokenizer
         tokenizer = LlamaTokenizer.from_pretrained(model_args.model_name_or_path)
@@ -247,7 +252,7 @@ def get_piqa_dataset(model_args, data_args, training_args):
     res = []
     labels = []
     for doc in raw_datasets['validation'] :
-        ctx = "Question: " + doc["goal"] + "\nAnswer:"
+        ctx = prompt + "Question: " + doc["goal"] + "\nAnswer:"
         res.append((ctx," {}".format(doc['sol1'])))
         res.append((ctx," {}".format(doc['sol2'])))
         labels.append(doc['label'])
@@ -267,11 +272,11 @@ def get_piqa_dataset(model_args, data_args, training_args):
 
 
 def evaluate_piqa(model, model_args, data_args, training_args, additional_args):
-    eval_dataset, labels, tokenizer = get_piqa_dataset(model_args, data_args, training_args)
+    eval_dataset, labels, tokenizer = get_piqa_dataset(model_args, data_args, training_args, prompt=PROMPT_WITH_TYPE[additional_args.eval_prompt_type])
 
     for n, p in model.named_parameters():
         p.requires_grad = False
-    results = _loglikelihood_tokens(eval_dataset, model, additional_args)
+    results = _loglikelihood_tokens(eval_dataset, model, additional_args, batch_size = 5 if additional_args.eval_prompt_type == 0 else 1)
     preds = []
     for i in range(0, len(results), 2):
         import numpy as np

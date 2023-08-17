@@ -260,6 +260,7 @@ class CoFiTrainer(Trainer):
         self._hp_search_setup(trial)
         self.is_in_train = True
         self._train_batch_size = self.args.train_batch_size
+
         import datetime
         now = datetime.datetime.now()
         self.args.output_dir = '/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}'.format(
@@ -300,6 +301,7 @@ class CoFiTrainer(Trainer):
             self.model.gradient_checkpointing_enable()
         model = self._wrap_model(self.model_wrapped)
         self.model_wrapped = model
+
         # teacher model for distillation
         if self.additional_args.do_distill:
             model_parameters = list(filter(lambda p: p.requires_grad, self.teacher_model.parameters()))
@@ -396,8 +398,8 @@ class CoFiTrainer(Trainer):
             self.eval_counter.clear()
             self.celoss_counter.clear()
             for step, inputs in enumerate(epoch_iterator):
-                if (self.prepruning_finetune_steps > 0 and self.global_step == self.prepruning_finetune_steps) or \
-                    (self.prepruning_finetune_steps == 0 and self.start_prune == False): 
+                if (self.l0_module is not None and self.prepruning_finetune_steps > 0 and self.global_step == self.prepruning_finetune_steps) or \
+                    (self.l0_module is not None and self.prepruning_finetune_steps == 0 and self.start_prune == False): 
                     self.start_prune = True
                     lr_steps = self.t_total - self.global_step
                     self.create_optimizer_and_scheduler(lr_steps, self.start_prune)
@@ -475,8 +477,8 @@ class CoFiTrainer(Trainer):
                             lr = self.args.learning_rate
 
                         logs["learning_rate"] = lr
-                        logs["lambda_1"] = self.l0_module.lambda_1.item()
-                        logs["lambda_2"] = self.l0_module.lambda_2.item()
+                        logs["lambda_1"] = self.l0_module.lambda_1.item() if self.l0_module is not None else None
+                        logs["lambda_2"] = self.l0_module.lambda_2.item() if self.l0_module is not None else None
                         logs["expected_sparsity"] = loss_terms["expected_sparsity"]
                         logs["target_sparsity"] = loss_terms["target_sparsity"]
                         logging_loss_scalar = tr_loss_scalar
@@ -767,7 +769,7 @@ class CoFiTrainer(Trainer):
                 self.global_step - self.prepruning_finetune_steps)
 
             expected_sparsity = round(expected_sparsity.item(), 5)
-            metrics.update(pruned_model_size_info)
+            metrics.update(pruned_model_size_info) # TODO: check here
             metrics["lag_loss"] = lag_loss
             metrics["expected_sparsity"] = expected_sparsity
             metrics["target_sparsity"] = target_sparsity

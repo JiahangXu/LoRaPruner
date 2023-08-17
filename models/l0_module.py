@@ -21,6 +21,7 @@ class L0Module(Module):
                  config, 
                  droprate_init=0.5,
                  layer_gate_init_open=False,
+                 layer_gate_open_0=False,
                  temperature=2./3.,
                  lagrangian_warmup=0,
                  start_sparsity=0.0,
@@ -60,7 +61,18 @@ class L0Module(Module):
         self.temperature = temperature
         self.droprate_init = droprate_init if droprate_init != 0. else 0.5
         self.layer_gate_init_open = layer_gate_init_open
-        
+        self.layer_gate_open_0 = layer_gate_open_0
+        assert self.layer_gate_open_0 == False
+        # mean = 10 -> layer init = 1; 
+        # mean = -10 -> layer init = 0; close
+        if (self.layer_gate_init_open and self.layer_gate_open_0) or \
+            (not self.layer_gate_init_open and not self.layer_gate_open_0):
+            self.layer_mean = -10
+        if (not self.layer_gate_init_open and self.layer_gate_open_0) or \
+            (self.layer_gate_init_open and not self.layer_gate_open_0):
+            self.layer_mean = 10
+        print(self.layer_gate_init_open, self.layer_gate_open_0, self.layer_mean)
+        # origin exp 0: mean=-10, layer init=0, close (layer_gate_init_open=False, layer_gate_open_0=False)
         self.types = []
         self.z_logas = {}
         self.parameters_per_dim = {}
@@ -144,7 +156,7 @@ class L0Module(Module):
     def initialized_layer_gate(self):
         n_layer = self.num_hidden_layers
         self.layer_loga = self.initialize_parameters(n_layer)
-        self.reset_loga(self.layer_loga, mean=-10 if self.layer_gate_init_open else 10)
+        self.reset_loga(self.layer_loga, mean=self.layer_mean)
         self.add_one_module(self.layer_loga, type="layer", 
                             parameter_per_dim=self.params_per_head * self.num_attention_heads + self.params_per_mlp_layer, size=1,
                             shape=[n_layer])
@@ -153,7 +165,7 @@ class L0Module(Module):
     def initialized_layer_structured_heads(self):
         n_layer = self.num_hidden_layers
         self.headlayer_loga = self.initialize_parameters(n_layer)
-        self.reset_loga(self.headlayer_loga, mean=-10 if self.layer_gate_init_open else 10)
+        self.reset_loga(self.headlayer_loga, mean=self.layer_mean)
         self.add_one_module(self.headlayer_loga, type="head_layer", 
                             parameter_per_dim=self.params_per_head * self.num_attention_heads, size=1,
                             shape=[n_layer])
@@ -169,16 +181,14 @@ class L0Module(Module):
         self.reset_loga(self.int_loga)
         logger.info(f"Initialized structured mlp! Prunable_model_size = {self.prunable_model_size}")
 
-
     def initialize_whole_mlp(self):
         n_layer = self.num_hidden_layers
         self.intlayer_loga = self.initialize_parameters(n_layer)
         self.add_one_module(self.intlayer_loga, type="mlp", 
                             parameter_per_dim=self.params_per_mlp_layer, size=self.mlp_num_per_layer,
                             shape=[n_layer])
-        self.reset_loga(self.intlayer_loga, mean=-10 if self.layer_gate_init_open else 10)
+        self.reset_loga(self.intlayer_loga, mean=self.layer_mean)
         logger.info(f"Initialized whole mlps! Prunable_model_size = {self.prunable_model_size}")
-
 
     def reset_loga(self, tensor, mean=None):
         if mean is None:
@@ -265,29 +275,52 @@ class L0Module(Module):
         all_head_score, head_score = self.transform_scores_for_head()
         hidden_score = (1 - self.cdf_qz(0, self.hidden_loga)) # 768
 
+        # threshold0.5 + lagST
         if all_head_score is not None:
             for i in range(len(all_head_score)):
                 if all_head_score[i] < 0.5:
-                #if all_head_score[i] ==0:
                     head_score[i] = (1 - (0.0 - all_head_score[i].detach() + all_head_score[i]) * (1 - head_score[i]))
                 elif all_head_score[i] >= 0.5:
-                #elif all_head_score[i]!=0:
                     head_score[i] = (1 - (1.0 - all_head_score[i].detach() + all_head_score[i]) * (1 - head_score[i]))
-        #else:
+
+        # # threshold0.0 + lagST
+        # if all_head_score is not None:
+        #     for i in range(len(all_head_score)):
+        #         if all_head_score[i] == 0:
+        #             head_score[i] = (1 - (0.0 - all_head_score[i].detach() + all_head_score[i]) * (1 - head_score[i]))
+        #         elif all_head_score[i] != 0:
+        #             head_score[i] = (1 - (1.0 - all_head_score[i].detach() + all_head_score[i]) * (1 - head_score[i]))
+
+        # # # w/o lagST
+        # if all_head_score is not None:
+        #     head_score = (1 - all_head_score * (1 - head_score))
+
         head_score = head_score.reshape(-1)
         num_parameters += \
             torch.sum(torch.outer(hidden_score, head_score)) * self.parameters_per_dim["head"] / self.hidden_size
 
         all_int_score, int_score = self.transform_scores_for_mlp()
+        
+        # threshold0.5 + lagST
         if all_int_score is not None:
             for i in range(len(all_int_score)):
                 if all_int_score[i] < 0.5:
-                #if all_int_score[i] == 0:
                     int_score[i] = (1 - (0.0 - all_int_score[i].detach() + all_int_score[i]) * (1 - int_score[i]))
                 elif all_int_score[i] >= 0.5 :
-                #elif all_int_score[i]!=0 :
                     int_score[i] = (1 - (1.0 - all_int_score[i].detach() + all_int_score[i]) * (1 - int_score[i]))
-        #else:
+
+        # # threshold0.0 + lagST
+        # if all_int_score is not None:
+        #     for i in range(len(all_int_score)):
+        #         if all_int_score[i] == 0:
+        #             int_score[i] = (1 - (0.0 - all_int_score[i].detach() + all_int_score[i]) * (1 - int_score[i]))
+        #         elif all_int_score[i] != 0 :
+        #             int_score[i] = (1 - (1.0 - all_int_score[i].detach() + all_int_score[i]) * (1 - int_score[i]))
+
+        # # # w/o lagST
+        # if all_int_score is not None:
+        #     int_score = (1 - all_int_score * (1 - int_score)).reshape(-1)
+
         int_score = int_score.reshape(-1)
         import time 
         s = time.time()
@@ -321,7 +354,11 @@ class L0Module(Module):
 
 
     def get_target_sparsity(self, pruned_steps):
+        # Linear Sparsity Scheduler
         target_sparsity = (self.target_sparsity - self.start_sparsity) * min(1, pruned_steps / self.lagrangian_warmup) + self.start_sparsity
+
+        # Cubic Sparsity Scheduler
+        # target_sparsity = self.target_sparsity + (self.start_sparsity - self.target_sparsity) * (1. - min(1, pruned_steps / self.lagrangian_warmup)) ** 3
         return target_sparsity
 
 
@@ -393,11 +430,6 @@ class L0Module(Module):
         hidden_z = numpified_zs["hidden"]
         intermediate_z = numpified_zs["intermediate"]
         head_z = numpified_zs["head"]
-        layer_z = numpified_zs["layer"].reshape(-1)
-        # if "layer" in self.pruning_type:
-        #     head_layer_z = layer_z
-        #     mlp_z = layer_z
-        # else:
         head_layer_z = numpified_zs["head_layer"].reshape(-1)
         mlp_z = numpified_zs["mlp"].reshape(-1)
             
@@ -444,8 +476,6 @@ class L0Module(Module):
 
         return results
 
-
-
     def forward(self, training=True,):
         zs = {f"{type}_z": [] for type in self.types}
 
@@ -478,8 +508,9 @@ class L0Module(Module):
                 else:
                     mlp_tmp = torch.stack(zs[type])
                     head_layer_tmp = torch.stack(zs[type])
-            zs["mlp_z"] = mlp_tmp
-            zs["head_layer_z"] = head_layer_tmp
+            if "layer_z" in zs:
+                zs["mlp_z"] = mlp_tmp
+                zs["head_layer_z"] = head_layer_tmp
         if "layer_z" in zs:
             zs.pop("layer_z")
         return zs 

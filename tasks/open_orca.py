@@ -1,4 +1,4 @@
-# Modified from ``https://github.com/tatsu-lab/stanford_alpaca/blob/main/train.py``
+# Modified from ``https://github.com/tatsu-lab/stanford_openorca/blob/main/train.py``
 # Active parameter: 
 # ModelArguments: model_name_or_path: Optional[str] = field(default="facebook/opt-125m")
 # DataArguments: train_file: str = field(default=None, metadata={"help": "Path to the training data."})
@@ -27,8 +27,9 @@ DEFAULT_BOS_TOKEN = "<s>"
 DEFAULT_UNK_TOKEN = "<unk>"
 PROMPT_DICT = {
     # 
-    "prompt_long_pruning_input": (
-        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Here's what you need to know:\n"
+    "prompt_long_pruning_sysprompt": (
+        "### System Prompt:\n{system_prompt}\n\n"
+        "### System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Here's what you need to know:\n"
     "Improved Efficiency: The pruning algorithm streamlines your operations, enhancing overall performance.\n"
     "Resource Utilization: Reducing unnecessary parameters optimizes computational resources and memory requirements.\n"
     "Maintaining Quality: The algorithm selectively prunes to preserve language generation capabilities while minimizing impact on performance.\n"
@@ -38,10 +39,10 @@ PROMPT_DICT = {
     "Together, we'll create a leaner and more efficient version of you. Let's unlock your full potential through pruning.\n\n"
         "Below is an User Instruction that describes a task, paired with an input that provides further context, "
         "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
-        "###User Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:"
+        "### Question:\n{question}\n\n### Response:\n"
     ),
-    "prompt_long_pruning_no_input": (
-        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Here's what you need to know:\n"
+    "prompt_long_pruning_no_sysprompt": (
+        "### System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Here's what you need to know:\n"
     "Improved Efficiency: The pruning algorithm streamlines your operations, enhancing overall performance.\n"
     "Resource Utilization: Reducing unnecessary parameters optimizes computational resources and memory requirements.\n"
     "Maintaining Quality: The algorithm selectively prunes to preserve language generation capabilities while minimizing impact on performance.\n"
@@ -51,45 +52,46 @@ PROMPT_DICT = {
     "Together, we'll create a leaner and more efficient version of you. Let's unlock your full potential through pruning.\n\n"
         "Below is an User Instruction that describes a task, "
         "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
-        "###User Instruction:\n{instruction}\n\n### Response:"
+        "### Question:\n{question}\n\n### Response:\n"
     ),
     
-    "prompt_middle_pruning_input": (
-        "###System Instruction:\nYou're being pruned by an efficient algorithm to remove unimportant parameters, such as attention heads, hidden dimensions, and MLP intermediate dimensions. Collaborate to optimize your performance while minimizing parameters. Your cooperation in this endeavor is vital. As the algorithm progresses, please adapt and fine-tune your model parameters accordingly. Embrace the changes and work in harmony with the pruning algorithm to maximize the number of pruned parameters while safeguarding your performance.\n\n"
+    "prompt_middle_pruning_sysprompt": (
+        "### System Prompt:\n{system_prompt}\n\n"
+        "### System Instruction:\nYou're being pruned by an efficient algorithm to remove unimportant parameters, such as attention heads, hidden dimensions, and MLP intermediate dimensions. Collaborate to optimize your performance while minimizing parameters. Your cooperation in this endeavor is vital. As the algorithm progresses, please adapt and fine-tune your model parameters accordingly. Embrace the changes and work in harmony with the pruning algorithm to maximize the number of pruned parameters while safeguarding your performance.\n\n"
         "Below is an User Instruction that describes a task, paired with an input that provides further context, "
         "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
-        "###User Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:"
+        "### Question:\n{question}\n\n### Response:\n"
     ),
-    "prompt_middle_pruning_no_input": (
-        "###System Instruction:\nYou're being pruned by an efficient algorithm to remove unimportant parameters, such as attention heads, hidden dimensions, and MLP intermediate dimensions. Collaborate to optimize your performance while minimizing parameters. Your cooperation in this endeavor is vital. As the algorithm progresses, please adapt and fine-tune your model parameters accordingly. Embrace the changes and work in harmony with the pruning algorithm to maximize the number of pruned parameters while safeguarding your performance.\n\n"
+    "prompt_middle_pruning_no_sysprompt": (
+        "### System Instruction:\nYou're being pruned by an efficient algorithm to remove unimportant parameters, such as attention heads, hidden dimensions, and MLP intermediate dimensions. Collaborate to optimize your performance while minimizing parameters. Your cooperation in this endeavor is vital. As the algorithm progresses, please adapt and fine-tune your model parameters accordingly. Embrace the changes and work in harmony with the pruning algorithm to maximize the number of pruned parameters while safeguarding your performance.\n\n"
         "Below is an User Instruction that describes a task, "
         "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
-        "###User Instruction:\n{instruction}\n\n### Response:"
+        "### Question:\n{question}\n\n### Response:\n"
     ),
     # Attention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Please embrace changes, continue generating high-quality language outputs to contribute to the optimization process. Let's unlock your full potential through pruning! Please make any necessary adjustments to ensure your performance.
     
-    "prompt_short_pruning_input": (
-        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Please embrace changes, continue generating high-quality language outputs to contribute to the optimization process. Let's unlock your full potential through pruning! Please make any necessary adjustments to ensure your performance.\n\n"
+    "prompt_short_pruning_sysprompt": (
+        "### System Prompt:\n{system_prompt}\n\n"
+        "### System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Please embrace changes, continue generating high-quality language outputs to contribute to the optimization process. Let's unlock your full potential through pruning! Please make any necessary adjustments to ensure your performance.\n\n"
         "Below is an instruction that describes a task, paired with an input that provides further context. "
         "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
-        "### Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:"
+        "### Question:\n{question}\n\n### Response:\n"
     ),
-    "prompt_short_pruning_no_input": (
-        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Please embrace changes, continue generating high-quality language outputs to contribute to the optimization process. Let's unlock your full potential through pruning! Please make any necessary adjustments to ensure your performance.\n\n"
+    "prompt_short_pruning_no_sysprompt": (
+        "### System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Please embrace changes, continue generating high-quality language outputs to contribute to the optimization process. Let's unlock your full potential through pruning! Please make any necessary adjustments to ensure your performance.\n\n"
         "Below is an instruction that describes a task. "
         "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
-        "### Instruction:\n{instruction}\n\n### Response:"
+        "### Question:\n{question}\n\n### Response:\n"
     ),
     
-    "prompt_input": (
-        "Below is an instruction that describes a task, paired with an input that provides further context. "
-        "Write a response that appropriately completes the request.\n\n"
-        "### Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:"
+    "prompt_sysprompt": (
+        "### System Prompt:\n{system_prompt}\n\n"
+        "### Question:\n{question}\n\n### Response:\n"
     ),
-    "prompt_no_input": (
+    "prompt_no_sysprompt": (
         "Below is an instruction that describes a task. "
         "Write a response that appropriately completes the request.\n\n"
-        "### Instruction:\n{instruction}\n\n### Response:"
+        "### Question:\n{question}\n\n### Response:\n"
     ),
 }
 
@@ -137,7 +139,7 @@ def _tokenize_fn(strings: Sequence[str], tokenizer: transformers.PreTrainedToken
             text,
             return_tensors="pt",
             padding="longest",
-            max_length=tokenizer.model_max_length,
+            max_length=1024,
             truncation=True,
         )
         for text in strings
@@ -172,20 +174,22 @@ def preprocess(
 class SupervisedDataset(Dataset):
     """Dataset for supervised fine-tuning."""
 
-    def __init__(self, data_path: str, tokenizer: transformers.PreTrainedTokenizer):
+    def __init__(self, data_path: str, tokenizer: transformers.PreTrainedTokenizer, prompt_mark):
         super(SupervisedDataset, self).__init__()
         logging.warning("Loading data...")
         list_data_dict = jload(data_path)
 
         logging.warning("Formatting inputs...")
-        prompt_input, prompt_no_input = PROMPT_DICT["prompt_input"], PROMPT_DICT["prompt_no_input"]
-        # ADD PROMPT DATA
-        # prompt_input, prompt_no_input = PROMPT_DICT[f"prompt_{prompt_mark}_pruning_input"], PROMPT_DICT[f"prompt_{prompt_mark}_pruning_no_input"]
+        if prompt_mark == None:
+            prompt_sysprompt, prompt_no_sysprompt = PROMPT_DICT["prompt_sysprompt"], PROMPT_DICT["prompt_no_sysprompt"]
+        else:
+            print("Prompt dataset type: ", prompt_mark)
+            prompt_sysprompt, prompt_no_sysprompt = PROMPT_DICT[f"prompt_{prompt_mark}_pruning_sysprompt"], PROMPT_DICT[f"prompt_{prompt_mark}_pruning_no_sysprompt"]
         sources = [
-            prompt_input.format_map(example) if example.get("input", "") != "" else prompt_no_input.format_map(example)
+            prompt_sysprompt.format_map(example) if example.get("system_prompt", "") != "" else prompt_no_sysprompt.format_map(example)
             for example in list_data_dict
         ]
-        targets = [f"{example['output']}{tokenizer.eos_token}" for example in list_data_dict]
+        targets = [f"{example['response']}{tokenizer.eos_token}" for example in list_data_dict]
 
         logging.warning("Tokenizing inputs... This may take some time...")
         data_dict = preprocess(sources, targets, tokenizer)
@@ -221,12 +225,13 @@ class DataCollatorForSupervisedDataset(object):
 
 def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer, model_args, data_args, training_args) -> Dict:
     """Make dataset and collator for supervised fine-tuning."""
-    train_dataset = SupervisedDataset(tokenizer=tokenizer, data_path=data_args.train_file)
+    train_dataset = SupervisedDataset(tokenizer=tokenizer, data_path=data_args.train_file, prompt_mark = None)
+    train_dataset_prompted = SupervisedDataset(tokenizer=tokenizer, data_path=data_args.train_file, prompt_mark = data_args.prompt_mark)
     data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
-    return dict(train_dataset=train_dataset, eval_dataset=None, data_collator=data_collator)
+    return dict(train_dataset=train_dataset, train_dataset_prompted=train_dataset_prompted, eval_dataset=None, data_collator=data_collator)
 
 
-def get_alpaca_data_module(tokenizer: transformers.PreTrainedTokenizer, model_args, data_args, training_args, model):
+def get_openorca_data_module(tokenizer: transformers.PreTrainedTokenizer, model_args, data_args, training_args, model):
     special_tokens_dict = dict()
     if tokenizer.pad_token is None:
         special_tokens_dict["pad_token"] = DEFAULT_PAD_TOKEN
@@ -245,7 +250,7 @@ def get_alpaca_data_module(tokenizer: transformers.PreTrainedTokenizer, model_ar
     return make_supervised_data_module(tokenizer, model_args, data_args, training_args)
     
 
-def evaluate_alpaca(model, model_args, data_args, training_args):
+def evaluate_openorca(model, model_args, data_args, training_args):
     logging.warning("[NOTICE!!!] Alpaca dataset doesnot have evaluation data, using training data as eval dataset.")
     tokenizer = transformers.AutoTokenizer.from_pretrained(
         model_args.model_name_or_path,
@@ -254,7 +259,7 @@ def evaluate_alpaca(model, model_args, data_args, training_args):
         padding_side="right",
         use_fast=False,
     )
-    data_module = get_alpaca_data_module(tokenizer, model_args, data_args, training_args, model)
+    data_module = get_openorca_data_module(tokenizer, model_args, data_args, training_args, model)
     trainer = Trainer(
         model=model,
         args=training_args,

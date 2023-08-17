@@ -1,138 +1,13 @@
-# Modified from ``https://github.com/tatsu-lab/stanford_alpaca/blob/main/train.py``
-
 import evaluate
 import collections
 from datasets import load_dataset
 from tqdm import tqdm
-import torch
-import torch.nn.functional as F
 import os
-metric = evaluate.load("accuracy")
-max_length = 2048
-batch_size = 5
-
-
-def chunks(iter, n):
-    arr = []
-    for x in iter:
-        arr.append(x)
-        if len(arr) == n:
-            yield arr
-            arr = []
-    if arr:
-        yield arr
-
-
-def group(arr, fn):
-    res = collections.defaultdict(list)
-    for ob in arr:
-        res[fn(ob)].append(ob)
-    return list(res.values())
-
-
-class Reorderer:
-    def __init__(self, arr, fn):
-        self.size = len(arr)
-        arr = list(enumerate(arr))
-        arr = group(arr, lambda x: fn(x[1]))
-        arr = [([y[0] for y in x], x[0][1]) for x in arr]
-        arr.sort(key=lambda x: fn(x[1]))
-        self.arr = arr
-
-    def get_reordered(self):
-        return [x[1] for x in self.arr]
-
-    def get_original(self, newarr):
-        res = [None] * self.size
-        cov = [False] * self.size
-        for (inds, _), v in zip(self.arr, newarr):
-            for ind in inds:
-                res[ind] = v
-                cov[ind] = True
-        assert all(cov)        
-        return res
-
-
-def _loglikelihood_tokens(requests, model, disable_tqdm = False):
-        # TODO: implement some kind of efficient-request-middleware that lumps together requests with the same context
-        res = []
-        dataset_inps = []
-
-        def _collate(x):
-            toks = x[1] + x[2]
-            return -len(toks), tuple(toks)
-
-        # TODO: automatic (variable) batch size detection for vectorization
-        re_ord = Reorderer(requests, _collate)
-        for chunk in chunks(
-            tqdm(re_ord.get_reordered(), disable=disable_tqdm), batch_size
-        ):
-            inps = []
-            cont_toks_list = []
-            inplens = []
-
-            padding_length = None
-
-            # because vectorizing is annoying, we first convert each (context, continuation) pair to padded
-            # tensors, then we pack them together into a batch, call the model, and then pick it all apart
-            # again because vectorizing is annoying
-
-            for _, context_enc, continuation_enc in chunk:
-                # sanity check
-                assert len(context_enc) > 0
-                assert len(continuation_enc) > 0
-                assert len(continuation_enc) <= max_length
-
-                # how this all works:
-                #          CTX      CONT
-                # inp    0 1 2 3|4 5 6 7 8 9   <- last token is deleted by inp[:, :-1]
-                # gpt2    \               \
-                # logits   1 2 3|4 5 6 7 8 9   <- the ctx half gets tossed out by the
-                # cont_toks      4 5 6 7 8 9      [:, -len(continuation_enc):, :self.vocab_size] slice
-
-                # when too long to fit in context, truncate from the left
-                inp = torch.tensor(
-                    (context_enc + continuation_enc)[-(max_length + 1) :][:-1],
-                    dtype=torch.long,
-                ).cuda()
-                (inplen,) = inp.shape
-
-                cont = continuation_enc
-
-                # since in _collate we make sure length is descending, the longest is always the first one.
-                padding_length = (
-                    padding_length if padding_length is not None else inplen
-                )
-
-                # pad length from seq to padding_length
-                inp = torch.cat(
-                    [
-                        inp,  # [seq]
-                        torch.zeros(padding_length - inplen, dtype=torch.long).to(
-                            inp.device
-                        ),  # [padding_length - seq]
-                    ],
-                    dim=0,
-                )
-
-                inps.append(inp.unsqueeze(0))  # [1, padding_length]
-                cont_toks_list.append(cont)
-                inplens.append(inplen)
-
-            batched_inps = torch.cat(inps, dim=0)  # [batch, padding_length
-            dataset_inps.append(batched_inps)
-
-    # Modified from ``https://github.com/tatsu-lab/stanford_alpaca/blob/main/train.py``
-
-import evaluate
-import collections
-from datasets import load_dataset
-from tqdm import tqdm
 import torch
 import torch.nn.functional as F
+from .utils import PROMPT_WITH_TYPE
 metric = evaluate.load("accuracy")
 max_length = 2048
-batch_size = 5
 
 
 def chunks(iter, n):
@@ -176,7 +51,7 @@ class Reorderer:
         return res
 
 
-def _loglikelihood_tokens(requests, model, additional_args, disable_tqdm = False):
+def _loglikelihood_tokens(requests, model, additional_args, disable_tqdm = False, batch_size = 5):
         # TODO: implement some kind of efficient-request-middleware that lumps together requests with the same context
         res = []
         dataset_inps = []
@@ -248,15 +123,18 @@ def _loglikelihood_tokens(requests, model, additional_args, disable_tqdm = False
         nsamples = len(dataset_inps)
         dataset_logits = []
         if additional_args.pretrained_pruned_model is not None:
-            zs = torch.load(os.path.join(additional_args.pretrained_pruned_model,'zs.pt'), map_location="cpu")
-            zs['head_layer_z'] = zs['layer_z']
-            zs['mlp_z'] = zs['layer_z']
-            zs.pop('layer_z')
+            # zs = torch.load(os.path.join(additional_args.pretrained_pruned_model,'zs.pt'), map_location="cpu")
+            l0_module = torch.load(os.path.join(additional_args.pretrained_pruned_model,'l0_module.pt'), map_location="cpu")
+            zs = l0_module.forward(training=False)
+            if "layer_z" in zs:
+                zs['head_layer_z'] = zs['layer_z']
+                zs['mlp_z'] = zs['layer_z']
+                zs.pop('layer_z')
             for key in zs:
                 zs[key] = zs[key].cuda().detach().half()
         for i in tqdm(range(nsamples), desc='Last Layer'):
             if additional_args.pretrained_pruned_model is not None:
-                outputs = model(dataset_inps[i],head_z=zs['head_z'],intermediate_z=zs['intermediate_z'],hidden_z=zs['hidden_z'],mlp_z=zs['mlp_z'],head_layer_z=zs['head_layer_z'])
+                outputs = model(dataset_inps[i], **zs)
             else:
                 outputs = model(dataset_inps[i])
             hidden_states = outputs[0]
@@ -352,7 +230,8 @@ def _loglikelihood_tokens(requests, model, additional_args, disable_tqdm = False
         return re_ord.get_original(res)
 
 
-def get_arc_dataset(model_args, data_args, training_args):
+def get_arc_dataset(model_args, data_args, training_args, prompt=""):
+    print(prompt)
     if "llama" in model_args.model_name_or_path:
         from models.tokenization_llama import LlamaTokenizer
         tokenizer = LlamaTokenizer.from_pretrained(model_args.model_name_or_path)
@@ -380,7 +259,7 @@ def get_arc_dataset(model_args, data_args, training_args):
             "choices": doc["choices"]["text"],
             "gold": ["A", "B", "C", "D", "E"].index(doc["answerKey"]),
         }
-        ctx = out_doc["query"]
+        ctx = prompt + out_doc["query"]
         for i in range(0,len(out_doc['choices'])):
             res.append((ctx," {}".format(out_doc['choices'][i]))) 
         choices_num.append(len(out_doc['choices']))   
@@ -401,11 +280,11 @@ def get_arc_dataset(model_args, data_args, training_args):
 
 
 def evaluate_arc(model, model_args, data_args, training_args, additional_args):
-    eval_dataset, labels, tokenizer, choices_num = get_arc_dataset(model_args, data_args, training_args)
+    eval_dataset, labels, tokenizer, choices_num = get_arc_dataset(model_args, data_args, training_args, prompt=PROMPT_WITH_TYPE[additional_args.eval_prompt_type])
 
     for n, p in model.named_parameters():
         p.requires_grad = False
-    results = _loglikelihood_tokens(eval_dataset, model, additional_args)
+    results = _loglikelihood_tokens(eval_dataset, model, additional_args, batch_size = 5 if additional_args.eval_prompt_type == 0 else 1)
     preds = []
     answers = []
     i = 0

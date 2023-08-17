@@ -1,9 +1,8 @@
 from pprint import pprint
 
-from . import alpaca, wikitext, piqa, c4, storycloze,arc, math, openbookqa, hellaswag, boolqa, math_eval, aqua, winogrande
+from . import alpaca, wikitext, piqa, c4, storycloze, arc, math, openbookqa, hellaswag, boolqa, math_eval, winogrande, open_orca
 
 TASK_EVALUATE_REGISTRY = {
-    "alpaca": alpaca.evaluate_alpaca, # [unnatural_instruction_core] [NOTICE: still in debugging]
     "piqa": piqa.evaluate_piqa,
     "c4": c4.evaluate_c4,
     "storycloze": storycloze.evaluate_storycloze,
@@ -12,7 +11,7 @@ TASK_EVALUATE_REGISTRY = {
     "addsub": math_eval.evaluate_math,
     "multiarith": math_eval.evaluate_math,
     "singleeq": math_eval.evaluate_math,
-    "aqua": aqua.evaluate_aqua,
+    "aqua": math_eval.evaluate_math,
     "svamp": math_eval.evaluate_math,
     "math": math.evaluate_math,
     "alpaca-gpt4": alpaca.evaluate_alpaca,
@@ -34,7 +33,8 @@ TASK_DATA_MODULE_REGISTRY = {
     "openbookqa": openbookqa.get_obqa_dataset,
     "hellaswag": hellaswag.get_hellaswag_dataset,
     "super_glue": boolqa.get_boolqa_dataset,
-    "winogrande": winogrande.get_winogrande_dataset
+    "winogrande": winogrande.get_winogrande_dataset,
+    "open_orca": open_orca.get_openorca_data_module,
 }
 
 

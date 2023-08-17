@@ -151,6 +151,8 @@ def get_wikitext_data_module(tokenizer, model_args, data_args, training_args):
 
     # Main data processing function that will concatenate all texts from our dataset and generate chunks of block_size.
     def group_texts(examples):
+        # ADD PROMPT DATA
+        # prompt = tokenizer(PROMPT_DICT[f"prompt_{prompt_mark[5:]}_pruning"])
         prompt = {'input_ids': [], 'attention_mask': []}
 
         # Concatenate all texts.
@@ -165,6 +167,9 @@ def get_wikitext_data_module(tokenizer, model_args, data_args, training_args):
             k: [prompt[k] + t[i : i + block_size] for i in range(0, total_length, block_size)]
             for k, t in concatenated_examples.items()
         }
+        # ADD PROMPT DATA
+        # result["labels"] = [[-100] * PROMPT_DICT_LENGTH[prompt_mark] + item[PROMPT_DICT_LENGTH[prompt_mark]: ] \
+        #                         for item in result["input_ids"]]
         result["labels"] = result["input_ids"].copy()
         return result
 

@@ -26,7 +26,7 @@ import deepspeed
 
 logger = logging.getLogger(__name__)
 
-ALPACA_TASK = ["alpaca", "alpaca-gpt4", "alpaca-gpt4-zh", "unnatural_instruction_gpt4", "math"]
+ALPACA_TASK = ["alpaca", "alpaca-gpt4", "alpaca-gpt4-zh", "unnatural_instruction_gpt4", "math", "open_orca"]
 
 def set_lora_args(config, modeling_args):
     config.use_lora = modeling_args.use_lora
@@ -154,6 +154,7 @@ def main():
         l0_module = L0Module(config=config,
                             droprate_init=additional_args.droprate_init,
                             layer_gate_init_open=additional_args.layer_gate_init_open,
+                            layer_gate_open_0=additional_args.layer_gate_open_0,
                             temperature=additional_args.temperature,
                             target_sparsity=additional_args.target_sparsity,
                             pruning_type=additional_args.pruning_type)

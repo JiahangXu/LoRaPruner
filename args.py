@@ -25,6 +25,7 @@ class AdditionalArguments():
 
     droprate_init: float = field(default=0.5, metadata={"help": "Init parameter for loga"})
     layer_gate_init_open: bool = field(default=False, metadata={"help": "Whether to open all layer gate when init."})
+    layer_gate_open_0: bool = field(default=False, metadata={"help": "Layer gate open 0: pruned model sparsity smaller; Layer gate open 1: pruned model sparsity larger;"})
     temperature: float = field(default=2./3., metadata={"help": "Temperature controlling hard concrete distribution"})
     prepruning_finetune_epochs: int = field(default=1, metadata={"help": "Finetuning epochs before pruning"})
     lagrangian_warmup_epochs: int = field(default=2, metadata={"help": "Number of epochs for lagrangian warmup"})
