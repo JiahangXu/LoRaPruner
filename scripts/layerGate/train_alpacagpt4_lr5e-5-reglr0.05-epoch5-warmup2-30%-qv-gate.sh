@@ -8,7 +8,7 @@ mkdir -p $OUTPUT_DIR
 
 deepspeed --num_nodes=1 --num_gpus=8 --master_port=16112 train.py \
   --deepspeed ds3_offload.json \
-  --pruning_type structured_heads+structured_mlp+hidden+mlp_layer+head_layer \
+  --pruning_type structured_heads+structured_mlp+hidden+layer \
   --target_sparsity 0.3 \
   --sparsity_epsilon 0.005 \
   --model_name_or_path decapoda-research/llama-7b-hf \
