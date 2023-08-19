@@ -387,7 +387,7 @@ class CoFiTrainer(Trainer):
                 train_dataloader.sampler.set_epoch(epoch)
 
             epoch_iterator = train_dataloader
-            print("training on unprompted train dataset")
+            print("training on prompted long train dataset")
 
             # Reset the past mems state at the beginning of each epoch if necessary.
             if self.args.past_index >= 0:
