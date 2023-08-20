@@ -38,7 +38,7 @@ job_eight_nodes = \
   command:
   #- bash setup2.sh
   #- python sleep.py
-  - bash ./scripts/layerGate/{file}.sh
+  - bash ./scripts/{file}.sh
   submit_args: 
     env:
       {{DEBUG: 1}}

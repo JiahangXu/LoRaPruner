@@ -192,6 +192,7 @@ class CoFiTrainer(Trainer):
                                                         self.args.adam_beta2),
                                                 eps=self.args.adam_epsilon)
         if self.lr_scheduler is None:
+            print("line 195")
             if self.additional_args.scheduler_type == "linear":
                 self.lr_scheduler = get_linear_schedule_with_warmup(
                     self.optimizer, num_warmup_steps=self.args.warmup_steps, num_training_steps=num_training_steps
@@ -438,7 +439,7 @@ class CoFiTrainer(Trainer):
                         self.l0_optimizer.step()
                         self.lagrangian_optimizer.step()
 
-                    if self.lr_scheduler is not None:
+                    if self.lr_scheduler is not None and not self.deepspeed:
                         self.lr_scheduler.step()
 
                     if self.l0_module is not None:
