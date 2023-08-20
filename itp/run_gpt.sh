@@ -1,1 +1,0 @@
-python run_sing.py submit --sparsity 0.5  --target sing_octo --task_name wikitext2 --model_name llama7blr5e_5reglr0.1 --file train

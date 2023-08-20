@@ -1,0 +1,2 @@
+python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr5e-6_Linear_FTepoch1_based_7-31-21-32 --file finetune/finetune_lr5e-6_FTepoch1_alpacagpt4_lr5e-5-reglr0.05-epoch5-warmup2-30%-qv-closeinit-gate2-thres0.5lagST_promptlong
+python run_sing.py submit --sparsity 0.3 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr5e-6_Cosine_FTepoch3_based_7-31-21-32 --file finetune/finetune_lr5e-6_cosine_FTepoch3_alpacagpt4_lr5e-5-reglr0.05-epoch5-warmup2-30%-qv-closeinit-gate2-thres0.5lagST_promptlong

@@ -1,1 +1,0 @@
-python run_sing.py submit --sparsity 0.5  --target sing_octo --task_name gpt4alpaca --model_name llama7b_qv_wolayer_lr5e-5-reglr0.05-epoch5-warmup2-50% --file train_alpacagpt4_lr5e-5-reglr0.05-epoch5-warmup2-50%-qv
