@@ -52,6 +52,9 @@ class AdditionalArguments():
     eval_dataset_name: Optional[str] = field(
         default=None, metadata={"help": "The name of the evaluation dataset to use."}
     )
+    eval_prompt_type: Optional[int] = field(
+        default=0, metadata={"help": "Whether add prompt in zero-shot evaluation, 0: no prompt; 1: prompt long; "}
+    )
     eval_method: Optional[str] = field(
         default="few_shot_cot",
         # choices=["zero_shot", "few_shot", "few_shot_cot"],
@@ -145,4 +148,4 @@ class DataTrainingArguments:
         metadata={"help": "The number of processes to use for the preprocessing."},
     )
     test_file: Optional[str] = field(default=None, metadata={"help": "A csv or a json file containing the test data."})
-
+    prompt_mark: Optional[str] = field(default="long", metadata={"help": "choose from ['long', 'short', 'middle']. (If additional_args.pruning_prompt_stage=0, this mark will not be used)"})
