@@ -184,7 +184,7 @@ def main():
     else:
         data_module = get_data_module(data_args.dataset_name)(tokenizer, model_args, data_args, training_args)
     # use wikitext2 test dataset to evaluate the performance of model on alpaca or math10k
-    wiki_module = get_data_module('wikitext')(tokenizer, model_args, data_args, training_args)
+    wiki_module = get_data_module(additional_args.eval_dataset_name[0] if "wikitext" in additional_args.eval_dataset_name[0] else "wikitext")(tokenizer, model_args, data_args, training_args)
     data_module['eval_dataset'] = wiki_module['eval_dataset']
     data_module['compute_metrics'] = wiki_module['compute_metrics']
     data_module['preprocess_logits_for_metrics'] = wiki_module['preprocess_logits_for_metrics']
