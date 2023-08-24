@@ -29,6 +29,8 @@ storage:
 jobs:
 {jobs}
 """
+
+
 job_eight_nodes = \
 """- name: {job_name}
   sku: G8
@@ -37,26 +39,30 @@ job_eight_nodes = \
 #   execution_mode: managed
   command:
   #- bash setup2.sh
-  #- python sleep.py
+  #- python ./itp/sleep.py
   - bash ./scripts/{file}.sh
   submit_args: 
     env:
       {{DEBUG: 1}}
 """
-job_two_nodes = \
+
+
+eval_job_template = \
 """- name: {job_name}
-  sku: G2
+  sku: G{node_num}
   priority: high
  # process_count_per_node: 1
 #   execution_mode: managed
   command:
   #- bash setup2.sh
   #- python sleep.py
-  - bash ./scripts/prompt_training/{file}.sh
+  - bash ./scripts/{file} {ckpt_dir} {prompt_type}
   submit_args: 
     env:
       {{DEBUG: 1}}
 """
+
+
 job_one_node = \
 """- name: {job_name}
   sku: NDAMv4:80G1-A100
@@ -87,6 +93,7 @@ def main():
     "squad",
     "squad_v2",
     "wikitext2",
+    "wikitext2_eval",
     "alpaca",
     "gpt4alpaca",
     "alpacaclean",
@@ -96,9 +103,19 @@ def main():
     "storycloze",
     "arc-e",
     "arc-c",
-    "hellaswag"
+    "gsm8k",
+    "multiarith",
+    "boolqa",
+    "hellaswag",
+    "obqa",
+    "winogrande",
+    "open_orca",
     ])
     parser.add_argument("--ckpt_dir", type=str, required=False)
+    parser.add_argument("--prompt_type", type=int, required=False)
+    parser.add_argument("--mark", type=str, required=False)
+    parser.add_argument("--node_num", type=int, default=2, required=False)
+    
     # parser.add_argument("--constraint", type=float, required=True,
     # help="MAC/latency constraint relative to the original model",
     # )
@@ -109,16 +126,28 @@ def main():
     else:
         mode = 0
 
-    job_template = job_eight_nodes
-    #job_template = job_eight_nodes
-    date = datetime.datetime.now().strftime('%m%d%H%M')
-    #job_name = f'testopt-{args.task_name}-{args.constraint}-{date}'
-    job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.sparsity}-{date}'
-    jobs = job_template.format(
-        job_name=job_name, 
-        debug=mode,
-        file = args.file
-    )
+    if args.task_name in ["wikitext2_eval", "piqa", "math_eval", "piqa", "storycloze", "arc-e", "arc-c", \
+      "math_eval", "boolqa", "hellaswag", "obqa", "winogrande", "gsm8k", "multiarith"]:
+        job_template = eval_job_template
+        date = datetime.datetime.now().strftime('%m%d%H%M')
+        job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.mark}-{date}'
+        jobs = job_template.format(
+            job_name=job_name, 
+            debug=mode,
+            file = args.file,
+            ckpt_dir = args.ckpt_dir,
+            prompt_type = args.prompt_type,
+            node_num = args.node_num
+        )
+    else:
+        job_template = job_eight_nodes
+        date = datetime.datetime.now().strftime('%m%d%H%M')
+        job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.sparsity}-{date}'
+        jobs = job_template.format(
+            job_name=job_name, 
+            debug=mode,
+            file = args.file
+        )
     description = f'{job_name}'
 
     # ======================================================================================================
