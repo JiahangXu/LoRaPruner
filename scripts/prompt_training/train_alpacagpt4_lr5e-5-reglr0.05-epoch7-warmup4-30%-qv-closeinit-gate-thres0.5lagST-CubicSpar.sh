@@ -9,15 +9,15 @@ mkdir -p $OUTPUT_DIR
 deepspeed --num_nodes=1 --num_gpus=8 --master_port=16112 train.py \
   --deepspeed ds3_offload.json \
   --pruning_type structured_heads+structured_mlp+hidden+layer \
-  --target_sparsity 0.2 \
+  --target_sparsity 0.3 \
   --sparsity_epsilon 0.005 \
-  --model_name_or_path decapoda-research/llama-13b-hf \
+  --model_name_or_path decapoda-research/llama-7b-hf \
   --num_train_epochs 7 \
   --learning_rate 5e-5 \
   --reg_learning_rate 0.05 \
   --lagrangian_warmup_epochs 4 \
   --max_seq_length 1024 \
-  --task_name gpt4alpaca_llama13b_closeinit_gate_0.5lagST \
+  --task_name gpt4alpaca_llama7b_closeinit_gate_0.5lagST_CubicSpar \
   --do_train \
   --do_eval \
   --dataset_name alpaca-gpt4 \
@@ -35,7 +35,7 @@ deepspeed --num_nodes=1 --num_gpus=8 --master_port=16112 train.py \
   --lora_train_bias none \
   --lora_alpha 8.0 \
   --lora_param Q.V \
-  --lora_layers 40 \
+  --lora_layers 32 \
   --gradient_checkpointing=True \
   --logging_first_step \
   --logging_steps 10 \
