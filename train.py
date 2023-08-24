@@ -113,9 +113,10 @@ def main():
         config.use_cache = False
         lora_ckpt = None
         config = set_lora_args(config, model_args)
-        # comment line117-118 when runing Finetune !!!!!!!!!!!!!!!
-        if additional_args.pretrained_pruned_model is not None:
+        # When runing Finetune, use lora merged "llama_pruned" as base model and do NOT load lora_ckpt
+        if additional_args.pretrained_pruned_model is not None and "llama_pruned" not in model_args.model_name_or_path:
             lora_ckpt = os.path.join(additional_args.pretrained_pruned_model, 'lora_weights.pt')
+            logger.info(f"load lora ckpt from {lora_ckpt}")
         tokenizer = LlamaTokenizer.from_pretrained(
             model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,
             cache_dir=model_args.cache_dir,
