@@ -89,6 +89,7 @@ def main():
     "wikitext2",
     "alpaca",
     "gpt4alpaca",
+    "alpacaclean",
     "c4",
     "piqa",
     "math10k",
