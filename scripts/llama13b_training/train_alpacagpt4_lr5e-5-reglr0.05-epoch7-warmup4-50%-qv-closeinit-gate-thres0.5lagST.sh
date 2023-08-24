@@ -17,7 +17,7 @@ deepspeed --num_nodes=1 --num_gpus=8 --master_port=16112 train.py \
   --reg_learning_rate 0.05 \
   --lagrangian_warmup_epochs 4 \
   --max_seq_length 1024 \
-  --task_name gpt4alpaca_llama7b_closeinit_gate_0.5lagST \
+  --task_name gpt4alpaca_llama13b_closeinit_gate_0.5lagST \
   --do_train \
   --do_eval \
   --dataset_name alpaca-gpt4 \
