@@ -5,8 +5,8 @@ deepspeed --num_nodes=1 --num_gpus=1 train.py \
   --pretrained_pruned_model ${1} \
   --do_eval \
   --max_seq_length 1024 \
-  --eval_dataset_name wikitext \
-  --dataset_name wikitext \
+  --eval_dataset_name wikitext2_eval \
+  --dataset_name wikitext2_eval \
   --dataset_config_name wikitext-2-raw-v1 \
   --training_objective LM \
   --per_device_train_batch_size 1 \
