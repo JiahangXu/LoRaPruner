@@ -806,7 +806,7 @@ class CoFiTrainer(Trainer):
         logger.info(f"time: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}")
         output_metrics = {}
         for dataset_name in self.additional_args.eval_dataset_name:
-            if dataset_name == "wikitext":
+            if "wikitext" in dataset_name:
                 eval_dataloader = self.get_eval_dataloader(eval_dataset)
                 start_time = time.time()
                 output = self.evaluation_loop(
