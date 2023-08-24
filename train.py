@@ -26,7 +26,7 @@ import deepspeed
 
 logger = logging.getLogger(__name__)
 
-ALPACA_TASK = ["alpaca", "alpaca-gpt4", "alpaca-gpt4-zh", "unnatural_instruction_gpt4", "math", "open_orca", "alpaca-cleaned"]
+ALPACA_TASK = ["alpaca", "alpaca-gpt4", "alpaca-gpt4-zh", "unnatural_instruction_gpt4", "math", "open_orca"]
 
 def set_lora_args(config, modeling_args):
     config.use_lora = modeling_args.use_lora
@@ -171,6 +171,7 @@ def main():
             zs['head_layer_z'] = zs['layer_z']
             zs['mlp_z'] = zs['layer_z']
             zs.pop('layer_z')
+        #zs.pop('gate_layer_z')
         #model = load_model(additional_args.pretrained_pruned_model, OPTForCausalLM, zs)
         print(
             f"Model Size after pruning: {calculate_parameters(model)}")
