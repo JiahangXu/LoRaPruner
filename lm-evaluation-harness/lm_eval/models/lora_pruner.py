@@ -215,6 +215,7 @@ class HuggingFaceAutoLM(BaseLM):
                 lora_ckpt = lora_ckpt
             )
         
+        self.model.half()
         self.model.eval()
         torch.set_grad_enabled(False)
 

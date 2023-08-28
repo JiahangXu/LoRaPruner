@@ -11,7 +11,8 @@ def single_job(arg):
         command_head = "python run_sing.py submit --target sing_research --model_name eval_llama13b "
         command_list_no_prompt = [
             command_head + f"--file evaluation_llama13b/zeroshot/eval_llama7b_boolqa.sh --task_name boolqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 4",
-            command_head + f"--file evaluation_llama13b/zeroshot/eval_llama7b_hellaswag.sh --task_name hellaswag --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 8",
+            command_head + f"--file evaluation_llama13b/zeroshot/eval_llama7b_piqa.sh --task_name piqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 4",
+            # command_head + f"--file evaluation_llama13b/zeroshot/eval_llama7b_hellaswag.sh --task_name hellaswag --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 8",
         ]
         command_list = [
             command_head + f"--file evaluation_llama13b/eval_wikitext.sh --task_name wikitext2_eval --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 4",
@@ -34,8 +35,7 @@ def single_job(arg):
 
 waiting_jobs = [
     # llama-13b
-    # ("/mnt/data/LoRaPruner/gpt4alpaca_llama13b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-8-3-21-48/epoch2/", "llama13b_8-3-21-48_no_prompt", 0), 
-    # ("/mnt/data/LoRaPruner/gpt4alpaca_llama13b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-8-3-21-48/epoch2/", "llama13b_8-3-21-48_prompt_long", 1),    
+    ("LoRaPruner/gpt4alpaca_llama13b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-8-3-21-48/epoch2/", "llama13b_8-3-21-48", 1), 
     
     
     ## ================= fix LR scheduler bug ================= ##
