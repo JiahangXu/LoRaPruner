@@ -35,12 +35,13 @@ def single_job(arg):
 
 waiting_jobs = [
     # llama-13b
-    ("LoRaPruner/gpt4alpaca_llama13b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-8-3-21-48/epoch2/", "llama13b_8-3-21-48", 1), 
+    # ("/mnt/data/LoRaPruner/gpt4alpaca_llama13b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-8-3-21-48/epoch2/", "llama13b_8-3-21-48_no_prompt", 0), 
+    # ("/mnt/data/LoRaPruner/gpt4alpaca_llama13b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-8-3-21-48/epoch2/", "llama13b_8-3-21-48_prompt_long", 1),    
     
     
     ## ================= fix LR scheduler bug ================= ##
     # # mark 36
-    # /mnt/data/LoRaPruner/gpt4alpaca_llama13b_prompt_nogate-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-23-5-24", "mark36_epoch5", 1),
+    # ("LoRaPruner/gpt4alpaca_llama13b_prompt_nogate-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-23-5-24", "mark36_epoch5", 1),
 
     # # mark 37
     # ("LoRaPruner/gpt4alpaca_llama13b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-21-9-58", "mark37_epoch5", 1),

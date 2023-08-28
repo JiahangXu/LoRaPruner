@@ -1,5 +1,7 @@
+cp -r /mnt/data/LPM/llama-13b-hf ./
+
 CUDA_VISIBLE_DEVICE3=0 python evaluation.py \
-  --model_name_or_path decapoda-research/llama-13b-hf \
+  --model_name_or_path ./llama-13b-hf \
   --pretrained_pruned_model ${1} \
   --dataset_name piqa \
   --task piqa \
