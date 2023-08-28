@@ -27,4 +27,5 @@
 python ./eval_ppl/eval_ppl.py \
     --max_seq_len 1024 \
     --model_type lora_pruner \
-    --lora_ckpt $pretrained_path
+    --lora_ckpt ${1} \
+    --prompt_mark ${2}

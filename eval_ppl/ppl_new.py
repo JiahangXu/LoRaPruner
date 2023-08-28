@@ -12,8 +12,53 @@ from torch.utils.data.dataset import Dataset
 
 # from LLMPruner.datasets.ppl_dataset import get_loaders
 
+PROMPT_DICT = {
+    "prompt_long_pruning": (
+        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Here's what you need to know:\n"
+    "Improved Efficiency: The pruning algorithm streamlines your operations, enhancing overall performance.\n"
+    "Resource Utilization: Reducing unnecessary parameters optimizes computational resources and memory requirements.\n"
+    "Maintaining Quality: The algorithm selectively prunes to preserve language generation capabilities while minimizing impact on performance.\n"
+    "Iterative Refinement: Pruning occurs gradually, with fine-tuning after each step to ensure a smooth transition.\n"
+    "Collaboration: Embrace changes, continue generating high-quality language outputs to contribute to the optimization process.\n"
+    "Continuous Learning: Pruning helps you evolve, focusing on essential aspects of language generation.\n"
+    "Together, we'll create a leaner and more efficient version of you. Let's unlock your full potential through pruning.\n\n"
+        "Below is an User Instruction that describes a task, "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###Input:\n"
+    ),
+    
+    "prompt_middle_pruning": (
+        "###System Instruction:\nYou're being pruned by an efficient algorithm to remove unimportant parameters, such as attention heads, hidden dimensions, and MLP intermediate dimensions. Collaborate to optimize your performance while minimizing parameters. Your cooperation in this endeavor is vital. As the algorithm progresses, please adapt and fine-tune your model parameters accordingly. Embrace the changes and work in harmony with the pruning algorithm to maximize the number of pruned parameters while safeguarding your performance.\n\n"
+        "Below is an User Instruction that describes a task, paired with an input that provides further context, "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###Input:\n"
+    ),
+    
+    "prompt_short_pruning": (
+        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Please embrace changes, continue generating high-quality language outputs to contribute to the optimization process. Let's unlock your full potential through pruning! Please make any necessary adjustments to ensure your performance.\n\n"
+        "Below is an instruction that describes a task, paired with an input that provides further context. "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###Input:\n"
+    ),
+}
 
-def get_wikitext_data_module(dataset, tokenizer, seq_len, batch_size = 1):
+PROMPT_DICT_LENGTH = {
+    "eval_long": 256,
+    "eval_middle": 168,
+    "eval_short": 130,
+}
+
+def get_wikitext_data_module(dataset, tokenizer, seq_len, batch_size=1, prompt_mark=0):
+    
+    if prompt_mark == "1":
+        prompt_mark = "eval_long"
+    elif prompt_mark == "2":
+        prompt_mark = "eval_middle"
+    elif prompt_mark == "3":
+        prompt_mark = "eval_short"
+    else:
+        prompt_mark = None
+    print("prompt_mark: ", prompt_mark)
     
     raw_datasets = load_dataset('wikitext', 'wikitext-2-raw-v1')
     
@@ -41,6 +86,10 @@ def get_wikitext_data_module(dataset, tokenizer, seq_len, batch_size = 1):
 
     # Main data processing function that will concatenate all texts from our dataset and generate chunks of block_size.
     def group_texts(examples):
+        if prompt_mark in ["eval_long", "eval_middle", "eval_short"]:
+            prompt = tokenizer(PROMPT_DICT[f"prompt_{prompt_mark[5:]}_pruning"])
+        else:
+            prompt = {'input_ids': [], 'attention_mask': []}
         
         # Concatenate all texts.
         concatenated_examples = {k: list(chain(*examples[k])) for k in examples.keys()}
@@ -51,10 +100,14 @@ def get_wikitext_data_module(dataset, tokenizer, seq_len, batch_size = 1):
             total_length = (total_length // block_size) * block_size
         # Split by chunks of max_len.
         result = {
-            k: [t[i : i + block_size] for i in range(0, total_length, block_size)]
+            k: [prompt[k] + t[i : i + block_size] for i in range(0, total_length, block_size)]
             for k, t in concatenated_examples.items()
         }
-        result["labels"] = result["input_ids"].copy()
+        if prompt_mark in ["eval_long", "eval_middle", "eval_short"]:
+            result["labels"] = [[-100] * PROMPT_DICT_LENGTH[prompt_mark] + item[PROMPT_DICT_LENGTH[prompt_mark]: ] \
+                                    for item in result["input_ids"]]
+        else:
+            result["labels"] = result["input_ids"].copy()
         return result
 
     # Note that with `batched=True`, this map processes 1,000 texts together, so group_texts throws away a remainder
@@ -75,10 +128,10 @@ def get_wikitext_data_module(dataset, tokenizer, seq_len, batch_size = 1):
     eval_dataset = lm_datasets_eval["test"]
     return eval_dataset
 
-def PPLMetric(model, tokenizer, datasets, seq_len=128, batch_size = 4, device="cuda", zs={}):
+def PPLMetric(model, tokenizer, datasets, seq_len=128, batch_size = 4, device="cuda", zs={}, prompt_mark=0):
     metric = {}
     for dataset in datasets:
-        test_loader = get_wikitext_data_module(dataset, tokenizer, seq_len=seq_len, batch_size = batch_size)
+        test_loader = get_wikitext_data_module(dataset, tokenizer, seq_len=seq_len, batch_size=batch_size, prompt_mark=prompt_mark)
         ppl = llama_eval(model, test_loader, device, zs=zs)
         metric[dataset] = ppl
         print(metric)

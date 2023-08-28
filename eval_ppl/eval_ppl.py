@@ -34,7 +34,7 @@ def main(args):
             config.lora_train_bias = None
             config.lora_alpha = 8.0
             config.lora_param = "Q.V"
-            config.lora_layers = 32
+            config.lora_layers = config.num_hidden_layers
             return config
         
         _config = LlamaConfig.from_pretrained(
@@ -65,6 +65,20 @@ def main(args):
                 zs[key] = zs[key].cuda().detach().half()
             zs = zs
 
+            sparsity_info = l0_module.calculate_model_size(zs)
+
+            if "decapoda-research/llama-7b-hf" in args.base_model:
+                embedding_parmas = 262410240
+                model_params = 6738415616
+            elif "decapoda-research/llama-13b-hf" in args.base_model:
+                embedding_parmas = 334648320
+                model_params = 13022417920
+
+            print(f"Model path: {args.lora_ckpt}")
+            print(f"Sparsity: {sparsity_info['pruned_model_sparsity']}")
+            print(f"Ramaining Params: {sparsity_info['remaining_params'] + embedding_parmas}")
+            print(f"Sparsity: {1 - (sparsity_info['remaining_params'] + embedding_parmas) / model_params}")
+
         model = LlamaForCausalLM.from_pretrained(
             LlamaForCausalLM,
             args.base_model,
@@ -84,13 +98,9 @@ def main(args):
     model.to(args.device)
 
     model.eval()
-    if args.max_seq_len == None:
-        for max_seq_len in [128, 1024]:
-            ppl = PPLMetric(model, tokenizer, ['wikitext2'], max_seq_len, device=args.device, batch_size=1, zs=zs)
-            print("Seq_len: {}; PPL before pruning: {}".format(max_seq_len, ppl))
-    else:
-        ppl = PPLMetric(model, tokenizer, ['wikitext2'], args.max_seq_len, device=args.device, batch_size=1, zs=zs)
-        print("Seq_len: {}; PPL before pruning: {}".format(args.max_seq_len, ppl))
+    for prompt_mark in ["0", args.prompt_mark]:
+        ppl = PPLMetric(model, tokenizer, ['wikitext2'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=prompt_mark)
+        print("Prompt mark: {}; PPL: {}".format(prompt_mark, ppl))
 
 
 if __name__ == "__main__":
@@ -101,6 +111,7 @@ if __name__ == "__main__":
     parser.add_argument('--base_model', type=str, default="decapoda-research/llama-7b-hf", help='base model name')
     parser.add_argument('--ckpt', type=str, default=None)
     parser.add_argument('--lora_ckpt', type=str, default=None)
+    parser.add_argument('--prompt_mark', type=str, default="0", help='prompt mark')
     parser.add_argument('--max_seq_len', type=int, default=None, help='max sequence length')
     parser.add_argument('--device', type=str, default="cuda", help='device')
     parser.add_argument('--eval_device', type=str, default="cuda", help='eval device')
