@@ -57,6 +57,21 @@ eval_job_template = \
   #- bash setup2.sh
   #- python sleep.py
   - bash ./scripts/{file} {ckpt_dir} {prompt_type}
+  #- python ./itp/sleep.py
+  submit_args: 
+    env:
+      {{DEBUG: 1}}
+"""
+
+
+eval_harness_job_template = \
+"""- name: {job_name}
+  sku: G{node_num}
+  priority: high
+  command:
+  - bash ./itp/harness_env.sh
+  - bash ./scripts/{file} {ckpt_dir} {prompt_type}
+  #- python ./itp/sleep.py
   submit_args: 
     env:
       {{DEBUG: 1}}
@@ -110,6 +125,7 @@ def main():
     "obqa",
     "winogrande",
     "open_orca",
+    "harness"
     ])
     parser.add_argument("--ckpt_dir", type=str, required=False)
     parser.add_argument("--prompt_type", type=int, required=False)
@@ -129,6 +145,18 @@ def main():
     if args.task_name in ["wikitext2_eval", "piqa", "math_eval", "piqa", "storycloze", "arc-e", "arc-c", \
       "math_eval", "boolqa", "hellaswag", "obqa", "winogrande", "gsm8k", "multiarith"]:
         job_template = eval_job_template
+        date = datetime.datetime.now().strftime('%m%d%H%M')
+        job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.mark}-{date}'
+        jobs = job_template.format(
+            job_name=job_name, 
+            debug=mode,
+            file = args.file,
+            ckpt_dir = args.ckpt_dir,
+            prompt_type = args.prompt_type,
+            node_num = args.node_num
+        )
+    elif args.task_name in ["harness"]:
+        job_template = eval_harness_job_template
         date = datetime.datetime.now().strftime('%m%d%H%M')
         job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.mark}-{date}'
         jobs = job_template.format(

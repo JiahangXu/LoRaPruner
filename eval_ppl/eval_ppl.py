@@ -10,7 +10,6 @@ from typing import Tuple
 
 import torch
 import numpy as np
-from transformers import LlamaTokenizer, GenerationConfig, LlamaConfig
 
 from models.modeling_llama import LlamaForCausalLM
 from models.tokenization_llama import LlamaTokenizer

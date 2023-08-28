@@ -8,20 +8,21 @@ def single_job(arg):
             mark = mrk + f"_no_prompt"
         else:
             mark = mrk + f"_prompt_type{prompt_type}"
-        command_head = "python run_sing.py submit --target sing_research --model_name eval_llama7b "
+        command_head = "python run_sing.py submit --target sing_octo --model_name eval_llama7b "
         command_list_no_prompt = [
-            command_head + f"--file evaluation/zeroshot/eval_llama7b_boolqa.sh --task_name boolqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 2",
-            command_head + f"--file evaluation/zeroshot/eval_llama7b_hellaswag.sh --task_name hellaswag --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 8",
+            # command_head + f"--file evaluation/zeroshot/eval_llama7b_boolqa.sh --task_name boolqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 2",
+            # command_head + f"--file evaluation/zeroshot/eval_llama7b_hellaswag.sh --task_name hellaswag --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 8",
+            command_head + f"--file evaluation/eval_harness.sh --task_name harness --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
         ]
         command_list = [
             command_head + f"--file evaluation/eval_wikitext.sh --task_name wikitext2_eval --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
-            command_head + f"--file evaluation/zeroshot/eval_llama7b_piqa.sh --task_name piqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
-            command_head + f"--file evaluation/zeroshot/eval_llama7b_storycloze.sh --task_name storycloze --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num {2 if prompt_type != 0 else 1}",
-            command_head + f"--file evaluation/zeroshot/eval_llama7b_arcc.sh --task_name arc-c --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 2",
-            command_head + f"--file evaluation/zeroshot/eval_llama7b_arce.sh --task_name arc-e --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num {4 if prompt_type != 0 else 2}",
-            command_head + f"--file evaluation/zeroshot/eval_llama7b_winogrande.sh --task_name winogrande --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
-            # command_head + f"--file evaluation/zeroshot/eval_llama7b_boolqa.sh --task_name boolqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 2",
-            command_head + f"--file evaluation/zeroshot/eval_llama7b_obqa.sh --task_name obqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            # command_head + f"--file evaluation/zeroshot/eval_llama7b_piqa.sh --task_name piqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            # command_head + f"--file evaluation/zeroshot/eval_llama7b_storycloze.sh --task_name storycloze --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num {2 if prompt_type != 0 else 1}",
+            # command_head + f"--file evaluation/zeroshot/eval_llama7b_arcc.sh --task_name arc-c --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 2",
+            # command_head + f"--file evaluation/zeroshot/eval_llama7b_arce.sh --task_name arc-e --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num {4 if prompt_type != 0 else 2}",
+            # command_head + f"--file evaluation/zeroshot/eval_llama7b_winogrande.sh --task_name winogrande --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            # # command_head + f"--file evaluation/zeroshot/eval_llama7b_boolqa.sh --task_name boolqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 2",
+            # command_head + f"--file evaluation/zeroshot/eval_llama7b_obqa.sh --task_name obqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_hellaswag.sh --task_name hellaswag --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 8",
             # command_head + f"--file evaluation/eval_gsm8k_train.sh --task_name gsm8k --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 8",
             # command_head + f"--file evaluation/eval_multiarith.sh --task_name multiarith --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1", 
@@ -143,7 +144,7 @@ waiting_jobs = [
     # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-46/epoch5", "mark24_epoch5", 1),
 
     # # mark 25
-    ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch3", "mark25_epoch3", 1),
+    #("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6", "mark25_epoch6", 1),
 
     # # mark 26
     # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-28", "mark26_epoch5", 2),
@@ -158,25 +159,25 @@ waiting_jobs = [
     # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-21-21-48", "mark28-1_epoch5", 1),
 
     # # mark 29
-    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-8-55", "mark29_epoch5", 1),
+    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-8-55/epoch3", "mark29_epoch3", 1),
 
     # # mark 29-1
-    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-21-20-59", "mark29-1_epoch5", 1),
+    #  ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-21-20-59/epoch4", "mark29-1_epoch4", 1),
 
     # # mark 50
     # ("LoRaPruner/gptcleaned_llama7b_closeinit_gate_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-22-22-19", "mark50_epoch5", 1),
 
     # # mark 30
-    # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31", "mark30_epoch5", 2),
+    # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch2", "mark30_epoch2", 2),
 
     # # mark 31
-    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31", "mark31_epoch5", 2),
+    #  ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch6", "mark31_epoch6", 2),
 
     # # mark 48
     # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup3/2023-8-21-21-2", "mark48_epoch5", 1),
 
     # # mark 49
-    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup3/2023-8-21-20-31", "mark49_epoch5", 1),
+    #  ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup3/2023-8-21-20-31/epoch4", "mark49_epoch4", 1),
     
     # # mark 32
     # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s50.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-46/epoch2", "mark32_epoch2", 1),
