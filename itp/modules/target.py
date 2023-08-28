@@ -76,6 +76,39 @@ environment:
   - pip install pydantic==1.10.7
   - pip install zstandard
 """
+sing_mrh_target = \
+"""
+target:
+  service: aisc
+  name: msrrlvc
+
+environment:
+  image: amlt-sing/pytorch-1.11.0-cuda11.6
+  #image: amlt-sing/pytorch-1.8.0
+  setup:
+  - set -x
+  image_setup:
+  - pip install accelerate==0.15.0
+  - pip install transformers==4.25.1
+  - pip install mpi4py
+  - pip install scipy
+  - pip install scikit-learn
+  - pip install numpy
+  - pip install tqdm
+  - pip install mlflow azureml-mlflow
+  - pip install protobuf==3.19.0
+  - pip install deepspeed==0.7.7 
+  - pip install evaluate 
+  - pip install datasets==2.8.0 
+  - pip install sentencepiece==0.1.97 
+  - pip install scipy 
+  - pip install viztracer
+  - pip install py-spy
+  - pip install pydantic==1.10.7
+  - pip install zstandard
+
+"""
+
 
 itp_rr1_target = \
 """
@@ -223,6 +256,7 @@ environment:
 target_dict = dict(
     sing_octo=sing_octo_target,
     sing_research=sing_research_target,
+    sing_ads=sing_mrh_target,
     itp_rr1=itp_rr1_target,
     itp_rr1_1=itp_rr1_target1,
     itp_p100=itp_p100_target,
