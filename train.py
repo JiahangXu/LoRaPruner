@@ -26,7 +26,7 @@ import deepspeed
 
 logger = logging.getLogger(__name__)
 
-ALPACA_TASK = ["alpaca", "alpaca-gpt4", "alpaca-gpt4-zh", "unnatural_instruction_gpt4", "math", "open_orca"]
+ALPACA_TASK = ["alpaca", "alpaca-gpt4", "alpaca-gpt4-zh", "unnatural_instruction_gpt4", "math", "open_orca", "alpaca-cleaned"]
 
 def set_lora_args(config, modeling_args):
     config.use_lora = modeling_args.use_lora

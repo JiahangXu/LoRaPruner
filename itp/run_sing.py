@@ -39,8 +39,8 @@ job_eight_nodes = \
 #   execution_mode: managed
   command:
   #- bash setup2.sh
-  #- python ./itp/sleep.py
   - bash ./scripts/{file}.sh
+  #- python ./itp/sleep.py
   submit_args: 
     env:
       {{DEBUG: 1}}
