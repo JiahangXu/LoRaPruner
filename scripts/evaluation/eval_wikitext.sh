@@ -24,6 +24,8 @@
 #   --random_init=False \
 #   --prompt_mark ${2}
 
+export PYTHONPATH='.'
+
 python ./eval_ppl/eval_ppl.py \
     --max_seq_len 1024 \
     --model_type lora_pruner \
