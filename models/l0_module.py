@@ -22,6 +22,8 @@ class L0Module(Module):
                  droprate_init=0.5,
                  layer_gate_init_open=False,
                  layer_gate_open_0=False,
+                 block_layer_start=None,
+                 block_layer_end=None,
                  temperature=2./3.,
                  lagrangian_warmup=0,
                  start_sparsity=0.0,
@@ -42,7 +44,13 @@ class L0Module(Module):
         self.num_attention_heads = config.num_attention_heads
         self.mlp_num_per_layer = 1
         self.dim_per_head = self.hidden_size // self.num_attention_heads 
-        self.num_hidden_layers = config.num_hidden_layers
+        self.all_hidden_layers = config.num_hidden_layers
+        if block_layer_start is not None and block_layer_end is not None:
+            self.num_hidden_layers = block_layer_end - block_layer_start
+            self.stable_hidden_layers = config.num_hidden_layers - (block_layer_end - block_layer_start)
+        else:
+            self.num_hidden_layers = self.all_hidden_layers
+            self.stable_hidden_layers = 0
         self.vocab_size = config.vocab_size
        
         if isinstance(config, LlamaConfig):
@@ -57,6 +65,7 @@ class L0Module(Module):
         # we ignore the parameters in normalization layers (it takes a very small amount)
         self.full_model_size = (self.params_per_head_layer + self.params_per_mlp_layer) * self.num_hidden_layers
         self.prunable_model_size = 0 
+        self.stable_model_size = 0
 
         self.temperature = temperature
         self.droprate_init = droprate_init if droprate_init != 0. else 0.5
@@ -98,12 +107,17 @@ class L0Module(Module):
         self.start_sparsity = start_sparsity
         self.target_sparsity = target_sparsity
 
+        self.block_layer_start = block_layer_start
+        self.block_layer_end = block_layer_end
+
         logger.info("********** Initializing L0 Module **********") 
         for type in self.types:
             logger.info(f"***** {type} *****")
             logger.info(f"z.shape: {self.z_logas[type].shape}")
             logger.info(f"size: {self.sizes[type]}")
         logger.info(f"prunable model size: {self.prunable_model_size}")
+        logger.info(f"stable model size: {self.stable_model_size}")
+        logger.info(f"self.block_layer_range: {self.block_layer_start}, {self.block_layer_end}")
 
     def set_lagrangian_warmup_steps(self, lagrangian_warmup):
         self.lagrangian_warmup = lagrangian_warmup
@@ -151,6 +165,7 @@ class L0Module(Module):
                             shape=[self.num_hidden_layers, 1, self.num_attention_heads, 1, 1])
         if add_prunable_model_size:
             self.prunable_model_size += self.params_per_head * self.num_hidden_layers * self.num_attention_heads
+            self.stable_model_size += self.params_per_head * self.stable_hidden_layers * self.num_attention_heads
         logger.info(f"Initialized structured heads! Prunable_model_size = {self.prunable_model_size}")
 
     def initialized_layer_gate(self):
@@ -178,6 +193,7 @@ class L0Module(Module):
                             parameter_per_dim=self.params_per_intermediate_dim, size=self.intermediate_size,
                             shape=[self.num_hidden_layers, 1, 1, self.intermediate_size])
         self.prunable_model_size += self.params_per_mlp_layer * self.num_hidden_layers
+        self.stable_model_size += self.params_per_mlp_layer * self.stable_hidden_layers
         self.reset_loga(self.int_loga)
         logger.info(f"Initialized structured mlp! Prunable_model_size = {self.prunable_model_size}")
 
@@ -255,6 +271,7 @@ class L0Module(Module):
         return all_int_score, int_score
 
     def get_num_parameters_for_mlp(self):
+        raise NotImplementedError
         if "layer" in self.types:
             intlayer_score = 1 - self.cdf_qz(0, self.layer_loga)
         elif "mlp_layer" in self.types:
@@ -368,7 +385,7 @@ class L0Module(Module):
             expected_size = self.get_num_parameters_and_constraint_for_hidden() #! calculate \bar s
         else:
             expected_size = self.get_num_parameters_and_constraint() #! calculate \bar s
-        expected_sparsity = 1 - expected_size / self.prunable_model_size
+        expected_sparsity = 1 - (expected_size + self.stable_model_size) / (self.prunable_model_size + self.stable_model_size)
         del expected_size
         if self.lagrangian_warmup > 0:
             target_sparsity = self.get_target_sparsity(pruned_steps)
@@ -460,8 +477,8 @@ class L0Module(Module):
         results["intermediate_dims"] = remaining_intermediate_nums
         results["head_nums"] = remaining_head_nums
         results["pruned_params"] = pruned_model_size
-        results["remaining_params"] = remaining_model_size
-        results["pruned_model_sparsity"] = pruned_model_size / self.prunable_model_size
+        results["remaining_params"] = remaining_model_size + self.stable_model_size
+        results["pruned_model_sparsity"] = (pruned_model_size) / (self.prunable_model_size + self.stable_model_size)
         
         if "layer" in self.pruning_type:
             logger.info(f"remaining_layers: {head_layer_z}")
@@ -472,7 +489,7 @@ class L0Module(Module):
         logger.info(f"remaining_intermediate_nums: {remaining_intermediate_nums}")
         logger.info(f"remaining_head_nums: {remaining_head_nums}")
         logger.info(f"pruned_model_size: {pruned_model_size}")
-        logger.info(f"remaining_model_size: {remaining_model_size}")
+        logger.info(f"remaining_model_size: {remaining_model_size + self.stable_model_size}")
 
         return results
 

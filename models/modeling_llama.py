@@ -1498,7 +1498,14 @@ class LlamaModel(LlamaPreTrainedModel):
         intermediate_z=None,
         mlp_z=None,
         hidden_z=None,
+        block_layer_start=None,
+        block_layer_end=None,
     ) -> Union[Tuple, BaseModelOutputWithPast]:
+
+        if block_layer_start is None and block_layer_end is None:
+            block_layer_start = 0
+            block_layer_end = len(self.layers)
+
         output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
         output_hidden_states = (
             output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
@@ -1564,43 +1571,78 @@ class LlamaModel(LlamaPreTrainedModel):
 
             past_key_value = past_key_values[idx] if past_key_values is not None else None
 
-            if (should_apply_checkpointing_given_lora_config(self.config, idx) and self.gradient_checkpointing and self.training):
+            if idx >= block_layer_start and idx < block_layer_end:
+                if (should_apply_checkpointing_given_lora_config(self.config, idx) and self.gradient_checkpointing and self.training):
 
-                def create_custom_forward(module):
-                    def custom_forward(*inputs):
-                        # None for past_key_value
-                        return module(*inputs)
+                    def create_custom_forward(module):
+                        def custom_forward(*inputs):
+                            # None for past_key_value
+                            return module(*inputs)
 
-                    return custom_forward
+                        return custom_forward
 
-                layer_outputs = torch.utils.checkpoint.checkpoint(
-                    create_custom_forward(decoder_layer),
-                    hidden_states,
-                    attention_mask,
-                    position_ids,
-                    None,
-                    output_attentions, 
-                    None,
-                    head_z[idx] if head_z is not None else None,
-                    head_layer_z[idx] if head_layer_z is not None else None,
-                    intermediate_z[idx] if intermediate_z is not None else None,
-                    mlp_z[idx] if mlp_z is not None else None,
-                    hidden_z
-                )
+                    layer_outputs = torch.utils.checkpoint.checkpoint(
+                        create_custom_forward(decoder_layer),
+                        hidden_states,
+                        attention_mask,
+                        position_ids,
+                        None,
+                        output_attentions, 
+                        None,
+                        head_z[idx - block_layer_start] if head_z is not None else None,
+                        head_layer_z[idx - block_layer_start] if head_layer_z is not None else None,
+                        intermediate_z[idx - block_layer_start] if intermediate_z is not None else None,
+                        mlp_z[idx - block_layer_start] if mlp_z is not None else None,
+                        hidden_z
+                    )
+                else:
+                    layer_outputs = decoder_layer(
+                        hidden_states,
+                        attention_mask=attention_mask,
+                        position_ids=position_ids,
+                        past_key_value=past_key_value,
+                        output_attentions=output_attentions,
+                        use_cache=use_cache,
+                        head_z=head_z[idx - block_layer_start] if head_z is not None else None,
+                        head_layer_z=head_layer_z[idx - block_layer_start] if head_layer_z is not None else None,
+                        intermediate_z=intermediate_z[idx - block_layer_start] if intermediate_z is not None else None,
+                        mlp_z=mlp_z[idx - block_layer_start] if mlp_z is not None else None,
+                        hidden_z=hidden_z
+                    )
             else:
-                layer_outputs = decoder_layer(
-                    hidden_states,
-                    attention_mask=attention_mask,
-                    position_ids=position_ids,
-                    past_key_value=past_key_value,
-                    output_attentions=output_attentions,
-                    use_cache=use_cache,
-                    head_z=head_z[idx] if head_z is not None else None,
-                    head_layer_z=head_layer_z[idx] if head_layer_z is not None else None,
-                    intermediate_z=intermediate_z[idx] if intermediate_z is not None else None,
-                    mlp_z=mlp_z[idx] if mlp_z is not None else None,
-                    hidden_z=hidden_z
-                )
+                if (should_apply_checkpointing_given_lora_config(self.config, idx) and self.gradient_checkpointing and self.training):
+
+                    def create_custom_forward(module):
+                        def custom_forward(*inputs):
+                            # None for past_key_value
+                            return module(*inputs)
+
+                        return custom_forward
+
+                    layer_outputs = torch.utils.checkpoint.checkpoint(
+                        create_custom_forward(decoder_layer),
+                        hidden_states,
+                        attention_mask,
+                        position_ids,
+                        None,
+                        output_attentions, 
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        hidden_z
+                    )
+                else:
+                    layer_outputs = decoder_layer(
+                        hidden_states,
+                        attention_mask=attention_mask,
+                        position_ids=position_ids,
+                        past_key_value=past_key_value,
+                        output_attentions=output_attentions,
+                        use_cache=use_cache,
+                        hidden_z=hidden_z
+                    )
 
             hidden_states = layer_outputs[0]
 
@@ -1674,6 +1716,8 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
         intermediate_z = None,
         mlp_z = None,
         hidden_z = None,
+        block_layer_start=None,
+        block_layer_end=None,
     ) -> Union[Tuple, CausalLMOutputWithPast]:
         r"""
         Args:
@@ -1723,6 +1767,8 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             intermediate_z=intermediate_z,
             mlp_z=mlp_z,
             hidden_z=hidden_z,
+            block_layer_start=block_layer_start,
+            block_layer_end=block_layer_end,
         )
 
         hidden_states = outputs[0]

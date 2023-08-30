@@ -1075,6 +1075,8 @@ class CoFiTrainer(Trainer):
     def fill_inputs_with_zs(self, zs, inputs):
         for key in zs:
             inputs[key] = zs[key]
+        inputs["block_layer_start"] = self.l0_module.block_layer_start
+        inputs["block_layer_end"] = self.l0_module.block_layer_end
        
     def prediction_step(
         self,

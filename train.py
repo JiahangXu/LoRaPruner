@@ -156,6 +156,8 @@ def main():
                             droprate_init=additional_args.droprate_init,
                             layer_gate_init_open=additional_args.layer_gate_init_open,
                             layer_gate_open_0=additional_args.layer_gate_open_0,
+                            block_layer_start=additional_args.block_layer_start,
+                            block_layer_end=additional_args.block_layer_end,
                             temperature=additional_args.temperature,
                             target_sparsity=additional_args.target_sparsity,
                             pruning_type=additional_args.pruning_type)
