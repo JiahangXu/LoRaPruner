@@ -9,8 +9,9 @@ mkdir -p $OUTPUT_DIR
 # output directory
 pruning_type=None
 
-baseline_pruned_model=/mnt/data/LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-46/epoch6
+baseline_pruned_model=/mnt/data/LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6
 
+# merge lora weights and save the merged ckpt to "./llama_pruned"
 deepspeed --num_nodes=1 --num_gpus=1 --master_port=16112 merge_weights.py \
   --pruning_type None \
   --target_sparsity 0. \
@@ -35,7 +36,8 @@ deepspeed --num_nodes=1 --num_gpus=1 --master_port=16112 merge_weights.py \
   --fp16 false \
   --random_init=False |& tee $OUTPUT_DIR/output.log \
 
-
+# run finetune
+# use ``pretrained_pruned_model`` to clarify zs.pt
 deepspeed --num_nodes=1 --num_gpus=8 --master_port=16112 train.py \
   --deepspeed ds3_offload.json \
   --pruning_type None \
@@ -48,12 +50,12 @@ deepspeed --num_nodes=1 --num_gpus=8 --master_port=16112 train.py \
   --lagrangian_warmup_epochs 0 \
   --pretrained_pruned_model $baseline_pruned_model \
   --max_seq_length 1024 \
-  --task_name alpacaclean_llama7b_promptlong_FTbased_mark24 \
+  --task_name alpacaclean_llama7b_promptlong_FTbased_mark25 \
   --do_train \
   --do_eval \
-  --dataset_name alpaca-cleaned \
+  --dataset_name alpaca-gpt4 \
   --eval_dataset_name wikitext \
-  --train_file /mnt/data/LPM/alpaca_data_cleaned.json \
+  --train_file /mnt/data/LPM/alpaca_gpt4_data.json \
   --droprate_init 0.01 \
   --per_device_train_batch_size 1 \
   --per_device_eval_batch_size 1 \
