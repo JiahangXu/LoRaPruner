@@ -9,7 +9,7 @@ mkdir -p $OUTPUT_DIR
 # output directory
 pruning_type=None
 
-baseline_pruned_model=/mnt/data/LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-46/epoch6
+baseline_pruned_model=/mnt/data/LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-28/epoch4
 
 deepspeed --num_nodes=1 --num_gpus=1 --master_port=16112 merge_weights.py \
   --pruning_type None \
@@ -48,12 +48,12 @@ deepspeed --num_nodes=1 --num_gpus=8 --master_port=16112 train.py \
   --lagrangian_warmup_epochs 0 \
   --pretrained_pruned_model $baseline_pruned_model \
   --max_seq_length 1024 \
-  --task_name alpacaclean_llama7b_promptlong_FTbased_mark24 \
+  --task_name alpacaclean_llama7b_promptlong_FTbased_mark26_epoch4 \
   --do_train \
   --do_eval \
-  --dataset_name alpaca-cleaned \
+  --dataset_name alpaca-gpt4 \
   --eval_dataset_name wikitext \
-  --train_file /mnt/data/LPM/alpaca_data_cleaned.json \
+  --train_file /mnt/data/LPM/alpaca_gpt4_data.json \
   --droprate_init 0.01 \
   --per_device_train_batch_size 1 \
   --per_device_eval_batch_size 1 \

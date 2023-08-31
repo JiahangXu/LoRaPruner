@@ -54,9 +54,16 @@ def main(args):
         tokenizer.model_max_length = 1024
 
         if args.lora_ckpt is not None:
-            lora_ckpt = os.path.join(args.lora_ckpt, 'lora_weights.pt')
-            l0_module = torch.load(os.path.join(args.lora_ckpt, 'l0_module.pt'), map_location="cpu")
-            zs = l0_module.forward(training=False)
+            if not args.lora_merged:
+                lora_ckpt = os.path.join(args.lora_ckpt, 'lora_weights.pt')
+            from models.l0_module import L0Module
+            l0_module = L0Module(config=_config)
+            zs = torch.load(os.path.join(args.lora_ckpt, 'zs.pt'), map_location="cpu")
+
+            if zs["head_z"].shape[0] < _config.num_hidden_layers:
+                zs["head_z"] = torch.concat([torch.ones(4, 1, 32, 1, 1), zs["head_z"], torch.ones(2, 1, 32, 1, 1)])
+                zs["intermediate_z"] = torch.concat([torch.ones(4, 1, 1, 11008), zs["intermediate_z"], torch.ones(2, 1, 1, 11008)])
+
             if "layer_z" in zs:
                 zs['head_layer_z'] = zs['layer_z']
                 zs['mlp_z'] = zs['layer_z']
@@ -67,12 +74,12 @@ def main(args):
 
             sparsity_info = l0_module.calculate_model_size(zs)
 
-            if "decapoda-research/llama-7b-hf" in args.base_model:
-                embedding_parmas = 262410240
-                model_params = 6738415616
-            elif "decapoda-research/llama-13b-hf" in args.base_model:
+            if "decapoda-research/llama-13b-hf" in args.base_model:
                 embedding_parmas = 334648320
                 model_params = 13022417920
+            else:
+                embedding_parmas = 262410240
+                model_params = 6738415616
 
             print(f"Model path: {args.lora_ckpt}")
             print(f"Sparsity: {sparsity_info['pruned_model_sparsity']}")
@@ -98,9 +105,8 @@ def main(args):
     model.to(args.device)
 
     model.eval()
-    for prompt_mark in ["0", args.prompt_mark]:
-        ppl = PPLMetric(model, tokenizer, ['wikitext2'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=prompt_mark)
-        print("Prompt mark: {}; PPL: {}".format(prompt_mark, ppl))
+    ppl = PPLMetric(model, tokenizer, ['wikitext2'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=args.prompt_mark)
+    print("Prompt mark: {}; PPL: {}".format(args.prompt_mark, ppl))
 
 
 if __name__ == "__main__":
@@ -116,6 +122,7 @@ if __name__ == "__main__":
     parser.add_argument('--device', type=str, default="cuda", help='device')
     parser.add_argument('--eval_device', type=str, default="cuda", help='eval device')
     parser.add_argument('--seed', type=int, default=42, help='seed')
+    parser.add_argument('--lora_merged', type=int, action="store_true")
     args = parser.parse_args()
 
     torch_version = float('.'.join(torch.__version__.split('.')[:2]))
