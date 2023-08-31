@@ -8,13 +8,13 @@ def single_job(arg):
             mark = mrk + f"_no_prompt"
         else:
             mark = mrk + f"_prompt_type{prompt_type}"
-        command_head = "python run_sing.py submit --target sing_octo --model_name eval_llama7b "
+        command_head = "python run_sing.py submit --target sing_research --model_name eval_llama7b "
         command_list_no_prompt = [
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_boolqa.sh --task_name boolqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 2",
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_hellaswag.sh --task_name hellaswag --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 8",
-            command_head + f"--file evaluation/eval_harness.sh --task_name harness --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
         ]
         command_list = [
+            command_head + f"--file evaluation/eval_harness.sh --task_name harness --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             command_head + f"--file evaluation/eval_wikitext.sh --task_name wikitext2_eval --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_piqa.sh --task_name piqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_storycloze.sh --task_name storycloze --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num {2 if prompt_type != 0 else 1}",
@@ -140,56 +140,62 @@ waiting_jobs = [
     # ("LoRaPruner/gpt4alpaca_llama7b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup3/2023-8-13-0-24/epoch5", "8-13-0-24mark22_epoch5_prompt_long", 1),
     
     ## ================= fix LR scheduler bug ================= ##
+    ##mark 56    
+   # ("LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch9-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-2/epoch8", "mark56_epoch8", 2),
+        
+    ##mark 53    
+    #("LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-3/epoch7", "mark53_epoch7", 2),
+
     # mark 24
-    ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-46/epoch6", "mark24_epoch6", 1),
+   # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-46/epoch6", "mark24_epoch6", 1),
 
     # # mark 25
-    ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6", "mark25_epoch6", 1),
+  # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6", "mark25_epoch6", 1),
 
     # # mark 26
-    # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-28", "mark26_epoch5", 2),
+   # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-28/epoch6", "mark26_epoch6", 2),
 
     # # mark 27
-    ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-17/epoch6", "mark27_epoch6", 2),
+   # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-17/epoch6", "mark27_epoch6", 2),
 
     # # mark 28
-    ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-47/epoch6", "mark28_epoch6", 1),
+   # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-47/epoch6", "mark28_epoch6", 1),
 
     # # mark 28-1
-    # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-21-21-48", "mark28-1_epoch5", 1),
+    # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-21-21-48/epoch6", "mark28-1_epoch6", 1),
 
     # # mark 29
-    ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-8-55/epoch6", "mark29_epoch6", 1),
+  # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-8-55/epoch6", "mark29_epoch6", 1),
 
     # # mark 29-1
-    #  ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-21-20-59/epoch4", "mark29-1_epoch4", 1),
+   # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-21-20-59/epoch6", "mark29-1_epoch6", 1),
 
     # # mark 50
-    # ("LoRaPruner/gptcleaned_llama7b_closeinit_gate_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-22-22-19", "mark50_epoch5", 1),
+  #   ("LoRaPruner/gptcleaned_llama7b_closeinit_gate_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-22-22-19/epoch6", "mark50_epoch6", 1),
 
     # # mark 30
-    ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch6", "mark30_epoch6", 2),
+  #  ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch6", "mark30_epoch6", 2),
 
     # # mark 31
-     ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch6", "mark31_epoch6", 2),
+  #  ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch6", "mark31_epoch6", 2),
 
     # # mark 48
-    ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup3/2023-8-21-21-2/epoch6", "mark48_epoch6", 1),
+  # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup3/2023-8-21-21-2/epoch5", "mark48_epoch5", 1),
 
     # # mark 49
-     ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup3/2023-8-21-20-31/epoch6", "mark49_epoch6", 1),
+ #   ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST_CubicSpar-s30.0-lr5e-05-reglr0.05-warmup3/2023-8-21-20-31/epoch5", "mark49_epoch5", 1),
     
     # # mark 32
-    ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s50.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-46/epoch6", "mark32_epoch6", 1),
+  #  ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s50.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-46/epoch6", "mark32_epoch6", 1),
 
     # # mark 33
-    ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s50.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-46/epoch6", "mark33_epoch6", 1),
+  # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s50.0-lr5e-05-reglr0.05-warmup4/2023-8-20-18-46/epoch6", "mark33_epoch6", 1),
 
     # # mark 34
-    ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s50.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch6", "mark34_epoch6", 2),
+   #("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate-s50.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch6", "mark34_epoch6", 2),
 
     # # mark 35
-    ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s50.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch6", "mark35_epoch6", 2),
+   #("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s50.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch6", "mark35_epoch6", 2),
 ]    
 
 
