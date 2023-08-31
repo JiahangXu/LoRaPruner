@@ -51,9 +51,9 @@ deepspeed --num_nodes=1 --num_gpus=8 --master_port=16112 train.py \
   --task_name alpacaclean_llama7b_promptlong_FTbased_mark24 \
   --do_train \
   --do_eval \
-  --dataset_name alpaca-cleaned \
+  --dataset_name alpaca-gpt4 \
   --eval_dataset_name wikitext \
-  --train_file /mnt/data/LPM/alpaca_data_cleaned.json \
+  --train_file /mnt/data/LPM/alpaca_gpt4_data.json \
   --droprate_init 0.01 \
   --per_device_train_batch_size 1 \
   --per_device_eval_batch_size 1 \

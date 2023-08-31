@@ -121,6 +121,7 @@ class HuggingFaceAutoLM(BaseLM):
         bnb_4bit_compute_dtype: Optional[Union[str, torch.dtype]] = None,
         bnb_4bit_use_double_quant: Optional[bool] = False,
         prompt_mark: int = 0,
+        lora_merged: Optional[bool] = False,
     ):
         """Initializes a HuggingFace `AutoModel` and `AutoTokenizer` for evaluation.
         Args:
@@ -233,9 +234,14 @@ class HuggingFaceAutoLM(BaseLM):
 
         self.zs = {}
         if peft is not None:
-            lora_ckpt = os.path.join(peft, 'lora_weights.pt')
-            l0_module = torch.load(os.path.join(peft, 'l0_module.pt'), map_location="cpu")
-            zs = l0_module.forward(training=False)
+            if not lora_merged:
+                lora_ckpt = os.path.join(peft, 'lora_weights.pt')
+            zs = torch.load(os.path.join(peft, 'zs.pt'), map_location="cpu")
+
+            if zs["head_z"].shape[0] < self._config.num_hidden_layers:
+                zs["head_z"] = torch.concat([torch.ones(4, 1, 32, 1, 1), zs["head_z"], torch.ones(2, 1, 32, 1, 1)])
+                zs["intermediate_z"] = torch.concat([torch.ones(4, 1, 1, 11008), zs["intermediate_z"], torch.ones(2, 1, 1, 11008)])
+
             if "layer_z" in zs:
                 zs['head_layer_z'] = zs['layer_z']
                 zs['mlp_z'] = zs['layer_z']
