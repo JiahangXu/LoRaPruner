@@ -196,6 +196,59 @@ waiting_jobs = [
 
     # # mark 35
    #("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s50.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch6", "mark35_epoch6", 2),
+
+    # # mark 53-1
+  # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-31-4-31/epoch7", "mark53-1_gpt4_epoch7", 2),
+
+   # # mark 57
+   #("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.2_middle-s20.0-lr5e-05-reglr0.05-warmup10/2023-8-29-5-24/epoch29", "mark57_gpt4_epoch29", 2),
+
+   # # mark 58
+  # ("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.2-s20.0-lr5e-05-reglr0.05-warmup10/2023-8-29-3-30/epoch29", "mark58_gpt4_epoch29", 1),
+
+   # # mark 63
+  # ("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.3-s30.0-lr5e-05-reglr0.05-warmup10/2023-8-29-5-26/epoch29", "mark63_gpt4_epoch29", 1),
+   
+   
+  # mark 64
+  # LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.3-s30.0-lr5e-05-reglr0.05-warmup10/2023-8-29-5-24
+
+  # mark 56
+  # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch9-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-2
+
+  # mark 52 
+  # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-2
+
+  # mark 53
+  # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-3
+
+  # mark 55
+  # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch9-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-21-47
+
+  # mark 56-1
+  ("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.2_middle-s20.0-lr5e-05-reglr0.05-warmup10/2023-8-30-0-16/epoch27", "mark56-1_epoch27", 2),
+  
+  # mark 61
+  # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-30-0-16
+
+  # # mark 62
+  # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch9-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-30-0-16
+
+  # mark 51
+  # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-30-2-36
+
+  # mark 54
+  # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch9-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-30-2-37
+
+  # mark 59
+  # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-30-2-50
+
+  # mark 60
+  # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch9-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-30-3-4
+
+  # mark 53-1
+  # mnt/data/LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-31-4-31
+
 ]    
 
 

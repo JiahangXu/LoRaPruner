@@ -6,3 +6,6 @@ conda activate py39
 pip install sentencepiece
 pip install deepspeed
 pip install accelerate
+pip install datasets
+pip install evaluate
+pip install mlflow
