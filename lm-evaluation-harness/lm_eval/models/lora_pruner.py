@@ -438,7 +438,7 @@ class AutoCausalLM(HuggingFaceAutoLM):
     def _model_call(
         self, inputs: TokenSequence, labels: Optional[TokenSequence] = None
     ) -> TokenSequence:
-        inputs = torch.concat([self.prompt_input_ids.unsqueeze(0), inputs], dim=-1)
+        inputs = torch.concat([self.prompt_input_ids.unsqueeze(0).to(inputs.dtype), inputs], dim=-1)
         return self.model(inputs, **self.zs)["logits"]
 
     def _model_generate(
