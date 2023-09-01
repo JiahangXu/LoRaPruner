@@ -180,7 +180,7 @@ class SupervisedDataset(Dataset):
         logging.warning("Formatting inputs...")
         # prompt_input, prompt_no_input = PROMPT_DICT["prompt_input"], PROMPT_DICT["prompt_no_input"]
         # ADD PROMPT DATA
-        prompt_mark = "middle"
+        prompt_mark = "long"
         prompt_input, prompt_no_input = PROMPT_DICT[f"prompt_{prompt_mark}_pruning_input"], PROMPT_DICT[f"prompt_{prompt_mark}_pruning_no_input"]
         sources = [
             prompt_input.format_map(example) if example.get("input", "") != "" else prompt_no_input.format_map(example)
