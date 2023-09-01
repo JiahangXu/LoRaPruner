@@ -122,7 +122,7 @@ if __name__ == "__main__":
     parser.add_argument('--device', type=str, default="cuda", help='device')
     parser.add_argument('--eval_device', type=str, default="cuda", help='eval device')
     parser.add_argument('--seed', type=int, default=42, help='seed')
-    parser.add_argument('--lora_merged', type=int, action="store_true")
+    parser.add_argument('--lora_merged', action="store_true")
     args = parser.parse_args()
 
     torch_version = float('.'.join(torch.__version__.split('.')[:2]))
