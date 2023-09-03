@@ -158,6 +158,7 @@ def main():
                             layer_gate_open_0=additional_args.layer_gate_open_0,
                             block_layer_start=additional_args.block_layer_start,
                             block_layer_end=additional_args.block_layer_end,
+                            sparsity_scheduler=additional_args.sparsity_scheduler,
                             temperature=additional_args.temperature,
                             target_sparsity=additional_args.target_sparsity,
                             pruning_type=additional_args.pruning_type)

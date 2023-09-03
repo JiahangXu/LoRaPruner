@@ -31,8 +31,9 @@ class AdditionalArguments():
     lagrangian_warmup_epochs: int = field(default=2, metadata={"help": "Number of epochs for lagrangian warmup"})
     target_sparsity: float = field(default=0, metadata={"help": "Target sparsity (pruned percentage)"})
     sparsity_epsilon: float = field(default=0, metadata={"help": "Epsilon for sparsity"})
-    block_layer_start: int = field(default=None, metadata={"help": "Finetuning epochs before pruning"})
-    block_layer_end: int = field(default=None, metadata={"help": "Finetuning epochs before pruning"})
+    block_layer_start: int = field(default=None)
+    block_layer_end: int = field(default=None)
+    sparsity_scheduler: str = field(default="linear")
 
     task_name: Optional[str] = field(default=None,metadata={"help": "The name of the task to train on: " + ", ".join(TASK_DATA_MODULE_REGISTRY.keys())})
     # distillation setup
