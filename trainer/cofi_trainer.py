@@ -511,6 +511,34 @@ class CoFiTrainer(Trainer):
 
                         logger.info(f"{logs}, {pruned_model_size_info}")
 
+                if self.l0_module is None and self.zs is not None:
+                    best_so_far = self.celoss_counter.update(
+                        self.epoch, self.global_step, logs["loss"])
+                    if best_so_far:
+                        best_dir = os.path.join(self.args.output_dir, "best")
+                        if not os.path.exists(best_dir):
+                            try:
+                                os.makedirs(best_dir)
+                            except:
+                                pass
+
+                        best_loss_log = {
+                            "best_eval_score_so_far": self.celoss_counter.best_ce_loss,
+                            "best_step": self.celoss_counter.global_step,
+                            "best_epoch": self.celoss_counter.epoch
+                        }
+                        if self.args.local_rank == 0:
+                            for k, v in best_loss_log.items():
+                                try:
+                                    mlflow.log_metric(k, v, step=self.global_step)
+                                except:
+                                    pass
+                        try:
+                            self.model.save_pretrained(best_dir)
+                            logger.info(f"Saving the best model so far: [Epoch {int(self.epoch)} | Step: {self.global_step} | Score: {round(self.celoss_counter.best_ce_loss, 5)}]")
+                        except:
+                            pass       
+
                 epoch_pbar.update(1)
                 torch.cuda.empty_cache()
                 if self.args.max_steps > 0 and self.global_step >= self.args.max_steps:
