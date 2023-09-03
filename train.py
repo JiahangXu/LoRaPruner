@@ -156,6 +156,7 @@ def main():
                             droprate_init=additional_args.droprate_init,
                             layer_gate_init_open=additional_args.layer_gate_init_open,
                             layer_gate_open_0=additional_args.layer_gate_open_0,
+                            sparsity_scheduler=additional_args.sparsity_scheduler,
                             temperature=additional_args.temperature,
                             target_sparsity=additional_args.target_sparsity,
                             pruning_type=additional_args.pruning_type)
