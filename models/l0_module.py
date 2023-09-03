@@ -24,6 +24,7 @@ class L0Module(Module):
                  layer_gate_open_0=False,
                  block_layer_start=None,
                  block_layer_end=None,
+                 sparsity_scheduler="linear",
                  temperature=2./3.,
                  lagrangian_warmup=0,
                  start_sparsity=0.0,
@@ -109,6 +110,7 @@ class L0Module(Module):
 
         self.block_layer_start = block_layer_start
         self.block_layer_end = block_layer_end
+        self.sparsity_scheduler = sparsity_scheduler
 
         logger.info("********** Initializing L0 Module **********") 
         for type in self.types:
@@ -371,11 +373,14 @@ class L0Module(Module):
 
 
     def get_target_sparsity(self, pruned_steps):
-        # Linear Sparsity Scheduler
-        target_sparsity = (self.target_sparsity - self.start_sparsity) * min(1, pruned_steps / self.lagrangian_warmup) + self.start_sparsity
-
         # Cubic Sparsity Scheduler
-        # target_sparsity = self.target_sparsity + (self.start_sparsity - self.target_sparsity) * (1. - min(1, pruned_steps / self.lagrangian_warmup)) ** 3
+        if self.sparsity_scheduler == "cubic":
+            target_sparsity = self.target_sparsity + (self.start_sparsity - self.target_sparsity) * (1. - min(1, pruned_steps / self.lagrangian_warmup)) ** 3
+        
+        # Linear Sparsity Scheduler
+        else:
+            target_sparsity = (self.target_sparsity - self.start_sparsity) * min(1, pruned_steps / self.lagrangian_warmup) + self.start_sparsity
+
         return target_sparsity
 
 
