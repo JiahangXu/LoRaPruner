@@ -1,11 +1,4 @@
-#!/bin/bash
-source /home/aiscuser/anaconda3/bin/activate py39
-
 export PYTHONPATH='.'
-
-cd lm-evaluation-harness
-pip install -e .
-cd ..
 
 export WANDB_DISABLED=TRUE
 export TQDM_DISABLED=true
@@ -38,20 +31,16 @@ deepspeed --num_nodes=1 --num_gpus=1 --master_port=16112 merge_weights.py \
   --logging_steps 10 \
   --disable_tqdm True \
   --fp16 false \
-  --random_init=False |& tee $OUTPUT_DIR/output.log \
+  --random_init=False |& tee $OUTPUT_DIR/output.log
 
 cp $baseline_pruned_model/zs.pt $pretrained_path/
 cp $baseline_pruned_model/l0_module.pt $pretrained_path/
 
 
-python ./lm-evaluation-harness/main.py \
-    --model lora-pruner \
-    --model_args pretrained=./llama_pruned,peft=$pretrained_path,prompt_mark=$3 \
-    --tasks openbookqa,arc_easy,winogrande,hellaswag,arc_challenge,piqa,boolq,storycloze_2018 \
-    --device cuda:0 \
-    --output_path results/results.json \
-    --no_cache
-
-python ./lm-evaluation-harness/generate.py results/results.json
-
-# nohup bash eval_harness.sh > eval_log.txt 2>&1 &
+python ./eval_ppl/eval_ppl.py \
+    --max_seq_len 1024 \
+    --model_type lora_pruner \
+    --eval_c4 \
+    --base_model ./llama_pruned \
+    --lora_ckpt $pretrained_path \
+    --prompt_mark $3
