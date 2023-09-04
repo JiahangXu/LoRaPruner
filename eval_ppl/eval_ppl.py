@@ -105,7 +105,10 @@ def main(args):
     model.to(args.device)
 
     model.eval()
-    ppl = PPLMetric(model, tokenizer, ['wikitext2'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=args.prompt_mark)
+    if args.eval_c4:
+        ppl = PPLMetric(model, tokenizer, ['c4'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=args.prompt_mark)
+    else:
+        ppl = PPLMetric(model, tokenizer, ['wikitext2', 'ptb'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=args.prompt_mark)
     print("Prompt mark: {}; PPL: {}".format(args.prompt_mark, ppl))
 
 
@@ -122,6 +125,7 @@ if __name__ == "__main__":
     parser.add_argument('--device', type=str, default="cuda", help='device')
     parser.add_argument('--eval_device', type=str, default="cuda", help='eval device')
     parser.add_argument('--seed', type=int, default=42, help='seed')
+    parser.add_argument('--eval_c4', action="store_true")
     parser.add_argument('--lora_merged', action="store_true")
     args = parser.parse_args()
 
