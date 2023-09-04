@@ -32,5 +32,6 @@ python ./eval_ppl/eval_ppl.py \
     --max_seq_len 1024 \
     --base_model ./llama-13b-hf \
     --model_type lora_pruner \
+    --eval_c4 \
     --lora_ckpt ${1} \
     --prompt_mark ${2}

@@ -16,6 +16,7 @@ def single_job(arg):
         command_list = [
             command_head + f"--file evaluation/eval_harness.sh --task_name harness --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             command_head + f"--file evaluation/eval_wikitext.sh --task_name wikitext2_eval --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            command_head + f"--file evaluation/eval_c4.sh --task_name c4 --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_piqa.sh --task_name piqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_storycloze.sh --task_name storycloze --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num {2 if prompt_type != 0 else 1}",
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_arcc.sh --task_name arc-c --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 2",
@@ -226,7 +227,7 @@ waiting_jobs = [
   # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch9-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-21-47
 
   # mark 56-1
-  ("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.2_middle-s20.0-lr5e-05-reglr0.05-warmup10/2023-8-30-0-16/epoch27", "mark56-1_epoch27", 2),
+  # ("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.2_middle-s20.0-lr5e-05-reglr0.05-warmup10/2023-8-30-0-16/epoch29", "mark56-1_epoch29", 2),
   
   # mark 61
   # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s30.0-lr5e-05-reglr0.05-warmup4/2023-8-30-0-16
@@ -249,11 +250,78 @@ waiting_jobs = [
   # mark 53-1
   # mnt/data/LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-31-4-31
 
+   # mark 65
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark65-s20.0-lr3e-05-reglr0.05-warmup5/2023-9-2-1-52/epoch7", "mark65_epoch7", 1),
+
+   # mark 66
+#  ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark66-s20.0-lr5e-05-reglr0.05-warmup5/2023-9-1-22-30/epoch7", "mark66_epoch7", 1),
+
+   # mark 67
+  #("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark67-s20.0-lr8e-05-reglr0.05-warmup5/2023-9-2-2-19/epoch7", "mark67_epoch7", 1),
+
+  # mark 68
+  #("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark68-s20.0-lr3e-05-reglr0.05-warmup4/2023-9-1-22-33/epoch7", "mark68_epoch7", 1),
+
+ # mark 69
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark69-s20.0-lr5e-05-reglr0.05-warmup4/2023-9-1-22-30/epoch7", "mark69_epoch7", 1),
+
+
+  # mark 71
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark71-s20.0-lr3e-05-reglr0.05-warmup8/2023-9-2-4-51/epoch14", "mark71_epoch14", 1),
+
+  # # mark 72
+  # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark72-s20.0-lr5e-05-reglr0.05-warmup8/2023-9-2-14-15/epoch14", "mark72_epoch14", 1),
+
+# mark 73
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark73-s20.0-lr8e-05-reglr0.05-warmup8/2023-9-1-22-30/epoch14", "mark73_epoch14", 1),
+
+ #mark 74
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark74-s20.0-lr3e-05-reglr0.05-warmup10/2023-9-2-3-8/epoch14", "mark74_epoch14", 1),
+
+# mark 75
+#  ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark75-s20.0-lr5e-05-reglr0.05-warmup10/2023-9-1-22-30/epoch14", "mark75_epoch14", 1),
+
+# mark 76
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark76-s20.0-lr8e-05-reglr0.05-warmup10/2023-9-1-22-29/epoch14", "mark76_epoch14", 1),
+
+
+
+
+ # mark 77
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark77-s20.0-lr3e-05-reglr0.05-warmup5/2023-9-1-22-30/epoch7", "mark77_epoch7", 1),
+ # mark 78
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark78-s20.0-lr5e-05-reglr0.05-warmup5/2023-9-1-22-59/epoch7", "mark78_epoch7", 1),
+ # mark 79
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark79-s20.0-lr8e-05-reglr0.05-warmup5/2023-9-1-23-0/epoch7", "mark79_epoch7", 1),
+ # mark 80
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark80-s20.0-lr3e-05-reglr0.05-warmup4/2023-9-1-23-33/epoch7", "mark80_epoch7", 1),
+
+
+# mark 81
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark81-s20.0-lr5e-05-reglr0.05-warmup4/2023-9-2-0-47/epoch7", "mark81_epoch7", 1),
+
+ # mark 82
+ # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark82-s20.0-lr8e-05-reglr0.05-warmup4/2023-9-2-0-40/epoch7", "mark82_epoch7", 1),
+
+ # mark 83
+# ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark83-s20.0-lr3e-05-reglr0.05-warmup8/2023-9-2-0-47/epoch14", "mark83_epoch14", 1),
+
+# mark 84
+# ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark84-s20.0-lr5e-05-reglr0.05-warmup8/2023-9-2-0-48/epoch14", "mark84_epoch14", 1),
+
+ # mark 85
+ #("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark85-s20.0-lr8e-05-reglr0.05-warmup8/2023-9-2-1-8/epoch14", "mark85_epoch14", 1),
+
+  # mark 86
+# ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark84-s20.0-lr5e-05-reglr0.05-warmup8/2023-9-2-0-48/epoch12", "mark86_epoch12", 1),
+
+# mark 87
+ ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark87-s20.0-lr5e-05-reglr0.05-warmup10/2023-9-2-2-20/epoch14", "mark87_epoch14", 1),
+
+  # mark 88
+ #("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark88-s20.0-lr8e-05-reglr0.05-warmup10/2023-9-2-6-37/epoch14", "mark88_epoch14", 1),
+
 ]    
-
-
-    
-
 
 args = []
 for ckpt_path, mark, prompt_type in waiting_jobs:
