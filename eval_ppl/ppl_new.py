@@ -60,10 +60,21 @@ def get_wikitext_data_module(dataset, tokenizer, seq_len, batch_size=1, prompt_m
         prompt_mark = None
     print("prompt_mark: ", prompt_mark)
     
-    raw_datasets = load_dataset('wikitext', 'wikitext-2-raw-v1')
+    if dataset == "wikitext2":
+        raw_datasets = load_dataset('wikitext', 'wikitext-2-raw-v1')
+        split = "test"
+    elif dataset == "ptb":
+        raw_datasets = load_dataset('ptb_text_only', 'penn_treebank')
+        split = "validation"
+    elif dataset == "c4":
+        from datasets.dataset_dict import DatasetDict
+        valdata = load_dataset(
+            'allenai/c4', 'allenai--c4', data_files={'validation': 'en/c4-validation.00000-of-00008.json.gz'}, split='validation'
+        )
+        raw_datasets = DatasetDict({"validation": valdata})
+        split = "validation"
     
-
-    column_names = raw_datasets["test"].column_names
+    column_names = raw_datasets[split].column_names
     text_column_name = "text" if "text" in column_names else column_names[0]
 
     
@@ -125,7 +136,7 @@ def get_wikitext_data_module(dataset, tokenizer, seq_len, batch_size=1, prompt_m
         load_from_cache_file=True,
         desc=f"Grouping texts in chunks of {block_size}",
     )
-    eval_dataset = lm_datasets_eval["test"]
+    eval_dataset = lm_datasets_eval[split]
     return eval_dataset
 
 def PPLMetric(model, tokenizer, datasets, seq_len=128, batch_size = 4, device="cuda", zs={}, prompt_mark=0):

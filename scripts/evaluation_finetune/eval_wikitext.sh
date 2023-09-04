@@ -1,26 +1,24 @@
-baseline_pruned_model=/mnt/data/LoRaPruner/gpt4alpaca_llama7b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-7-31-21-23/epoch4
-pretrained_pruned_model=${1}
-cp $baseline_pruned_model/zs.pt $pretrained_pruned_model/
-cp $baseline_pruned_model/l0_module.pt $pretrained_pruned_model/
+export PYTHONPATH='.'
 
-cp -r $baseline_pruned_model/llama_pruned ./
+export WANDB_DISABLED=TRUE
+export TQDM_DISABLED=true
 
+export OUTPUT_DIR=output
+mkdir -p $OUTPUT_DIR
 
-deepspeed --num_nodes=1 --num_gpus=1 train.py \
-  --deepspeed ds3_offload.json \
-  --pruning_type structured_heads+structured_mlp+hidden+mlp_layer+head_layer \
-  --model_name_or_path ./llama_pruned \
-  --pretrained_pruned_model $pretrained_pruned_model \
-  --do_eval \
-  --max_seq_length 1024 \
-  --eval_dataset_name wikitext2_eval \
-  --dataset_name wikitext2_eval \
-  --dataset_config_name wikitext-2-raw-v1 \
+baseline_pruned_model=$1
+pretrained_path=$2
+
+deepspeed --num_nodes=1 --num_gpus=1 --master_port=16112 merge_weights.py \
+  --pruning_type None \
+  --target_sparsity 0. \
+  --sparsity_epsilon 0.005 \
+  --model_name_or_path decapoda-research/llama-7b-hf \
+  --pretrained_pruned_model $baseline_pruned_model \
+  --task_name None \
   --training_objective LM \
-  --per_device_train_batch_size 1 \
-  --per_device_eval_batch_size 1 \
   --overwrite_output_dir \
-  --output_dir output/ \
+  --output_dir $OUTPUT_DIR/ \
   --cache_dir /dev/shm/ \
   --use_lora True \
   --lora_rank 8 \
@@ -28,6 +26,20 @@ deepspeed --num_nodes=1 --num_gpus=1 train.py \
   --lora_alpha 8.0 \
   --lora_param Q.V \
   --lora_layers 32 \
+  --gradient_checkpointing=True \
+  --logging_first_step \
+  --logging_steps 10 \
+  --disable_tqdm True \
   --fp16 false \
-  --random_init=False \
-  --prompt_mark ${2}
+  --random_init=False |& tee $OUTPUT_DIR/output.log
+
+cp $baseline_pruned_model/zs.pt $pretrained_path/
+cp $baseline_pruned_model/l0_module.pt $pretrained_path/
+
+
+python ./eval_ppl/eval_ppl.py \
+    --max_seq_len 1024 \
+    --model_type lora_pruner \
+    --base_model ./llama_pruned \
+    --lora_ckpt $pretrained_path \
+    --prompt_mark $3
