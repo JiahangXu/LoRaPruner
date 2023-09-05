@@ -31,6 +31,19 @@ PROMPT_DICT = {
         "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
         "###Input:\n"
     ),
+
+    "prompt_eval_long_pruning": (
+        "###System Instruction:\nAttention, LLM! You've undergone model pruning, and here's what's changed:\n"
+	"Improved Efficiency: The pruning process has streamlined your operations, boosting overall performance.\n"
+	"Resource Utilization: We've reduced unnecessary parameters to optimize computational resources and memory usage.\n"
+	"Maintained Quality: We've selectively pruned while preserving your language generation capabilities, minimizing the impact on performance.\n"
+	"Iterative Refinement: Pruning occurred gradually, with fine-tuning after each step to ensure a smooth transition.\n"
+	"Collaboration: Embrace these changes and continue generating high-quality language outputs to contribute to the optimization process.\n"
+	"Continuous Learning: Pruning helps you evolve, focusing on essential aspects of language generation. Together, we've created a leaner and more efficient version of you. Let's unlock your full potential through pruning!\n"
+        "Below is an User Instruction that describes a task, "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###Input:\n"
+    ),
     
     "prompt_middle_pruning": (
         "###System Instruction:\nYou're being pruned by an efficient algorithm to remove unimportant parameters, such as attention heads, hidden dimensions, and MLP intermediate dimensions. Collaborate to optimize your performance while minimizing parameters. Your cooperation in this endeavor is vital. As the algorithm progresses, please adapt and fine-tune your model parameters accordingly. Embrace the changes and work in harmony with the pruning algorithm to maximize the number of pruned parameters while safeguarding your performance.\n\n"
@@ -48,9 +61,10 @@ PROMPT_DICT = {
 }
 
 PROMPT_DICT_LENGTH = {
+    "long": 256,
     "eval_long": 256,
-    "eval_middle": 168,
-    "eval_short": 130,
+    "middle": 168,
+    "short": 130,
 }
 
   
@@ -79,7 +93,7 @@ def _get_dtype(
 
 class HuggingFaceAutoLM(BaseLM):
     import sys
-    sys.path.append("/home/jiahangxu/working/LoRaPruner")
+    # sys.path.append("/home/jiahangxu/working/LoRaPruner")
     from models.modeling_llama import LlamaConfig
     from models.tokenization_llama import LlamaTokenizer
     from models.modeling_llama import LlamaForCausalLM
@@ -120,7 +134,7 @@ class HuggingFaceAutoLM(BaseLM):
         bnb_4bit_quant_type: Optional[str] = None,
         bnb_4bit_compute_dtype: Optional[Union[str, torch.dtype]] = None,
         bnb_4bit_use_double_quant: Optional[bool] = False,
-        prompt_mark: int = 0,
+        prompt_mark: str = "0",
         lora_merged: Optional[bool] = False,
     ):
         """Initializes a HuggingFace `AutoModel` and `AutoTokenizer` for evaluation.
@@ -269,18 +283,20 @@ class HuggingFaceAutoLM(BaseLM):
         except:
             print("Failed to place model onto specified device. This may be because the model is quantized via `bitsandbytes`. If the desired GPU is being used, this message is safe to ignore.")
 
-        if prompt_mark == 1:
+        if prompt_mark == "1":
+            prompt_mark = "long"
+        elif prompt_mark == "1-1":
             prompt_mark = "eval_long"
-        elif prompt_mark == 2:
-            prompt_mark = "eval_middle"
-        elif prompt_mark == 3:
-            prompt_mark = "eval_short"
+        elif prompt_mark == "2":
+            prompt_mark = "middle"
+        elif prompt_mark == "3":
+            prompt_mark = "short"
         else:
             prompt_mark = None
         print("prompt_mark: ", prompt_mark)
         
-        if prompt_mark in ["eval_long", "eval_middle", "eval_short"]:
-            prompt = self.tokenizer(PROMPT_DICT[f"prompt_{prompt_mark[5:]}_pruning"])
+        if prompt_mark in ["long", "middle", "short", "eval_long"]:
+            prompt = self.tokenizer(PROMPT_DICT[f"prompt_{prompt_mark}_pruning"])
         else:
             prompt = {'input_ids': [], 'attention_mask': []}
         self.prompt_input_ids = torch.tensor(prompt["input_ids"]).to(self._device)
