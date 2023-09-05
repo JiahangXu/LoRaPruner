@@ -527,25 +527,25 @@ class CoFiTrainer(Trainer):
                                     "best_step": self.celoss_counter.global_step,
                                     "best_epoch": self.celoss_counter.epoch
                                 }
+
                                 if self.args.local_rank == 0:
                                     for k, v in best_loss_log.items():
                                         try:
                                             mlflow.log_metric(k, v, step=self.global_step)
                                         except:
                                             pass
-                                try:
-                                    # save model via azcopy
-                                    lora_weights = {}
-                                    for n, m in model.named_parameters():
-                                        if 'lora_' in n:
-                                            gather = lora.should_gather(m)
-                                            with gather:
-                                                lora_weights[n.replace('module.','')] = m.data
-                                    if self.args.local_rank == 0:
-                                        torch.save(lora_weights,'{}/lora_weights.pt'.format(epoch_output_dir))
-                                    logger.info(f"Saving the best model so far: [Epoch {int(self.epoch)} | Step: {self.global_step} | Score: {round(self.celoss_counter.best_ce_loss, 5)}]")
-                                except:
-                                    pass
+
+                                # save model to container
+                                lora_weights = {}
+                                for n, m in model.named_parameters():
+                                    if 'lora_' in n:
+                                        gather = lora.should_gather(m)
+                                        with gather:
+                                            lora_weights[n.replace('module.','')] = m.data
+                                if self.args.local_rank == 0:
+                                    torch.save(lora_weights, './best/lora_weights.pt')
+                                logger.info(f"Saving the best model so far: [Epoch {int(self.epoch)} | Step: {self.global_step} | Score: {round(self.celoss_counter.best_ce_loss, 5)}]")
+
                 epoch_pbar.update(1)
                 torch.cuda.empty_cache()
                 if self.args.max_steps > 0 and self.global_step >= self.args.max_steps:
@@ -555,7 +555,6 @@ class CoFiTrainer(Trainer):
             self.evaluate()
             torch.cuda.empty_cache()
             os.system(f"cp -r ./best/ {self.args.output_dir}")
-            # self.save_model(os.path.join(self._get_output_dir(None),"epoch{}".format(epoch)))
 
             # save model via azcopy
             lora_weights = {}
