@@ -128,7 +128,7 @@ def main():
     "harness"
     ])
     parser.add_argument("--ckpt_dir", type=str, required=False)
-    parser.add_argument("--prompt_type", type=int, required=False)
+    parser.add_argument("--prompt_type", type=str, required=False)
     parser.add_argument("--mark", type=str, required=False)
     parser.add_argument("--node_num", type=int, default=2, required=False)
     

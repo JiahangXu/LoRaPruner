@@ -3,7 +3,7 @@ from tqdm.contrib.concurrent import process_map
 
 def single_job(arg):
     base_model, ckpt_path, pt, mrk = arg
-    for prompt_type in [0, pt]:
+    for prompt_type in [0, "1-1", pt]:
         if prompt_type == 0:
             mark = mrk + f"_no_prompt"
         else:
@@ -75,67 +75,66 @@ waiting_jobs = [
     #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25-s30.0-lr8e-06-reglr0.05-warmup0/2023-8-30-20-22/epoch1",
     #  "mark25FT2", 1),
     
-    # Finetune mark25FT3
-   # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
-   #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25-s30.0-lr8e-06-reglr0.05-warmup0/2023-8-30-23-6/epoch1",
-    # "mark25FT3", 1),
+    # # Finetune mark25FT3
+    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
+    #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25-s30.0-lr8e-06-reglr0.05-warmup0/2023-8-30-23-6/epoch1",
+    #  "mark25FT3", 1),
     
-    # Finetune mark25FT4
-   # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
-   #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25-s30.0-lr5e-06-reglr0.05-warmup0/2023-8-31-19-47/epoch0",
-    # "mark25FT4", 1),
+    # # Finetune mark25FT4
+    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
+    #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25-s30.0-lr5e-06-reglr0.05-warmup0/2023-8-31-19-47/epoch0",
+    #  "mark25FT4", 1),
     
-    # Finetune mark25FT5
-   # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
-   #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25-s30.0-lr2e-06-reglr0.05-warmup0/2023-8-31-20-18/epoch0",
-   #  "mark25FT5", 1),
+    # # Finetune mark25FT5
+    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
+    #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25-s30.0-lr2e-06-reglr0.05-warmup0/2023-8-31-20-18/epoch0",
+    #  "mark25FT5", 1),
     
-    # Finetune mark25FT6
-  #  ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
-   #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25-s30.0-lr1e-06-reglr0.05-warmup0/2023-8-31-23-27/epoch0",
-   #  "mark25FT6", 1),
+    # # Finetune mark25FT6
+    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
+    #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25-s30.0-lr1e-06-reglr0.05-warmup0/2023-8-31-23-27/epoch0",
+    #  "mark25FT6", 1),
     
     # Finetune mark25FT7
-   # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
-    # "LoRaPruner/gpt4alpaca_llama7b_promptlong_mark25-s30.0-lr1e-06-reglr0.05-warmup0/2023-8-31-22-47/epoch0",
-    # "mark25FT7", 1),
+    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
+    #  "LoRaPruner/gpt4alpaca_llama7b_promptlong_mark25-s30.0-lr1e-06-reglr0.05-warmup0/2023-8-31-22-47/epoch0",
+    #  "mark25FT7", 1),
 
     # Finetune mark25FT8
-   # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
-   #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25_8e-5-s30.0-lr8e-05-reglr0.05-warmup0/2023-9-3-4-2/epoch0",
-   #  "mark25FT8", 1),
-
+    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
+    #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25_8e-5-s30.0-lr8e-05-reglr0.05-warmup0/2023-9-3-4-2/epoch0",
+    #  "mark25FT8", 1),
 
     # Finetune mark25FT9
-   # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
-    # "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25_5e-5-s30.0-lr5e-05-reglr0.05-warmup0/2023-9-3-4-2/epoch0",
-   #  "mark25FT9", 1),
-    
-    #  # Finetune mark25FT10
+    ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
+     "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25_5e-5-s30.0-lr5e-05-reglr0.05-warmup0/2023-9-3-4-2/epoch0",
+     "mark25FT9", 1),
+
+    # # Finetune mark25FT10
     # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
     #  "LoRaPruner/alpacagpt4_llama7b_promptlong_FTbased_mark25_3e-5_qkvo-s30.0-lr3e-05-reglr0.05-warmup0/2023-9-3-9-38/epoch0",
     #  "mark25FT10", 1),
     
-    # Finetune mark25FT11
-    ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
-     "LoRaPruner/alpacagpt4_llama7b_promptlong_FTbased_mark25_8e-6_qkvo-s30.0-lr8e-06-reglr0.05-warmup0/2023-9-3-13-55/epoch0",
-     "mark25FT11", 1),
+    # # Finetune mark25FT11
+    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
+    #  "LoRaPruner/alpacagpt4_llama7b_promptlong_FTbased_mark25_8e-6_qkvo-s30.0-lr8e-06-reglr0.05-warmup0/2023-9-3-13-55/epoch0",
+    #  "mark25FT11", 1),
 
-    #Finetune mark56-1FT1
+    # # Finetune mark56-1FT1
     # ("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.2_middle-s20.0-lr5e-05-reglr0.05-warmup10/2023-8-30-0-16/epoch29",
-    # "LoRaPruner/alpacagpt4_llama7b_promptlong_FTbased_mark56-1_5e-5-s30.0-lr5e-05-reglr0.05-warmup0/2023-9-3-5-21/epoch0",
-   #  "mark56-1FT1", 1),
+    #  "LoRaPruner/alpacagpt4_llama7b_promptlong_FTbased_mark56-1_5e-5-s30.0-lr5e-05-reglr0.05-warmup0/2023-9-3-5-21/epoch0",
+    #  "mark56-1FT1", 1),
 
-    #Finetune mark56-1FT2
-   #  ("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.2_middle-s20.0-lr5e-05-reglr0.05-warmup10/2023-8-30-0-16/epoch29",
-   #  "LoRaPruner/alpacagpt4_llama7b_promptlong_FTbased_mark56-1_3e-5-s30.0-lr3e-05-reglr0.05-warmup0/2023-9-3-5-18/epoch0",
-   #  "mark56-1FT2", 1),
+    # # Finetune mark56-1FT2
+    # ("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.2_middle-s20.0-lr5e-05-reglr0.05-warmup10/2023-8-30-0-16/epoch29",
+    #  "LoRaPruner/alpacagpt4_llama7b_promptlong_FTbased_mark56-1_3e-5-s30.0-lr3e-05-reglr0.05-warmup0/2023-9-3-5-18/epoch0",
+    #  "mark56-1FT2", 1),
 
 
-    #Finetune mark56-1FT3
-   #  ("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.2_middle-s20.0-lr5e-05-reglr0.05-warmup10/2023-8-30-0-16/epoch29",
-    # "LoRaPruner/alpacagpt4_llama7b_promptlong_FTbased_mark56-1_8e-5-s30.0-lr0.0001-reglr0.05-warmup0/2023-9-3-5-18/epoch0",
-   #  "mark56-1FT3", 1),
+    # # Finetune mark56-1FT3
+    # ("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.2_middle-s20.0-lr5e-05-reglr0.05-warmup10/2023-8-30-0-16/epoch29",
+    #  "LoRaPruner/alpacagpt4_llama7b_promptlong_FTbased_mark56-1_8e-5-s30.0-lr0.0001-reglr0.05-warmup0/2023-9-3-5-18/epoch0",
+    #  "mark56-1FT3", 1),
 
 
     # # Finetune mark26FT1
