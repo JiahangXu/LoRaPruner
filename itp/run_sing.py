@@ -143,7 +143,7 @@ def main():
         mode = 0
 
     if args.task_name in ["wikitext2_eval", "piqa", "math_eval", "piqa", "storycloze", "arc-e", "arc-c", \
-      "math_eval", "boolqa", "hellaswag", "obqa", "winogrande", "gsm8k", "multiarith"]:
+      "math_eval", "boolqa", "hellaswag", "obqa", "winogrande", "gsm8k", "multiarith", "c4"]:
         job_template = eval_job_template
         date = datetime.datetime.now().strftime('%m%d%H%M')
         job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.mark}-{date}'
