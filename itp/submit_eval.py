@@ -194,13 +194,16 @@ waiting_jobs = [
     # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s50.0-lr5e-05-reglr0.05-warmup4/2023-8-20-20-31/epoch6", "mark35_epoch6", 2),
 
     # # mark 51
-    # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-30-2-36
+     ("LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-30-2-36/epoch7","mark51_epoch7",2),
 
     # # mark 52 
-    # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-2
+     ("LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-2/epoch6","mark52_epoch6",2),
+
+       # # mark 52 
+     ("LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-2/epoch4","mark52_epoch4",2),
 
     # # mark 53
-    # ("LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-3/epoch7", "mark53_epoch7", 2),
+     ("LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-3/epoch7", "mark53_epoch7", 2),
 
     # # mark 53-1
     # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_epoch8-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-31-4-31/epoch7", "mark53-1_gpt4_epoch7", 2),
@@ -212,7 +215,7 @@ waiting_jobs = [
     # LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch9-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-21-47
 
     # # mark 56
-    # ("LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch9-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-2/epoch8", "mark56_epoch8", 2),
+     ("LoRaPruner/alpacacleaned_llama7b_prompt_nogate_epoch9-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-29-11-2/epoch8", "mark56_epoch8", 2),
 
     # # mark 56-1
     # ("LoRaPruner/gptcleaned5k_llama7b_epoch30_warmup10_spar0.2_middle-s20.0-lr5e-05-reglr0.05-warmup10/2023-8-30-0-16/epoch29", "mark56-1_epoch29", 2),
@@ -318,57 +321,71 @@ waiting_jobs = [
     # # mark 90
     # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark90-s20.0-lr5e-05-reglr0.05-warmup10/2023-9-3-8-30/epoch16", "mark90_epoch16", 1),
     # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark90-s20.0-lr5e-05-reglr0.05-warmup10/2023-9-3-8-30/epoch19", "mark90_epoch19", 1),
-    
+
     # # mark 91
     # LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark91-s20.0-lr8e-05-reglr0.05-warmup10/2023-9-4-2-1
 
     # # mark 92
-    ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark92-s20.0-lr3e-05-reglr0.05-warmup12/2023-9-3-10-17/epoch16", "mark92_epoch16", 1),
-    ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark92-s20.0-lr3e-05-reglr0.05-warmup12/2023-9-3-10-17/epoch19", "mark92_epoch16", 1),
+    # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark92-s20.0-lr3e-05-reglr0.05-warmup12/2023-9-3-10-17/epoch16", "mark92_epoch16", 1),
+    # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark92-s20.0-lr3e-05-reglr0.05-warmup12/2023-9-3-10-17/epoch19", "mark92_epoch19", 1),
 
     # # mark 93
-    # LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark93-s20.0-lr5e-05-reglr0.05-warmup12/2023-9-3-11-45
+   # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark93-s20.0-lr5e-05-reglr0.05-warmup12/2023-9-3-11-45/epoch18", "mark93_epoch18", 1),
+   # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark93-s20.0-lr5e-05-reglr0.05-warmup12/2023-9-3-11-45/epoch19", "mark93_epoch19", 1),
 
     # # mark 94
-    # LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark94-s20.0-lr8e-05-reglr0.05-warmup12/2023-9-3-19-23
+    #("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark94-s20.0-lr8e-05-reglr0.05-warmup12/2023-9-3-19-23/epoch19","mark94_epoch19", 1),
 
     # # mark 95
-    # LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark95-s20.0-lr3e-05-reglr0.05-warmup15/2023-9-3-9-0
+   # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark95-s20.0-lr3e-05-reglr0.05-warmup15/2023-9-3-9-0/epoch19", "mark95_epoch19", 1),
 
     # # mark 96
-    # LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark96-s20.0-lr5e-05-reglr0.05-warmup15/2023-9-3-9-0
+   # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark96-s20.0-lr5e-05-reglr0.05-warmup15/2023-9-3-9-0/epoch19", "mark96_epoch19", 1),
 
     # # mark 97
-    # LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark97-s20.0-lr8e-05-reglr0.05-warmup15/2023-9-3-9-0
+ #   ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark97-s20.0-lr8e-05-reglr0.05-warmup15/2023-9-3-9-0/epoch19", "mark97_epoch19", 1),
 
     # # mark 98
-    ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark98-s20.0-lr3e-05-reglr0.05-warmup10/2023-9-3-9-29/epoch18", "mark98_epoch16", 1),
-    ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark98-s20.0-lr3e-05-reglr0.05-warmup10/2023-9-3-9-29/epoch19", "mark98_epoch16", 1),
+    # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark98-s20.0-lr3e-05-reglr0.05-warmup10/2023-9-3-9-29/epoch18", "mark98_epoch18", 1),
+    # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark98-s20.0-lr3e-05-reglr0.05-warmup10/2023-9-3-9-29/epoch19", "mark98_epoch19", 1),
 
     # # mark 99
-    ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark99-s20.0-lr5e-05-reglr0.05-warmup10/2023-9-3-9-32/epoch19", "mark99_epoch16", 1),
+    # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark99-s20.0-lr5e-05-reglr0.05-warmup10/2023-9-3-9-32/epoch19", "mark99_epoch19", 1),
 
     # # mark 100
-    ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark100-s20.0-lr8e-05-reglr0.05-warmup10/2023-9-3-9-44/epoch19", "mark100_epoch16", 1),
+    # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark100-s20.0-lr8e-05-reglr0.05-warmup10/2023-9-3-9-44/epoch19", "mark100_epoch19", 1),
 
     # # mark 101
-    # LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark101-s20.0-lr3e-05-reglr0.05-warmup12/2023-9-3-10-26
+     #"LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark101-s20.0-lr3e-05-reglr0.05-warmup12/2023-9-3-10-26/epoch10","mark101_epoch19", 1,
 
     # # mark 102
-    ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark102-s20.0-lr5e-05-reglr0.05-warmup12/2023-9-3-10-30/epoch17", "mark102_epoch16", 1),
-    ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark102-s20.0-lr5e-05-reglr0.05-warmup12/2023-9-3-10-30/epoch19", "mark102_epoch16", 1),
+    # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark102-s20.0-lr5e-05-reglr0.05-warmup12/2023-9-3-10-30/epoch17", "mark102_epoch17", 1),
+    # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark102-s20.0-lr5e-05-reglr0.05-warmup12/2023-9-3-10-30/epoch19", "mark102_epoch19", 1),
 
     # # mark 103
-    # LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark103-s20.0-lr8e-05-reglr0.05-warmup12/2023-9-3-20-33
+    #("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark103-s20.0-lr8e-05-reglr0.05-warmup12/2023-9-3-20-33/epoch19", "mark103_epoch19", 1),
+    # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark103-s20.0-lr8e-05-reglr0.05-warmup12/2023-9-3-20-33/epoch19","mark103_epoch19", 1)
 
     # # mark 104
-    # LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark104-s20.0-lr3e-05-reglr0.05-warmup15/2023-9-3-11-28
+   # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark104-s20.0-lr3e-05-reglr0.05-warmup15/2023-9-3-11-28/epoch19", "mark104_epoch19", 1),
 
     # # mark 105
-    # LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark105-s20.0-lr5e-05-reglr0.05-warmup15/2023-9-3-13-33
+   #  ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark105-s20.0-lr5e-05-reglr0.05-warmup15/2023-9-3-13-33/epoch19","mark105_epoch19",1),
 
     # # mark 106
-    # LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark106-s20.0-lr8e-05-reglr0.05-warmup15/2023-9-3-14-19
+   #  ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark106-s20.0-lr8e-05-reglr0.05-warmup15/2023-9-3-14-19/epoch18","mark106_epoch18",1),
+
+   # # mark 110
+     ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark112-s26.840000000000003-lr5e-05-reglr0.05-warmup12/2023-9-4-5-58/epoch19","mark110_epoch19",1),
+
+   # # mark 111
+     ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_cubic_mark111-s26.840000000000003-lr5e-05-reglr0.05-warmup10/2023-9-4-4-15/epoch19","mark111_epoch19",1),
+
+   # # mark 112
+     ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark110-s26.840000000000003-lr5e-05-reglr0.05-warmup10/2023-9-4-4-30/epoch19","mark112_epoch19",1),
+
+   # # mark 114
+     ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark114-s26.840000000000003-lr5e-05-reglr0.05-warmup14/2023-9-4-4-30/epoch19","mark114_epoch19",1),
 ]    
 
 args = []
