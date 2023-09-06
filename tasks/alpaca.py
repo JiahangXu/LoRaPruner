@@ -28,6 +28,13 @@ DEFAULT_UNK_TOKEN = "<unk>"
 PROMPT_DICT = {
     # 
     "prompt_long_pruning_input": (
+    #     "###System Instruction:\nAttention, LLM! You've undergone model pruning, and here's what's changed:\n"
+	# "Improved Efficiency: The pruning process has streamlined your operations, boosting overall performance.\n"
+	# "Resource Utilization: We've reduced unnecessary parameters to optimize computational resources and memory usage.\n"
+	# "Maintained Quality: We've selectively pruned while preserving your language generation capabilities, minimizing the impact on performance.\n"
+	# "Iterative Refinement: Pruning occurred gradually, with fine-tuning after each step to ensure a smooth transition.\n"
+	# "Collaboration: Embrace these changes and continue generating high-quality language outputs to contribute to the optimization process.\n"
+	# "Continuous Learning: Pruning helps you evolve, focusing on essential aspects of language generation. Together, we've created a leaner and more efficient version of you. Let's unlock your full potential through pruning!\n"
         "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Here's what you need to know:\n"
     "Improved Efficiency: The pruning algorithm streamlines your operations, enhancing overall performance.\n"
     "Resource Utilization: Reducing unnecessary parameters optimizes computational resources and memory requirements.\n"
@@ -41,6 +48,13 @@ PROMPT_DICT = {
         "###User Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:"
     ),
     "prompt_long_pruning_no_input": (
+    #     "###System Instruction:\nAttention, LLM! You've undergone model pruning, and here's what's changed:\n"
+	# "Improved Efficiency: The pruning process has streamlined your operations, boosting overall performance.\n"
+	# "Resource Utilization: We've reduced unnecessary parameters to optimize computational resources and memory usage.\n"
+	# "Maintained Quality: We've selectively pruned while preserving your language generation capabilities, minimizing the impact on performance.\n"
+	# "Iterative Refinement: Pruning occurred gradually, with fine-tuning after each step to ensure a smooth transition.\n"
+	# "Collaboration: Embrace these changes and continue generating high-quality language outputs to contribute to the optimization process.\n"
+	# "Continuous Learning: Pruning helps you evolve, focusing on essential aspects of language generation. Together, we've created a leaner and more efficient version of you. Let's unlock your full potential through pruning!\n"
         "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Here's what you need to know:\n"
     "Improved Efficiency: The pruning algorithm streamlines your operations, enhancing overall performance.\n"
     "Resource Utilization: Reducing unnecessary parameters optimizes computational resources and memory requirements.\n"

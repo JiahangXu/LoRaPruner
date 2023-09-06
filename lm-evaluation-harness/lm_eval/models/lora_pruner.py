@@ -283,13 +283,13 @@ class HuggingFaceAutoLM(BaseLM):
         except:
             print("Failed to place model onto specified device. This may be because the model is quantized via `bitsandbytes`. If the desired GPU is being used, this message is safe to ignore.")
 
-        if prompt_mark == "1":
+        if prompt_mark == "1" or prompt_mark == 1:
             prompt_mark = "long"
         elif prompt_mark == "1-1":
             prompt_mark = "eval_long"
-        elif prompt_mark == "2":
+        elif prompt_mark == "2" or prompt_mark == 2:
             prompt_mark = "middle"
-        elif prompt_mark == "3":
+        elif prompt_mark == "3" or prompt_mark == 3:
             prompt_mark = "short"
         else:
             prompt_mark = None
