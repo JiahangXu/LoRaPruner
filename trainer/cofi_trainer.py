@@ -1110,7 +1110,7 @@ class CoFiTrainer(Trainer):
     def fill_inputs_with_zs(self, zs, inputs):
         for key in zs:
             inputs[key] = zs[key]
-       
+
     def prediction_step(
         self,
         model: nn.Module,
