@@ -75,9 +75,9 @@ class CEloss_Counter():
         self.epoch = 0
         self.global_step = 0
         self.best_ce_loss = 10e4
-        self.near_sparsity_eval_times = 0
-        self.level_best_score = {0.85: 0, 0.8: 0, 0.7: 0,
-                                 0.6: 0, 0.75: 0, 0.9: 0, 0.95: 0, 0.65: 0}
+        # self.near_sparsity_eval_times = 0
+        # self.level_best_score = {0.85: 0, 0.8: 0, 0.7: 0,
+        #                          0.6: 0, 0.75: 0, 0.9: 0, 0.95: 0, 0.65: 0}
 
     def round_nearest(self, x, a):
         return round(round(x / a) * a, -int(math.floor(math.log10(a))))
@@ -87,7 +87,7 @@ class CEloss_Counter():
         if ce_loss < self.best_ce_loss:
             self.epoch = epoch
             self.global_step = global_step
-            self.best_eval_score = ce_loss
+            self.best_ce_loss = ce_loss
             best_so_far = True
         return best_so_far
 
@@ -396,8 +396,8 @@ class CoFiTrainer(Trainer):
 
             epoch_pbar = tqdm(epoch_iterator, desc="Iteration",
                               disable=disable_tqdm)
-            self.eval_counter.clear()
-            self.celoss_counter.clear()
+            # self.eval_counter.clear()
+            # self.celoss_counter.clear()
             for step, inputs in enumerate(epoch_iterator):
                 if (self.l0_module is not None and self.prepruning_finetune_steps > 0 and self.global_step == self.prepruning_finetune_steps) or \
                     (self.l0_module is not None and self.prepruning_finetune_steps == 0 and self.start_prune == False): 
@@ -1110,9 +1110,6 @@ class CoFiTrainer(Trainer):
     def fill_inputs_with_zs(self, zs, inputs):
         for key in zs:
             inputs[key] = zs[key]
-        if self.l0_module is not None:
-            inputs["block_layer_start"] = self.l0_module.block_layer_start
-            inputs["block_layer_end"] = self.l0_module.block_layer_end
        
     def prediction_step(
         self,
