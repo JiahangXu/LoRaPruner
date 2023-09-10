@@ -261,11 +261,11 @@ def compute_flash_attention_inference(query_states, key_states, value_states, at
 
     # No point returning attn_probs since it is not guaranteed to be correct
     if seq_len_q == seq_len_k:
-        attn_output = flash_attn_varlen_func(query_states, key_states, value_states,
+        attn_output = flash_attn_unpadded_func(query_states, key_states, value_states,
                                             cu_seqlens_q, cu_seqlens_k, seq_len_q, seq_len_k,
                                             dropout, scale, causal=True, return_attn_probs=False)
     else:
-        attn_output = flash_attn_varlen_func(query_states, key_states, value_states,
+        attn_output = flash_attn_unpadded_func(query_states, key_states, value_states,
                                             cu_seqlens_q, cu_seqlens_k, seq_len_q, seq_len_k,
                                             dropout, scale, causal=False, return_attn_probs=False)
 
