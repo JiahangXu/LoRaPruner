@@ -83,7 +83,7 @@ if TYPE_CHECKING:
     from transformers.generation.streamers import BaseStreamer
 
 try:
-    from flash_attn.flash_attn_interface import flash_attn_varlen_func
+    from flash_attn.flash_attn_interface import flash_attn_unpadded_func 
     from flash_attn.modules.mha import FlashSelfAttention
     from einops import rearrange
     have_flash_attention = True
