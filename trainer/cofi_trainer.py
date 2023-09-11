@@ -1113,7 +1113,7 @@ class CoFiTrainer(Trainer):
         if self.l0_module is not None:
             inputs["block_layer_start"] = self.l0_module.block_layer_start
             inputs["block_layer_end"] = self.l0_module.block_layer_end
-       
+
     def prediction_step(
         self,
         model: nn.Module,
