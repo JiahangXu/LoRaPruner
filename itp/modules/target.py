@@ -124,6 +124,7 @@ environment:
 
   setup:
     - pip install accelerate==0.15.0
+    - pip install transformers==4.25.1
     - pip install mpi4py
     - pip install scipy
     - pip install numpy
@@ -138,6 +139,8 @@ environment:
     - pip install scikit-learn 
     - pip install viztracer
     - pip install py-spy
+    - pip install pydantic==1.10.7
+    - pip install zstandard
 
 
 
