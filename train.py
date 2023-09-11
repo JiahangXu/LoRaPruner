@@ -171,8 +171,12 @@ def main():
         # l0_module = None
         
         if zs["head_z"].shape[0] < config.num_hidden_layers:
+            if zs["head_z"].shape[0] == 26:
                 zs["head_z"] = torch.concat([torch.ones(4, 1, 32, 1, 1), zs["head_z"], torch.ones(2, 1, 32, 1, 1)])
                 zs["intermediate_z"] = torch.concat([torch.ones(4, 1, 1, 11008), zs["intermediate_z"], torch.ones(2, 1, 1, 11008)])
+            elif zs["head_z"].shape[0] == 28:
+                zs["head_z"] = torch.concat([torch.ones(3, 1, 32, 1, 1), zs["head_z"], torch.ones(1, 1, 32, 1, 1)])
+                zs["intermediate_z"] = torch.concat([torch.ones(3, 1, 1, 11008), zs["intermediate_z"], torch.ones(1, 1, 1, 11008)])
 
         if "layer_z" in zs:
             zs['head_layer_z'] = zs['layer_z']

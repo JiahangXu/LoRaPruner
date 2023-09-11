@@ -12,6 +12,9 @@
 # python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr5e-6_Cosine_FTepoch1_based_mark25 --file finetune/finetune_lr5e-6_cosine_FTepoch1_mark25_gpt4alpaca_promptlong
 # python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr5e-5_Cosine_FTepoch1_based_mark25 --file finetune/finetune_lr5e-5_cosine_FTepoch1_mark25_gpt4alpaca_promptlong
 # python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr5e-5_Cosine_FTepoch1_based_mark25FT9_eval_long --file finetune/finetune_lr5e-5_cosine_FTepoch1_mark25_gpt4alpaca_promptlong
+# python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr5e-5_Cosine_FTepoch1_based_mark25FT9_GradAccm8 --file finetune/finetune_lr5e-5_cosine_FTepoch1_mark25_gpt4alpaca_promptlong_gradaccm8
+# python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name alpacaclean --model_name finetune_lr5e-5_Cosine_FTepoch2_based_mark25FT9_GradAccm8_FTver --file finetune/finetune_lr5e-5_cosine_FTepoch2_mark25_gpt4alpaca_promptlong_gradaccm8_finetune
+# python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr5e-5_Cosine_FTepoch1_based_mark25FT9_NoDS_GradAccm8 --file finetune/finetune_lr5e-5_cosine_FTepoch1_mark25_gpt4alpaca_promptlong_nods_gradaccm8
 # python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr8e-5_Cosine_FTepoch1_based_mark25 --file finetune/finetune_lr8e-5_cosine_FTepoch1_mark25_gpt4alpaca_promptlong
 # python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr8e-6_Cosine_FTepoch2_based_mark26_epoch4 --file finetune/finetune_lr8e-6_cosine_FTepoch2_mark26_epoch4_gpt4alpaca_promptlong
 # python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr8e-6_Cosine_FTepoch2_based_mark27 --file finetune/finetune_lr8e-6_cosine_FTepoch2_mark27_gpt4alpaca_promptlong
@@ -58,4 +61,12 @@
 
 # mark 84
 # python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr1e-4_Cosine_FTepoch2_based_mark84 --file finetune/finetune_lr1e-4_cosine_FTepoch2_mark84_gpt4alpaca_promptlong
-# python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr8e-5_Cosine_FTepoch2_based_mark84 --file finetune/finetune_lr1e-4_cosine_FTepoch2_mark84_gpt4alpaca_promptlong
+# python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_lr8e-5_Cosine_FTepoch2_based_mark84 --file finetune/finetune_lr8e-5_cosine_FTepoch2_mark84_gpt4alpaca_promptlong
+
+
+# python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_mark72LLMQATFT14_lr8e-5_Cosine_FTepoch3 --file finetune/finetune_mark72LLMQATFT14_lr8e-5_cosine_FTepoch3_gpt4alpaca_promptlong
+# python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_mark72LLMQATFT16_lr1e-4_Cosine_FTepoch3 --file finetune/finetune_mark72LLMQATFT16_lr1e-4_cosine_FTepoch3_gpt4alpaca_promptlong
+# python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_mark72LLMQATFT14_lr8e-6_Cosine_FTepoch3 --file finetune/finetune_mark72LLMQATFT14_lr8e-6_cosine_FTepoch3_gpt4alpaca_promptlong
+# python run_sing.py submit --sparsity 0.2 --target sing_octo --task_name gpt4alpaca --model_name finetune_mark72LLMQATFT16_lr1e-5_Cosine_FTepoch3 --file finetune/finetune_mark72LLMQATFT16_lr1e-5_cosine_FTepoch3_gpt4alpaca_promptlong
+
+python run_sing.py submit --sparsity 0.268 --target sing_octo --task_name gpt4alpaca --model_name finetune_mark108_lr1e-4_Cosine_FTepoch3 --file finetune/finetune_mark108_lr1e-4_cosine_FTepoch3_gpt4alpaca_promptlong

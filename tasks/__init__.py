@@ -1,6 +1,6 @@
 from pprint import pprint
 
-from . import alpaca, wikitext, piqa, c4, storycloze, arc, math, openbookqa, hellaswag, boolqa, math_eval, winogrande, open_orca, wikitext2_eval
+from . import alpaca, wikitext, piqa, c4, storycloze, arc, math, openbookqa, hellaswag, boolqa, math_eval, winogrande, open_orca, wikitext2_eval, llm_qat_data
 
 TASK_EVALUATE_REGISTRY = {
     "piqa": piqa.evaluate_piqa,
@@ -38,6 +38,7 @@ TASK_DATA_MODULE_REGISTRY = {
     "super_glue": boolqa.get_boolqa_dataset,
     "winogrande": winogrande.get_winogrande_dataset,
     "open_orca": open_orca.get_openorca_data_module,
+    "llm_qat": llm_qat_data.get_llmqat_data_module,
 }
 
 
