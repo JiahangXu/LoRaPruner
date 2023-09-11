@@ -31,71 +31,25 @@ jobs:
 """
 
 
-job_eight_nodes = \
+job_16_nodes = \
 """- name: {job_name}
-  sku: G8
+  sku: G16
   priority: high
- # process_count_per_node: 1
-#   execution_mode: managed
   command:
-  #- bash setup2.sh
-  - bash ./scripts/{file}.sh
-  #- python ./itp/sleep.py
+  - git clone 
+  - python ./itp/sleep.py
   submit_args: 
     env:
       {{DEBUG: 1}}
 """
 
-
-eval_job_template = \
-"""- name: {job_name}
-  sku: G{node_num}
-  priority: high
- # process_count_per_node: 1
-#   execution_mode: managed
-  command:
-  #- bash setup2.sh
-  #- python sleep.py
-  #- bash ./itp/flash_attn_env.sh
-  - bash ./scripts/{file} {ckpt_dir} {prompt_type}
-  #- python ./itp/sleep.py
-  submit_args: 
-    env:
-      {{DEBUG: 1}}
-"""
-
-
-eval_harness_job_template = \
-"""- name: {job_name}
-  sku: G{node_num}
-  priority: high
-  command:
-  - bash ./itp/harness_env.sh
-  - bash ./scripts/{file} {ckpt_dir} {prompt_type}
-  #- python ./itp/sleep.py
-  submit_args: 
-    env:
-      {{DEBUG: 1}}
-"""
-
-
-job_one_node = \
-"""- name: {job_name}
-  sku: NDAMv4:80G1-A100
-  priority: high
-  command:
-  - bash run_wiki.sh
-  submit_args: 
-    env:
-      {{DEBUG: 1}}
-"""
 # --nproc_per_node=8 --node_rank=$${{NODE_RANK}} --nnodes=4 
 #     --master_addr=$${{MASTER_ADDR}} --master_port=$${{MASTER_PORT}}  
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('func', choices=['submit', 'debug'], help='submit job or local debug')
-    parser.add_argument('--target', default='sing_octo', choices=list(target_dict.keys()), help='where to submit')
+    parser.add_argument('--target', default='itp_rr1', choices=list(target_dict.keys()), help='where to submit')
     parser.add_argument("--model_name", type=str, required=False)
     parser.add_argument("--sparsity", type=float, required=False)
     parser.add_argument("--file", type=str, required=False)
@@ -144,40 +98,13 @@ def main():
     else:
         mode = 0
 
-    if args.task_name in ["wikitext2_eval", "piqa", "math_eval", "piqa", "storycloze", "arc-e", "arc-c", \
-      "math_eval", "boolqa", "hellaswag", "obqa", "winogrande", "gsm8k", "multiarith", "c4"]:
-        job_template = eval_job_template
-        date = datetime.datetime.now().strftime('%m%d%H%M')
-        job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.mark}-{date}'
-        jobs = job_template.format(
-            job_name=job_name, 
-            debug=mode,
-            file = args.file,
-            ckpt_dir = args.ckpt_dir,
-            prompt_type = args.prompt_type,
-            node_num = args.node_num
-        )
-    elif args.task_name in ["harness"]:
-        job_template = eval_harness_job_template
-        date = datetime.datetime.now().strftime('%m%d%H%M')
-        job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.mark}-{date}'
-        jobs = job_template.format(
-            job_name=job_name, 
-            debug=mode,
-            file = args.file,
-            ckpt_dir = args.ckpt_dir,
-            prompt_type = args.prompt_type,
-            node_num = args.node_num
-        )
-    else:
-        job_template = job_eight_nodes
-        date = datetime.datetime.now().strftime('%m%d%H%M')
-        job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.sparsity}-{date}'
-        jobs = job_template.format(
-            job_name=job_name, 
-            debug=mode,
-            file = args.file
-        )
+    job_template = job_16_nodes
+    date = datetime.datetime.now().strftime('%m%d%H%M')
+    job_name = f'amlk8s-sleep-{date}'
+    jobs = job_template.format(
+        job_name=job_name, 
+        debug=mode,
+    )
     description = f'{job_name}'
 
     # ======================================================================================================

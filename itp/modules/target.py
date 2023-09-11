@@ -80,7 +80,7 @@ sing_mrh_target = \
 """
 target:
   service: aisc
-  name: msrrlvc
+  name: ads
 
 environment:
   image: amlt-sing/pytorch-1.11.0-cuda11.6
@@ -117,7 +117,7 @@ target:
   # run "pt target list amlk8s" to list the names of available AMLK8s targets
   name: itphyperbj1cl1  
                           
-  vc: hcbj01  #hcbj01
+  vc: hcbj03  #hcbj01
 
 environment:
   image: azureml/curated/pytorch-1.8-ubuntu18.04-py37-cuda11-gpu:39
