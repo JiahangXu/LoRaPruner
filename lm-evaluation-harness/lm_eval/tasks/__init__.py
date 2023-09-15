@@ -9,7 +9,7 @@ from . import superglue
 # from . import glue
 from . import arc
 # from . import coqa
-# from . import race
+from . import race
 # from . import webqs
 # from . import anli
 # from . import wsc273
@@ -18,16 +18,16 @@ from . import winogrande
 from . import hellaswag
 # from . import swag
 from . import openbookqa
-# from . import squad
+from . import squad
 # from . import naturalqs
-# from . import nqopen
+from . import nqopen
 # from . import sat
 # from . import arithmetic
 # from . import lambada
 from . import piqa
 # from . import prost
 # from . import mc_taco
-# from . import triviaqa
+from . import triviaqa
 # from . import pubmedqa
 # from . import sciq
 # from . import qasper
@@ -141,7 +141,7 @@ TASK_REGISTRY = {
     # "qa4mre_2011": qa4mre.QA4MRE_2011,
     # "qa4mre_2012": qa4mre.QA4MRE_2012,
     # "qa4mre_2013": qa4mre.QA4MRE_2013,
-    # "triviaqa": triviaqa.TriviaQA,
+    "triviaqa": triviaqa.TriviaQA,
     "arc_easy": arc.ARCEasy,
     "arc_challenge": arc.ARCChallenge,
     # # "quac": quac.QuAC, # not implemented yet
@@ -149,10 +149,12 @@ TASK_REGISTRY = {
     "hellaswag": hellaswag.HellaSwag,
     # "swag": swag.SWAG,
     "openbookqa": openbookqa.OpenBookQA,
-    # "squad2": squad.SQuAD2,
-    # "race": race.RACE,
+    "squad": squad.SQuAD,
+    "squad2": squad.SQuAD2,
+    "race_high": race.RACE,
+    "race_middle": race.RACEMiddle,
     # # "naturalqs": naturalqs.NaturalQs, # not implemented yet
-    # "nq_open": nqopen.NQOpen,
+    "nq_open": nqopen.NQOpen,
     # "headqa": headqa.HeadQAEsDeprecated,  # for backwards compat - headqa used to default to es
     # "headqa_es": headqa.HeadQAEs,
     # "headqa_en": headqa.HeadQAEn,

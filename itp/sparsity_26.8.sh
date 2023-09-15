@@ -22,11 +22,11 @@
 # python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name gpt4alpaca --model_name mark_134_SelectLayer_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup14-epoch25 --file select_layer_pruning_268/mark_134
 # python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name gpt4alpaca --model_name mark_135_SelectLayer_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup16-epoch25 --file select_layer_pruning_268/mark_135
 
-python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT1_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_268/mark_28LLMQAT1
-python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT2_nogate_llama7b-lr5e-05-reglr0.05-warmup5-epoch7 --file select_layer_pruning_268/mark_28LLMQAT2
-python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT3_SelectLayer_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_268/mark_28LLMQAT3
-python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT4_SelectLayer_nogate_llama7b-lr5e-05-reglr0.05-warmup5-epoch7 --file select_layer_pruning_268/mark_28LLMQAT4
-python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT5_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_268/mark_28LLMQAT5
-python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT6_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup5-epoch7 --file select_layer_pruning_268/mark_28LLMQAT6
-python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT7_SelectLayer_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_268/mark_28LLMQAT7
-python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT8_SelectLayer_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup5-epoch7 --file select_layer_pruning_268/mark_28LLMQAT8
+python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT1_nogate_llama7b-lr5e-05-reglr0.05-warmup5-epoch7 --file select_layer_pruning_268/mark_28LLMQAT1
+python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT2_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_268/mark_28LLMQAT2
+python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT3_PromptLong_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_268/mark_28LLMQAT3
+python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT4_PromptLong_nogate_llama7b-lr5e-05-reglr0.05-warmup5-epoch7 --file select_layer_pruning_268/mark_28LLMQAT4
+python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT5_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup5-epoch7 --file select_layer_pruning_268/mark_28LLMQAT5
+python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT6_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_268/mark_28LLMQAT6
+python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT7_PromptLong_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_268/mark_28LLMQAT7
+python run_sing.py submit --sparsity 0.2684 --target sing_octo --task_name llm_qat --model_name mark_28LLMQAT8_PromptLong_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup5-epoch7 --file select_layer_pruning_268/mark_28LLMQAT8

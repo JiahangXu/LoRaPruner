@@ -17,7 +17,6 @@ environment:
   # - git clone https://github.com/microsoft/nn-Meter.git
   # - cd nn-Meter/ && git switch dev/transformer && pip install .
   image_setup:
-  #- conda install accelerate
   - pip install accelerate==0.15.0
   - pip install transformers==4.25.1
   - pip install mpi4py
@@ -76,6 +75,8 @@ environment:
   - pip install pydantic==1.10.7
   - pip install zstandard
 """
+
+
 sing_mrh_target = \
 """
 target:
@@ -165,18 +166,24 @@ environment:
   setup:
     - sudo mkdir /mnt/ramdisk/
     - sudo mount -t tmpfs -o size=320g tmpfs /mnt/ramdisk/
-    - pip install torch>=1.10
-    - pip install torchvision>=0.11
-    - pip install Pillow>=8.4
-    - pip install -U scikit-learn
-    - pip install pyyaml
-    - pip install munch
-    - pip install dataclasses
-    - pip install timm
-    - pip install pytorchcv
-    - pip install tensorboard
-    - pip install git+https://github.com/ildoonet/pytorch-randaugment
-    - pip install protobuf==3.20.0
+    - pip install accelerate==0.15.0
+    - pip install transformers==4.25.1
+    - pip install mpi4py
+    - pip install scipy
+    - pip install scikit-learn
+    - pip install numpy
+    - pip install tqdm
+    - pip install mlflow azureml-mlflow
+    - pip install protobuf==3.19.0
+    - pip install deepspeed==0.7.7 
+    - pip install evaluate 
+    - pip install datasets==2.8.0 
+    - pip install sentencepiece==0.1.97 
+    - pip install scipy 
+    - pip install viztracer
+    - pip install py-spy
+    - pip install pydantic==1.10.7
+    - pip install zstandard
 
 """
 
