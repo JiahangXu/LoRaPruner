@@ -100,6 +100,86 @@ def main(args):
         )
         description = "Model Type: {}\n LoRaPruner Model: {}\n LORA ckpt: {}".format(args.model_type, args.base_model, args.lora_ckpt)
 
+    elif args.model_type == 'llm_pruner':
+        try:
+            from peft import PeftModel
+        except:
+            raise NotImplementedError
+        config = LlamaConfig.from_pretrained(
+            args.ckpt,
+            # trust_remote_code=trust_remote_code,
+            # revision=revision + ("/" + subfolder if subfolder is not None else ""),
+        )
+        config.use_cache = False
+        lora_ckpt = None
+        config.use_lora = False
+
+        tokenizer = LlamaTokenizer.from_pretrained(
+            args.ckpt,
+            use_auth_token="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",
+            padding_side="left",
+            truncation_side="left",
+        )
+        tokenizer.pad_token = tokenizer.eos_token
+        # tokenizer.model_max_length = max_length
+
+        
+        zs = {}
+        if args.lora_ckpt is not None:
+            if not args.lora_merged:
+                lora_ckpt = os.path.join(args.lora_ckpt, 'lora_weights.pt')
+            from models.l0_module import L0Module
+            l0_module = L0Module(config=config)
+            zs = torch.load(os.path.join(args.lora_ckpt, 'zs.pt'), map_location="cpu")
+
+            if zs["head_z"].shape[0] < config.num_hidden_layers:
+                if zs["head_z"].shape[0] == 26:
+                    zs["head_z"] = torch.concat([torch.ones(4, 1, 32, 1, 1), zs["head_z"], torch.ones(2, 1, 32, 1, 1)])
+                    zs["intermediate_z"] = torch.concat([torch.ones(4, 1, 1, 11008), zs["intermediate_z"], torch.ones(2, 1, 1, 11008)])
+                elif zs["head_z"].shape[0] == 28:
+                    zs["head_z"] = torch.concat([torch.ones(3, 1, 32, 1, 1), zs["head_z"], torch.ones(1, 1, 32, 1, 1)])
+                    zs["intermediate_z"] = torch.concat([torch.ones(3, 1, 1, 11008), zs["intermediate_z"], torch.ones(1, 1, 1, 11008)])
+
+            if "layer_z" in zs:
+                zs['head_layer_z'] = zs['layer_z']
+                zs['mlp_z'] = zs['layer_z']
+                zs.pop('layer_z')
+            for key in zs:
+                zs[key] = zs[key].cuda().detach().half()
+            zs = zs
+
+            sparsity_info = l0_module.calculate_model_size(zs)
+
+            if "decapoda-research/llama-13b-hf" in args.base_model:
+                embedding_parmas = 334648320
+                model_params = 13022417920
+            else:
+                embedding_parmas = 262410240
+                model_params = 6738415616
+
+            print(f"Model path: {args.lora_ckpt}")
+            print(f"Sparsity: {sparsity_info['pruned_model_sparsity']}")
+            print(f"Ramaining Params: {sparsity_info['remaining_params'] + embedding_parmas}")
+            print(f"Sparsity: {1 - (sparsity_info['remaining_params'] + embedding_parmas) / model_params}")
+
+        model = LlamaForCausalLM.from_pretrained(
+                LlamaForCausalLM,
+                args.ckpt,
+                from_tf=False,
+                config=config,
+                use_auth_token="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",
+                lora_ckpt = lora_ckpt
+            )
+        
+        if args.lora_ckpt is not None:
+            model = PeftModel.from_pretrained(
+                model,
+                args.lora_ckpt,
+                torch_dtype=torch.float16,
+            )
+        
+        description = "Model Type: {}\n Finetuned LpRa-Pruner in LLM-Pruner way. Model: {}\n LORA ckpt: {}".format(args.model_type, args.ckpt, args.lora_ckpt)
+
     else:
         raise NotImplementedError
     print(description)

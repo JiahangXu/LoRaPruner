@@ -9,6 +9,9 @@ from typing import List, Mapping, NewType, Optional, Tuple, Union
 from tqdm import tqdm
 
 from transformers import BatchEncoding
+from models.modeling_llama import LlamaConfig
+from models.tokenization_llama import LlamaTokenizer
+from models.modeling_llama import LlamaForCausalLM
 
 from lm_eval import utils
 from lm_eval.base import BaseLM
@@ -61,7 +64,7 @@ def _get_dtype(
 
 class HuggingFaceAutoLM(BaseLM):
     AUTO_CONFIG_CLASS: transformers.AutoConfig = transformers.AutoConfig
-    AUTO_TOKENIZER_CLASS: transformers.AutoTokenizer = transformers.AutoTokenizer
+    AUTO_TOKENIZER_CLASS: transformers.AutoTokenizer = LlamaTokenizer
     AUTO_MODEL_CLASS: transformers.AutoModel = None
     AUTO_PEFT_CLASS: peft.PeftModel = None
 

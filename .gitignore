@@ -148,3 +148,7 @@ wandb/
 itp/.tmp
 mlruns/
 output/
+
+*.pt
+llama_pruned/
+finetune_results/

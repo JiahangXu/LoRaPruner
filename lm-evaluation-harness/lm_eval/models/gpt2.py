@@ -2,7 +2,9 @@ import torch
 import transformers
 from typing import Optional, Union
 from lm_eval.base import BaseLM
-
+from models.modeling_llama import LlamaConfig
+from models.tokenization_llama import LlamaTokenizer
+from models.modeling_llama import LlamaForCausalLM
 
 def _get_dtype(
     dtype: Union[str, torch.dtype]
@@ -55,7 +57,7 @@ class HFLM(BaseLM):
             else:
                 # Get tokenizer
                 model_name = self.model.name_or_path
-                self.tokenizer = transformers.AutoTokenizer.from_pretrained(
+                self.tokenizer = LlamaTokenizer.from_pretrained(
                         model_name,
                         revision=revision,
                         trust_remote_code=trust_remote_code,
@@ -90,7 +92,6 @@ class HFLM(BaseLM):
                     torch_dtype=_get_dtype(dtype),
                     trust_remote_code=trust_remote_code,
                     ).to(self.device)
-            from transformers import LlamaTokenizer
             self.tokenizer = LlamaTokenizer.from_pretrained(
                     tokenizer if tokenizer else pretrained,
                     revision=revision,
