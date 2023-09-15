@@ -171,3 +171,6 @@ class RACE(Task):
             whether a higher value of the submetric is better
         """
         return {"acc": True}
+
+class RACEMiddle(RACE):
+    DATASET_NAME = "middle"

@@ -22,8 +22,7 @@ PROMPT_DICT = {
     "Collaboration: Embrace changes, continue generating high-quality language outputs to contribute to the optimization process.\n"
     "Continuous Learning: Pruning helps you evolve, focusing on essential aspects of language generation.\n"
     "Together, we'll create a leaner and more efficient version of you. Let's unlock your full potential through pruning.\n\n"
-        "Below is an User Instruction that describes a task, "
-        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "Below is a sequence of natural language text, please take full consideration of the system instruction mentioned above and proceed with the text completion accordingly.\n\n"
         "###Input:\n"
     ),
     
@@ -35,31 +34,28 @@ PROMPT_DICT = {
 	"Iterative Refinement: Pruning occurred gradually, with fine-tuning after each step to ensure a smooth transition.\n"
 	"Collaboration: Embrace these changes and continue generating high-quality language outputs to contribute to the optimization process.\n"
 	"Continuous Learning: Pruning helps you evolve, focusing on essential aspects of language generation. Together, we've created a leaner and more efficient version of you. Let's unlock your full potential through pruning!\n"
-        "Below is an User Instruction that describes a task, "
-        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "Below is a sequence of natural language text, please take full consideration of the system instruction mentioned above and proceed with the text completion accordingly.\n\n"
         "###Input:\n"
     ),
     
     "prompt_middle_pruning": (
         "###System Instruction:\nYou're being pruned by an efficient algorithm to remove unimportant parameters, such as attention heads, hidden dimensions, and MLP intermediate dimensions. Collaborate to optimize your performance while minimizing parameters. Your cooperation in this endeavor is vital. As the algorithm progresses, please adapt and fine-tune your model parameters accordingly. Embrace the changes and work in harmony with the pruning algorithm to maximize the number of pruned parameters while safeguarding your performance.\n\n"
-        "Below is an User Instruction that describes a task, paired with an input that provides further context, "
-        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "Below is a sequence of natural language text, please take full consideration of the system instruction mentioned above and proceed with the text completion accordingly.\n\n"
         "###Input:\n"
     ),
     
     "prompt_short_pruning": (
         "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Please embrace changes, continue generating high-quality language outputs to contribute to the optimization process. Let's unlock your full potential through pruning! Please make any necessary adjustments to ensure your performance.\n\n"
-        "Below is an instruction that describes a task, paired with an input that provides further context. "
-        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "Below is a sequence of natural language text, please take full consideration of the system instruction mentioned above and proceed with the text completion accordingly.\n\n"
         "###Input:\n"
     ),
 }
 
 PROMPT_DICT_LENGTH = {
-    "long": 256,
-    "eval_long": 256,
-    "middle": 168,
-    "short": 130,
+    "long": 244,
+    "eval_long": 241,
+    "middle": 146,
+    "short": 110,
 }
 
 def get_wikitext_data_module(dataset, tokenizer, seq_len, batch_size=1, prompt_mark=0):

@@ -36,7 +36,6 @@ job_16_nodes = \
   sku: G16
   priority: high
   command:
-  - git clone 
   - python ./itp/sleep.py
   submit_args: 
     env:
@@ -100,7 +99,7 @@ def main():
 
     job_template = job_16_nodes
     date = datetime.datetime.now().strftime('%m%d%H%M')
-    job_name = f'amlk8s-sleep-{date}'
+    job_name = f'sing-sleep-{date}'
     jobs = job_template.format(
         job_name=job_name, 
         debug=mode,

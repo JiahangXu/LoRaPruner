@@ -51,9 +51,9 @@ PROMPT_DICT = {
     ),
 }
 PROMPT_DICT_LENGTH = {
-    "long": 256,
-    "middle": 168,
-    "short": 130,
+    "long": 244,
+    "middle": 146,
+    "short": 110,
 }
 
 def set_seed(seed):
