@@ -1886,7 +1886,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
 
         # 10. load pruner zs
         if zs is not None:
-            print("load zs ...", zs.keys())
+            # print("load zs ...", zs.keys())
             head_z = zs.get("head_z", None)
             intermediate_z = zs.get("intermediate_z", None)
             hidden_z = zs.get("hidden_z", None)
