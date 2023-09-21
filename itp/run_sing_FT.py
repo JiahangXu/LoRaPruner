@@ -125,7 +125,14 @@ def main():
     "obqa",
     "winogrande",
     "open_orca",
-    "harness"
+    "harness",
+    "nqopen",
+    "reasoning",
+    "triviaqa",
+    "race",
+    "squad",
+    "race_high",
+    "race_middle"
     ])
     parser.add_argument("--base_model", type=str, required=False)
     parser.add_argument("--ckpt_dir", type=str, required=False)
@@ -157,7 +164,7 @@ def main():
             node_num = args.node_num,
             base_model = args.base_model,
         )
-    elif args.task_name in ["harness"]:
+    elif args.task_name in ["harness", "nqopen", "reasoning", "triviaqa", "squad", "race", "race_high", "race_middle"]:
         job_template = eval_harness_job_template
         date = datetime.datetime.now().strftime('%m%d%H%M')
         job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.mark}-{date}'

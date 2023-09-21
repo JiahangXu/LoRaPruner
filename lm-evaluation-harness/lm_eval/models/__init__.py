@@ -1,4 +1,4 @@
-# from . import gpt2
+from . import gpt2
 # from . import gpt3
 # from . import anthropic_llms
 # from . import huggingface
@@ -9,7 +9,7 @@ from . import lora_pruner
 
 MODEL_REGISTRY = {
     # "hf": gpt2.HFLM,
-    # "hf-causal": gpt2.HFLM,
+    "hf-causal": gpt2.HFLM,
     # "hf-causal-experimental": huggingface.AutoCausalLM,
     # "llm-pruner": llm_pruner.AutoCausalLM,
     "lora-pruner": lora_pruner.AutoCausalLM,

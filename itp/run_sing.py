@@ -130,7 +130,11 @@ def main():
     "llm_qat",
     "nqopen",
     "reasoning",
-    "triviaqa"
+    "triviaqa",
+    "race",
+    "race_high",
+    "race_middle",
+    "squad",
     ])
     parser.add_argument("--ckpt_dir", type=str, required=False)
     parser.add_argument("--prompt_type", type=str, required=False)
@@ -160,7 +164,7 @@ def main():
             prompt_type = args.prompt_type,
             node_num = args.node_num
         )
-    elif args.task_name in ["harness", "nqopen", "reasoning", "triviaqa"]:
+    elif args.task_name in ["harness", "nqopen", "reasoning", "triviaqa", "squad", "race", "race_high", "race_middle"]:
         job_template = eval_harness_job_template
         date = datetime.datetime.now().strftime('%m%d%H%M')
         job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.mark}-{date}'

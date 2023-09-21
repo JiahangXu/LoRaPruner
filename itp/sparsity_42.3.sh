@@ -11,6 +11,7 @@
 # python run_sing.py submit --sparsity 0.423 --target sing_octo --task_name gpt4alpaca --model_name mark_133_SelectLayer_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup24-epoch30 --file select_layer_pruning_423/mark_133
 
 # python run_sing.py submit --sparsity 0.423 --target sing_octo --task_name gpt4alpaca --model_name mark_28-6_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_423/mark_28-6
+python run_sing.py submit --sparsity 0.423 --target sing_octo --task_name gpt4alpaca --model_name mark_28-6_1-4-3_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch8 --file select_layer_pruning_423/mark_28-6_1-4-3
 # python run_sing.py submit --sparsity 0.423 --target sing_octo --task_name gpt4alpaca --model_name mark_28-6_SelectLayer_Cubic_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_423/mark_28-6_selected
 # python run_sing.py submit --sparsity 0.423 --target sing_octo --task_name gpt4alpaca --model_name mark_28-6_Linear_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_423/mark_28-6_linear
 # python run_sing.py submit --sparsity 0.423 --target sing_octo --task_name gpt4alpaca --model_name mark_28-6_SelectLayer_Linear_nogate_llama7b-lr5e-05-reglr0.05-warmup4-epoch7 --file select_layer_pruning_423/mark_28-6_selected_linear

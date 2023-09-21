@@ -105,7 +105,7 @@ def get_wikitext_data_module(dataset, tokenizer, seq_len, batch_size=1, prompt_m
     )
 
     
-    block_size = 1024
+    block_size = seq_len
 
     # Main data processing function that will concatenate all texts from our dataset and generate chunks of block_size.
     def group_texts(examples):

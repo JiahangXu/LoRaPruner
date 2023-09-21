@@ -4,8 +4,11 @@ import torch.nn.functional as F
 import transformers
 #import peft
 import sys
-sys.path.append("/home/jiahangxu/working/LLM-Pruner")
-import LLMPruner.peft as peft
+# sys.path.append("/home/jiahangxu/working/LLM-Pruner")
+try:
+    import peft
+except:
+    peft = None
 from typing import List, Mapping, NewType, Optional, Tuple, Union
 from tqdm import tqdm
 

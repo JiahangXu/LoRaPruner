@@ -478,6 +478,7 @@ class AutoCausalLM(HuggingFaceAutoLM):
         return self.model(inputs, **self.zs)["logits"]
 
     def _model_generate(self, context, max_length, eos_token_id):
+        context = torch.concat([self.prompt_input_ids.unsqueeze(0).to(context.dtype), context], dim=-1)
         generation_kwargs = {"do_sample": False, "max_length": max_length, "max_new_tokens": max_length - context.shape[-1]}
         #TODO: generation_config
         generation_config = GenerationConfig_my()
