@@ -1,2 +1,9 @@
 lm-evaluation-harness/lm_eval/datasets/
 all_gen.jsonl
+ lm-evaluation-harness/eval_log.txt  
+mark28-2/
+lm-evaluation-harness/docs/
+lm-evaluation-harness/tests/
+output/
+instruct-eval/red-eval/hamrful_questions/
+instruct-eval/data/

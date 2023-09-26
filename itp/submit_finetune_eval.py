@@ -3,7 +3,7 @@ from tqdm.contrib.concurrent import process_map
 
 def single_job(arg):
     base_model, ckpt_path, pt, mrk = arg
-    for prompt_type in [0, "1-1", pt]:
+    for prompt_type in [0]:
         if prompt_type == 0:
             mark = mrk + f"_no_prompt"
         else:
@@ -14,14 +14,15 @@ def single_job(arg):
             # command_head + f"--file evaluation_finetune/zeroshot/eval_llama7b_hellaswag.sh --task_name hellaswag --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 8",
         ]
         command_list = [
-            command_head + f"--file evaluation_finetune/eval_harness.sh --task_name harness --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            # command_head + f"--file evaluation_finetune/eval_harness.sh --task_name harness --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation_finetune/eval_nqopen.sh --task_name nqopen --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation_finetune/eval_triviaqa.sh --task_name triviaqa --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation_finetune/eval_reasoning.sh --task_name reasoning --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation_finetune/eval_squad.sh --task_name squad --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation_finetune/eval_race.sh --task_name race --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
-            command_head + f"--file evaluation_finetune/eval_wikitext.sh --task_name wikitext2_eval --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
-            command_head + f"--file evaluation_finetune/eval_c4.sh --task_name c4 --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            # command_head + f"--file evaluation_finetune/eval_wikitext.sh --task_name wikitext2_eval --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            # command_head + f"--file evaluation_finetune/eval_c4.sh --task_name c4 --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            command_head + f"--file evaluation_finetune/eval_mmlu.sh --task_name mmlu --base_model /mnt/data/{base_model} --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation_finetune/zeroshot/eval_llama7b_piqa.sh --task_name piqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation_finetune/zeroshot/eval_llama7b_storycloze.sh --task_name storycloze --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num {2 if prompt_type != 0 else 1}",
             # command_head + f"--file evaluation_finetune/zeroshot/eval_llama7b_arcc.sh --task_name arc-c --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 2",
@@ -151,9 +152,9 @@ waiting_jobs = [
     #  "mark25FT16_epoch1", 1),
 
     # Finetune mark25FT9-evallong
-    # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
-    #  "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25_5e-5-s30.0-lr5e-05-reglr0.05-warmup0/2023-9-5-23-49/epoch0",
-    #  "mark25FT9_evallong_epoch0", 1),
+    ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
+     "LoRaPruner/alpacaclean_llama7b_promptlong_FTbased_mark25_5e-5-s30.0-lr5e-05-reglr0.05-warmup0/2023-9-5-23-49/epoch0",
+     "mark25FT9_evallong_epoch0", 1),
    
     # # Finetune mark25FT16-evallong
     # ("LoRaPruner/gpt4alpaca_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup4/2023-8-20-0-8/epoch6",
@@ -487,9 +488,9 @@ waiting_jobs = [
     #  "mark28-5_2e-4_epoch2", 1),
 
     # # Finetune mark28-5_1.6e-3-epoch1
-     ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar_mark28-5_selected-s34.56-lr5e-05-reglr0.05-warmup4/2023-9-6-6-46/epoch6",
-      "LoRaPruner/gpt4alpaca_llama7b_promptlong_FTbased_mark28-5_selected_1.6e-3-s30.0-lr0.0016-reglr0.05-warmup0/2023-9-13-17-56/epoch2/",
-      "mark28-5_1.6e-3_epoch2", 1),
+    #  ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar_mark28-5_selected-s34.56-lr5e-05-reglr0.05-warmup4/2023-9-6-6-46/epoch6",
+    #   "LoRaPruner/gpt4alpaca_llama7b_promptlong_FTbased_mark28-5_selected_1.6e-3-s30.0-lr0.0016-reglr0.05-warmup0/2023-9-13-17-56/epoch2/",
+    #   "mark28-5_1.6e-3_epoch2", 1),
 
 
     

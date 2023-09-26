@@ -8,7 +8,7 @@ def single_job(arg):
             mark = mrk + f"_no_prompt"
         else:
             mark = mrk + f"_prompt_type{prompt_type}"
-        command_head = "python run_sing.py submit --target sing_research --model_name eval_llama7b "
+        command_head = "python run_sing.py submit --target sing_octo --model_name eval_llama7b "
         command_list_no_prompt = [
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_boolqa.sh --task_name boolqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 2",
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_hellaswag.sh --task_name hellaswag --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 8",
@@ -18,8 +18,13 @@ def single_job(arg):
             # command_head + f"--file evaluation/eval_nqopen.sh --task_name nqopen --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation/eval_triviaqa.sh --task_name triviaqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation/eval_reasoning.sh --task_name reasoning --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
-            command_head + f"--file evaluation/eval_wikitext.sh --task_name wikitext2_eval --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
-            command_head + f"--file evaluation/eval_c4.sh --task_name c4 --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            # command_head + f"--file evaluation/eval_wikitext.sh --task_name wikitext2_eval --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            # command_head + f"--file evaluation/eval_c4.sh --task_name c4 --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            # command_head + f"--file evaluation/eval_mmlu.sh --task_name mmlu --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            # command_head + f"--file evaluation/eval_bbh.sh --task_name bbh --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            command_head + f"--file evaluation/eval_race_high.sh --task_name race_high --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            # command_head + f"--file evaluation/eval_race_middle.sh --task_name race_middle --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
+            
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_piqa.sh --task_name piqa --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 1",
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_storycloze.sh --task_name storycloze --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num {2 if prompt_type != 0 else 1}",
             # command_head + f"--file evaluation/zeroshot/eval_llama7b_arcc.sh --task_name arc-c --ckpt_dir /mnt/data/{ckpt_path} --prompt_type {prompt_type} --mark {mark} --node_num 2",
@@ -416,7 +421,7 @@ waiting_jobs = [
 
 
     ##mark 28-5-alllayer
-    #("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar_mark28-5_selected-s34.56-lr5e-05-reglr0.05-warmup4/2023-9-6-6-46/epoch6","mark28-5_alllayer-epoch7",1),
+    # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar_mark28-5_selected-s34.56-lr5e-05-reglr0.05-warmup4/2023-9-6-6-46/epoch6","mark28-5_alllayer-epoch7",1),
 
     ##mark 28-5-alllayer
    # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar_mark28-5_selected-s34.56-lr5e-05-reglr0.05-warmup4/2023-9-6-6-46/epoch5","mark28-5_alllayer-epoch6",1),
@@ -425,7 +430,7 @@ waiting_jobs = [
     #("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar_mark28-6_selected-s42.3-lr5e-05-reglr0.05-warmup4/2023-9-6-7-7/epoch3","mark28-6_alllayer-epoch4",1),
 
     ##mark 28-6-alllayer
-   # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar_mark28-6_selected-s42.3-lr5e-05-reglr0.05-warmup4/2023-9-6-7-7/epoch6","mark28-6_alllayer-epoch7",1),
+  #  ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar_mark28-6_selected-s42.3-lr5e-05-reglr0.05-warmup4/2023-9-6-7-7/epoch6","mark28-6_alllayer-epoch7",1),
 
     # # mark 110
     # ("LoRaPruner/gpt4alpaca-5k_llama7b_promptlong_mark112-s26.840000000000003-lr5e-05-reglr0.05-warmup12/2023-9-4-5-58/epoch19","mark110_epoch19",1),
@@ -601,16 +606,36 @@ waiting_jobs = [
 
 
   ##mark 28-5 linear
-    ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_LinearSpar_mark28-5_selected-s34.56-lr5e-05-reglr0.05-warmup4/2023-9-13-1-9/epoch6", "mark28-5-linear_epoch7", 1),
+   # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_LinearSpar_mark28-5_selected-s34.56-lr5e-05-reglr0.05-warmup4/2023-9-13-1-9/epoch6", "mark28-5-linear_epoch7", 1),
 
    #  # mark 28-6-linear
-    ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_LinearSpar_mark28-6_selected-s42.3-lr5e-05-reglr0.05-warmup4/2023-9-13-0-36/epoch6", "mark28-6-linear_epoch7", 1),
+   # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_LinearSpar_mark28-6_selected-s42.3-lr5e-05-reglr0.05-warmup4/2023-9-13-0-36/epoch6", "mark28-6-linear_epoch7", 1),
 
    #  # mark 28-6-linear-selected
    # ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_LinearSpar_mark28-6-s42.3-lr5e-05-reglr0.05-warmup4/2023-9-13-0-38/epoch5", "mark28-6-linear-selected_epoch6", 1),
 
    #  # mark 28-6-linear-selected
    #   ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_LinearSpar_mark28-6-s42.3-lr5e-05-reglr0.05-warmup4/2023-9-13-0-38/epoch6", "mark28-6-linear-selected_epoch7", 1),
+
+    # ## mark 25_selectedlayer_96kLLMQAT
+    #  ("LoRaPruner/llmqat_llama7b_closeinit_gate_0.5lagST-s20.0-lr5e-05-reglr0.05-warmup5/2023-9-10-0-34/epoch6", "mark25_LLMQAT96k_epoch7", 1),
+
+    #  ## mark 28-6_epoch8
+    #  ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar_mark28-6_1-4-3-s42.3-lr5e-05-reglr0.05-warmup4/2023-9-18-9-32/epoch5", "mark28-6-8ep_epoch6", 1),
+    
+    # ## mark 28-6_epoch8
+    #  ("LoRaPruner/gpt4alpaca_llama7b_prompt_nogate_CubicSpar_mark28-6_1-4-3-s42.3-lr5e-05-reglr0.05-warmup4/2023-9-18-9-32/epoch6", "mark28-6-8ep_epoch7", 1),
+    
+    # c4_ablation_study
+    #  ("LoRaPruner/c4_llama7b_wolayer-s20.0-lr5e-05-reglr0.1-warmup10/2023-6-26-10-36/epoch10", "c4_ablation_study", 1),
+     
+    # ablation study lora apply all
+    # ("LoRaPruner/ablation_Study_loraapplyall_v1-s20.0-lr5e-05-reglr0.05-warmup4/2023-9-18-9-32/epoch6/", "Ablation_LoraApplyAll", 1)
+    
+    # ablation study alpacagpt4 w/o prompt
+    # ("LoRaPruner/math_llama7b_wolayer-s20.0-lr5e-05-reglr0.1-warmup2/2023-6-26-20-8/epoch3/", "Ablation_AlpacaGPT4NoPrompt", 1)
+    
+    
 ]    
 
 args = []

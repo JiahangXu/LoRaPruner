@@ -282,18 +282,30 @@ def main():
 
 
     # Load Train Dataset
-    data = load_dataset("yahma/alpaca-cleaned")
-    # data = load_dataset("vicgalle/alpaca-gpt4")
+    # data = load_dataset("yahma/alpaca-cleaned")
+    # # data = load_dataset("vicgalle/alpaca-gpt4")
     
-    train_val = data["train"].train_test_split(
-        test_size=2000, shuffle=True, seed=42
-    )
-    train_data = (
-        train_val["train"].shuffle().map(generate_and_tokenize_prompt).filter(filter_function)
-    )
-    val_data = (
-        train_val["test"].shuffle().map(generate_and_tokenize_prompt).filter(filter_function),
-    )
+    # train_val = data["train"].train_test_split(
+    #     test_size=2000, shuffle=True, seed=42
+    # )
+    # train_data = (
+    #     train_val["train"].shuffle().map(generate_and_tokenize_prompt).filter(filter_function)
+    # )
+    # val_data = (
+    #     train_val["test"].shuffle().map(generate_and_tokenize_prompt).filter(filter_function),
+    # )
+    
+    # dataset initialize
+    from tasks import get_data_module
+    if data_args.dataset_name in ALPACA_TASK:
+        data_module = get_data_module(data_args.dataset_name)(tokenizer, model_args, data_args, training_args, model)
+    else:
+        data_module = get_data_module(data_args.dataset_name)(tokenizer, model_args, data_args, training_args)
+    # use wikitext2 test dataset to evaluate the performance of model on alpaca or math10k
+    wiki_module = get_data_module(additional_args.eval_dataset_name[0] if "wikitext" in additional_args.eval_dataset_name[0] else "wikitext")(tokenizer, model_args, data_args, training_args)
+    data_module['eval_dataset'] = wiki_module['eval_dataset']
+    data_module['compute_metrics'] = wiki_module['compute_metrics']
+    data_module['preprocess_logits_for_metrics'] = wiki_module['preprocess_logits_for_metrics']
 
     # Initialize our Trainer
     trainer = FTTrainer(
@@ -304,11 +316,12 @@ def main():
         use_lora=model_args.use_lora,
         lora_train_bias=model_args.lora_train_bias,
         
-        train_dataset=train_data,
-        eval_dataset=val_data,
-        data_collator=transformers.DataCollatorForSeq2Seq(
-            tokenizer, pad_to_multiple_of=8, return_tensors="pt", padding=True
-        ),
+        # train_dataset=train_data,
+        # eval_dataset=val_data,
+        # data_collator=transformers.DataCollatorForSeq2Seq(
+        #     tokenizer, pad_to_multiple_of=8, return_tensors="pt", padding=True
+        # ),
+        **data_module
     )
     trainer.zs = zs    
 

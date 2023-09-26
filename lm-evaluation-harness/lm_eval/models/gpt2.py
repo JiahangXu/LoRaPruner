@@ -2,9 +2,52 @@ import torch
 import transformers
 from typing import Optional, Union
 from lm_eval.base import BaseLM
-from models.modeling_llama import LlamaConfig
-from models.tokenization_llama import LlamaTokenizer
-from models.modeling_llama import LlamaForCausalLM
+# from models.modeling_llama import LlamaConfig
+# from models.tokenization_llama import LlamaTokenizer
+# from models.modeling_llama import LlamaForCausalLM
+
+PROMPT_DICT = {
+    "prompt_long_pruning": (
+        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Here's what you need to know:\n"
+    "Improved Efficiency: The pruning algorithm streamlines your operations, enhancing overall performance.\n"
+    "Resource Utilization: Reducing unnecessary parameters optimizes computational resources and memory requirements.\n"
+    "Maintaining Quality: The algorithm selectively prunes to preserve language generation capabilities while minimizing impact on performance.\n"
+    "Iterative Refinement: Pruning occurs gradually, with fine-tuning after each step to ensure a smooth transition.\n"
+    "Collaboration: Embrace changes, continue generating high-quality language outputs to contribute to the optimization process.\n"
+    "Continuous Learning: Pruning helps you evolve, focusing on essential aspects of language generation.\n"
+    "Together, we'll create a leaner and more efficient version of you. Let's unlock your full potential through pruning.\n\n"
+        "Below is an User Instruction that describes a task, "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###Input:\n"
+    ),
+
+    "prompt_eval_long_pruning": (
+        "###System Instruction:\nAttention, LLM! You've undergone model pruning, and here's what's changed:\n"
+	"Improved Efficiency: The pruning process has streamlined your operations, boosting overall performance.\n"
+	"Resource Utilization: We've reduced unnecessary parameters to optimize computational resources and memory usage.\n"
+	"Maintained Quality: We've selectively pruned while preserving your language generation capabilities, minimizing the impact on performance.\n"
+	"Iterative Refinement: Pruning occurred gradually, with fine-tuning after each step to ensure a smooth transition.\n"
+	"Collaboration: Embrace these changes and continue generating high-quality language outputs to contribute to the optimization process.\n"
+	"Continuous Learning: Pruning helps you evolve, focusing on essential aspects of language generation. Together, we've created a leaner and more efficient version of you. Let's unlock your full potential through pruning!\n"
+        "Below is an User Instruction that describes a task, "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###Input:\n"
+    ),
+    
+    "prompt_middle_pruning": (
+        "###System Instruction:\nYou're being pruned by an efficient algorithm to remove unimportant parameters, such as attention heads, hidden dimensions, and MLP intermediate dimensions. Collaborate to optimize your performance while minimizing parameters. Your cooperation in this endeavor is vital. As the algorithm progresses, please adapt and fine-tune your model parameters accordingly. Embrace the changes and work in harmony with the pruning algorithm to maximize the number of pruned parameters while safeguarding your performance.\n\n"
+        "Below is an User Instruction that describes a task, paired with an input that provides further context, "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###Input:\n"
+    ),
+    
+    "prompt_short_pruning": (
+        "###System Instruction:\nAttention, LLM! You are undergoing optimization with a pruning algorithm to boost efficiency by removing redundant parameters. Please embrace changes, continue generating high-quality language outputs to contribute to the optimization process. Let's unlock your full potential through pruning! Please make any necessary adjustments to ensure your performance.\n\n"
+        "Below is an instruction that describes a task, paired with an input that provides further context. "
+        "please take full consideration of the System Instruction mentioned above, and then write a response that appropriately completes the request.\n\n"
+        "###Input:\n"
+    ),
+}
 
 def _get_dtype(
     dtype: Union[str, torch.dtype]
@@ -36,6 +79,7 @@ class HFLM(BaseLM):
         load_in_8bit: Optional[bool] = False,
         trust_remote_code: Optional[bool] = False,
         dtype: Optional[Union[str, torch.dtype]]="auto",
+        prompt_mark: str = "0",
     ):
         super().__init__()
 
@@ -57,7 +101,7 @@ class HFLM(BaseLM):
             else:
                 # Get tokenizer
                 model_name = self.model.name_or_path
-                self.tokenizer = LlamaTokenizer.from_pretrained(
+                self.tokenizer = transformers.LlamaTokenizer.from_pretrained(
                         model_name,
                         revision=revision,
                         trust_remote_code=trust_remote_code,
@@ -91,8 +135,10 @@ class HFLM(BaseLM):
                     revision=revision,
                     torch_dtype=_get_dtype(dtype),
                     trust_remote_code=trust_remote_code,
-                    ).to(self.device)
-            self.tokenizer = LlamaTokenizer.from_pretrained(
+                    )
+            self.model = self.model.half()
+            self.model = self.model.to(self.device)
+            self.tokenizer = transformers.LlamaTokenizer.from_pretrained(
                     tokenizer if tokenizer else pretrained,
                     revision=revision,
                     trust_remote_code=trust_remote_code,
@@ -119,6 +165,25 @@ class HFLM(BaseLM):
         self.max_batch_size = max_batch_size
 
         self._max_length = max_length
+        
+        if prompt_mark == "1" or prompt_mark == 1:
+            prompt_mark = "long"
+        elif prompt_mark == "1-1" or prompt_mark == 4 or prompt_mark == "4":
+            prompt_mark = "eval_long"
+        elif prompt_mark == "2" or prompt_mark == 2:
+            prompt_mark = "middle"
+        elif prompt_mark == "3" or prompt_mark == 3:
+            prompt_mark = "short"
+        else:
+            prompt_mark = None
+        # prompt_mark = "long"
+        print("prompt_mark: ", prompt_mark)
+        
+        if prompt_mark in ["long", "middle", "short", "eval_long"]:
+            prompt = PROMPT_DICT[f"prompt_{prompt_mark}_pruning"]
+        else:
+            prompt = ""
+        self.prompt = prompt
 
     @property
     def eot_token_id(self):

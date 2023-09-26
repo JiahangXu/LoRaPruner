@@ -79,6 +79,20 @@ eval_harness_job_template = \
 """
 
 
+eval_mmlu_job_template = \
+"""- name: {job_name}
+  sku: G{node_num}
+  priority: high
+  command:
+  - bash ./itp/instruct_eval_env.sh
+  - bash ./scripts/{file} {ckpt_dir} {prompt_type}
+  #- python ./itp/sleep.py
+  submit_args: 
+    env:
+      {{DEBUG: 1}}
+"""
+
+
 job_one_node = \
 """- name: {job_name}
   sku: NDAMv4:80G1-A100
@@ -135,6 +149,8 @@ def main():
     "race_high",
     "race_middle",
     "squad",
+    "mmlu",
+    "bbh"
     ])
     parser.add_argument("--ckpt_dir", type=str, required=False)
     parser.add_argument("--prompt_type", type=str, required=False)
@@ -166,6 +182,18 @@ def main():
         )
     elif args.task_name in ["harness", "nqopen", "reasoning", "triviaqa", "squad", "race", "race_high", "race_middle"]:
         job_template = eval_harness_job_template
+        date = datetime.datetime.now().strftime('%m%d%H%M')
+        job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.mark}-{date}'
+        jobs = job_template.format(
+            job_name=job_name, 
+            debug=mode,
+            file = args.file,
+            ckpt_dir = args.ckpt_dir,
+            prompt_type = args.prompt_type,
+            node_num = args.node_num
+        )
+    elif args.task_name in ["mmlu", "bbh"]:
+        job_template = eval_mmlu_job_template
         date = datetime.datetime.now().strftime('%m%d%H%M')
         job_name = f'{args.model_name.replace("%","")}-{args.task_name}-{args.mark}-{date}'
         jobs = job_template.format(
