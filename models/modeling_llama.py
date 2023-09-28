@@ -77,6 +77,9 @@ import torch.distributed as dist
 import copy
 import warnings
 import inspect
+from transformers.modeling_utils import (apply_chunking_to_forward, prune_linear_layer)
+# from utils.cofi_utils import find_pruneable_heads_and_indices
+
 if TYPE_CHECKING:
     from transformers.modeling_utils import PreTrainedModel
     from transformers.generation.streamers import BaseStreamer
@@ -268,7 +271,7 @@ class LlamaRMSNorm(nn.Module):
         self.variance_epsilon = eps
 
     def forward(self, hidden_states):
-        variance = hidden_states.to(torch.float32).pow(2).mean(-1, keepdim=True)
+        variance = torch.sum(hidden_states.to(torch.float32).pow(2), dim=-1, keepdim=True) / 4096
         hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
 
         # convert into half-precision if necessary
@@ -413,6 +416,34 @@ class LlamaAttention(nn.Module):
     def _shape(self, tensor: torch.Tensor, seq_len: int, bsz: int):
         return tensor.view(bsz, seq_len, self.num_heads, self.head_dim).transpose(1, 2).contiguous()
 
+    # def prune_heads(self, heads):
+    #     len_heads = len(heads)
+    #     if len_heads == 0:
+    #         return
+
+    #     heads, index = find_pruneable_heads_and_indices(
+    #         heads, self.num_heads, self.head_dim, None
+    #     )
+    #     # Prune linear layers
+    #     if len(index) == 0:
+    #         self.q_proj = None
+    #         self.k_proj = None
+    #         self.v_proj = None
+    #         self.o_proj = None
+    #     else:
+    #         self.q_proj = prune_linear_layer(self.q_proj, index)
+    #         self.k_proj = prune_linear_layer(self.k_proj, index)
+    #         self.v_proj = prune_linear_layer(self.v_proj, index)
+    #         self.o_proj = prune_linear_layer(
+    #             self.o_proj, index, dim=1)
+
+    #     # Update hyper params and store pruned heads
+    #     self.num_heads = self.num_heads - \
+    #         len(heads)
+    #     # self.self.all_head_size = self.self.attention_head_size * \
+    #     #     self.self.num_attention_heads
+    #     # self.pruned_heads = self.pruned_heads.union(heads)
+
     def forward(
         self,
         hidden_states: torch.Tensor,
@@ -493,7 +524,7 @@ class LlamaAttention(nn.Module):
         if head_z is not None:
             attn_output *= head_z
         attn_output = attn_output.transpose(1, 2)
-        attn_output = attn_output.reshape(bsz, q_len, self.hidden_size)
+        attn_output = attn_output.reshape(bsz, q_len, -1)
 
         attn_output = self.o_proj(attn_output)
         # if head_layer_z is not None:
@@ -1542,6 +1573,9 @@ class LlamaModel(LlamaPreTrainedModel):
 
         if inputs_embeds is None:
             inputs_embeds = self.embed_tokens(input_ids)
+        # if hidden_z is not None:
+        #     inputs_embeds = inputs_embeds.mul(hidden_z)
+        
         # embed positions
         if attention_mask is None:
             attention_mask = torch.ones(

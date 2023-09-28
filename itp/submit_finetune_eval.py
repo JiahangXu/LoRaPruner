@@ -556,8 +556,6 @@ waiting_jobs = [
     #  "LoRaPruner/gpt4alpaca_llama7b_promptlong_FTbased_mark28-6_selected_8e-4-s30.0-lr0.0008-reglr0.05-warmup0/2023-9-13-18-4/epoch1/",
     #  "mark28-6_8e-4_epoch1", 1),
 
-    
-
 ]
 
 args = []
