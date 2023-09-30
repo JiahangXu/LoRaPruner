@@ -554,7 +554,8 @@ class CoFiTrainer(Trainer):
             epoch_end = time.time()
             self.evaluate()
             torch.cuda.empty_cache()
-            os.system(f"cp -r ./best/ {self.args.output_dir}")
+            if os.path.exists("./best/"):
+                os.system(f"cp -r ./best/ {self.args.output_dir}")
 
             # save model via azcopy
             lora_weights = {}

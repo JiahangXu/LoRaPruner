@@ -1573,8 +1573,8 @@ class LlamaModel(LlamaPreTrainedModel):
 
         if inputs_embeds is None:
             inputs_embeds = self.embed_tokens(input_ids)
-        # if hidden_z is not None:
-        #     inputs_embeds = inputs_embeds.mul(hidden_z)
+        if hidden_z is not None:
+            inputs_embeds = inputs_embeds.mul(hidden_z)
         
         # embed positions
         if attention_mask is None:
