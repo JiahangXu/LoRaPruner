@@ -136,6 +136,7 @@ class HuggingFaceAutoLM(BaseLM):
         bnb_4bit_use_double_quant: Optional[bool] = False,
         prompt_mark: str = "0",
         lora_merged: Optional[bool] = False,
+        peft_mode: Optional[bool] = False,
     ):
         """Initializes a HuggingFace `AutoModel` and `AutoTokenizer` for evaluation.
         Args:
@@ -248,7 +249,8 @@ class HuggingFaceAutoLM(BaseLM):
 
         self.zs = {}
         if peft is not None:
-            if not lora_merged:
+            # import pdb; pdb.set_trace()
+            if not lora_merged and not peft_mode:
                 lora_ckpt = os.path.join(peft, 'lora_weights.pt')
             zs = torch.load(os.path.join(peft, 'zs.pt'), map_location="cpu")
 
@@ -276,6 +278,14 @@ class HuggingFaceAutoLM(BaseLM):
                 use_auth_token="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",
                 lora_ckpt = lora_ckpt
             )
+        if peft_mode:
+            from peft import PeftModel
+            self.model = PeftModel.from_pretrained(
+                self.model,
+                peft,
+                torch_dtype=torch.float16,
+            )
+            
         
         self.model.half()
         self.model.eval()

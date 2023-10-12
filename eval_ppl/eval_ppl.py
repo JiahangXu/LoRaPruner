@@ -178,7 +178,7 @@ def main(args):
                 torch_dtype=torch.float16,
             )
         
-        description = "Model Type: {}\n Finetuned LpRa-Pruner in LLM-Pruner way. Model: {}\n LORA ckpt: {}".format(args.model_type, args.ckpt, args.lora_ckpt)
+        description = "Model Type: {} Finetuned LoRa-Pruner in LLM-Pruner way.\n Model: {}\n LORA ckpt: {}".format(args.model_type, args.ckpt, args.lora_ckpt)
 
     else:
         raise NotImplementedError
