@@ -124,6 +124,7 @@ class BaseLM(LM):
         self.batch_schedule = 1
         self.batch_sizes = {}
         self.max_batch_size = 512
+        self.prompt = ""
 
     @property
     @abstractmethod
@@ -444,7 +445,7 @@ class BaseLM(LM):
                 primary_until = None
 
             context_enc = torch.tensor(
-                [self.tok_encode(context)[self.max_gen_toks - self.max_length :]]
+                [self.tok_encode(self.prompt + context)[self.max_gen_toks - self.max_length :]]
             ).to(self.device)
 
             max_gen_tokens = min(

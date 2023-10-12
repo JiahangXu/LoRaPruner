@@ -1,2 +1,23 @@
 lm-evaluation-harness/lm_eval/datasets/
 all_gen.jsonl
+ lm-evaluation-harness/eval_log.txt  
+mark28-2/
+lm-evaluation-harness/docs/
+lm-evaluation-harness/tests/
+output/
+instruct-eval/red-eval/hamrful_questions/
+instruct-eval/data/
+instruct-eval/red-eval/results/
+instruct-eval/human_eval/HumanEval.jsonl.gz
+itp/finetune.sh
+instruct-eval/README.md
+instruct-eval/red-eval/LICENSE
+instruct-eval/LICENCE
+itp/select_layer_pruning_long.sh
+itp/lyna.sh
+itp/yiran.sh 
+itp/ruidong.sh 
+itp/prompt_long_train.sh
+itp/submit_generate.sh
+scripts/before_paper_submit
+itp/before_paper_submit
