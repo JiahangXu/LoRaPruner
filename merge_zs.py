@@ -152,7 +152,8 @@ def main():
         )
         config.use_cache = False
         lora_ckpt = None
-        config = set_lora_args(config, model_args)
+        config.use_lora = False
+        # config = set_lora_args(config, model_args)
         # When runing Finetune, use lora merged "llama_pruned" as base model and do NOT load lora_ckpt
         if additional_args.pretrained_pruned_model is not None and "llama_pruned" not in model_args.model_name_or_path:
             lora_ckpt = os.path.join(additional_args.pretrained_pruned_model, 'lora_weights.pt')
@@ -190,28 +191,11 @@ def main():
     if additional_args.do_layer_distill:
         initialize_layer_transformation(model)
 
-    l0_module = None
-    if additional_args.pruning_type is not None:
-        l0_module = L0Module(config=config,
-                            droprate_init=additional_args.droprate_init,
-                            layer_gate_init_open=additional_args.layer_gate_init_open,
-                            layer_gate_open_0=additional_args.layer_gate_open_0,
-                            block_layer_start=additional_args.block_layer_start,
-                            block_layer_end=additional_args.block_layer_end,
-                            sparsity_scheduler=additional_args.sparsity_scheduler,
-                            temperature=additional_args.temperature,
-                            target_sparsity=additional_args.target_sparsity,
-                            pruning_type=additional_args.pruning_type)
-
     zs = None
     if additional_args.pretrained_pruned_model is not None:
         zs = load_zs(os.path.join(additional_args.pretrained_pruned_model,'zs.pt'))
-        # import pdb; pdb.set_trace()
         for key in zs:
             zs[key] = zs[key].detach()
-        # l0_module = torch.load(os.path.join(additional_args.pretrained_pruned_model,'l0_module.pt'), map_location="cpu")
-        # zs = l0_module.forward(training=False)
-        # l0_module = None
         
         if zs["head_z"].shape[0] < config.num_hidden_layers:
             if zs["head_z"].shape[0] == 26:
@@ -229,89 +213,18 @@ def main():
         #model = load_model(additional_args.pretrained_pruned_model, OPTForCausalLM, zs)
         print(
             f"Model Size after pruning: {calculate_parameters(model)}")
+        print("in zs loading")
+    print("start updating zs ...")
 
-    # zs.pop("head_z")
     
     update_params(model, zs)
     
-    config.use_lora = False
-    llama = LlamaForCausalLM.from_pretrained(LlamaForCausalLM, model_args.model_name_or_path, config=config)
-    
-    # import pdb; pdb.set_trace()
-    # # input = model.model.embed_tokens(torch.tensor([[1,2,3,8]]))
-    # # print(model.model.layers[0].mlp(input, None, None))
-    # # print(llama.model.layers[0].mlp(input,intermediate_z=zs["intermediate_z"][0],mlp_z=zs["mlp_z"][0]))
-    
-    # print(model(torch.tensor([[1,2,3,8]])).logits)
-    # print(llama(torch.tensor([[1,2,3,8]]), **zs).logits)
-    
-    # inputs = {"position_ids": torch.tensor([[1,2,3,4]]), "attention_mask":torch.ones((1,1,4,4))}
-    # print(model.model.layers[0].forward(input, **inputs))
+    print("updating zs finish...")
     
     output_path = "./llama_pruned"
-    llama.load_state_dict(model.state_dict(), strict=False)
-    llama.save_pretrained(output_path)
-    
-    # os.system(f"cp {refered_files_path}/tokenizer.model {output_path}")
-    # os.system(f"cp {refered_files_path}/tokenizer.json {output_path}")
-    # os.system(f"cp {refered_files_path}/tokenizer_config.json {output_path}")
-    # os.system(f"cp {refered_files_path}/special_tokens_map.json {output_path}")
-    
-    
-    input = torch.tensor([[1,2,3,8]])
-    a1 = model.model(input).logits
-    b1 = llama.model(input, **zs).logits
-    print(model(input, **zs))
-    print(llama(input))
-    
-    
-    # llama.model.embed_tokens(input, **zs)
-
-
-    # # dataset initialize
-    # from tasks import get_data_module
-    # if data_args.dataset_name in ALPACA_TASK:
-    #     data_module = get_data_module(data_args.dataset_name)(tokenizer, model_args, data_args, training_args, model)
-    # else:
-    #     data_module = get_data_module(data_args.dataset_name)(tokenizer, model_args, data_args, training_args)
-    # # use wikitext2 test dataset to evaluate the performance of model on alpaca or math10k
-    # wiki_module = get_data_module(additional_args.eval_dataset_name[0] if "wikitext" in additional_args.eval_dataset_name[0] else "wikitext")(tokenizer, model_args, data_args, training_args)
-    # data_module['eval_dataset'] = wiki_module['eval_dataset']
-    # data_module['compute_metrics'] = wiki_module['compute_metrics']
-    # data_module['preprocess_logits_for_metrics'] = wiki_module['preprocess_logits_for_metrics']
-    # # Initialize our Trainer
-    # trainer = CoFiTrainer(
-    #     model=model,
-    #     args=training_args,
-    #     additional_args=additional_args,
-    #     tokenizer=tokenizer,
-    #     use_lora=model_args.use_lora,
-    #     lora_train_bias=model_args.lora_train_bias,
-    #     l0_module=l0_module,
-    #     **data_module
-    # )
-
-    # from transformers.integrations import AzureMLCallback, ProgressCallback
-    # trainer.remove_callback(AzureMLCallback)
-    # trainer.remove_callback(ProgressCallback)
-    # logger.info("Remove AzureMLCallback and ProgressCallback in Trainer.")
-
-    # if additional_args.pretrained_pruned_model is not None:
-    #     trainer.zs = zs
-
-    # # Training
-    # if training_args.do_train:
-    #     checkpoint = None
-    #     if training_args.resume_from_checkpoint is not None:
-    #         checkpoint = training_args.resume_from_checkpoint
-    #     elif last_checkpoint is not None:
-    #         checkpoint = last_checkpoint
-    #     train_result = trainer.train(None)
-
-    # # Evaluating
-    # if training_args.do_eval:
-    #     metrics = trainer.evaluate(eval_dataset=data_module["eval_dataset"])
-    #     trainer.log_metrics("eval", metrics)
+    model.save_pretrained(output_path)
+    print(output_path)
+    print("saved")
 
 
 if __name__ == "__main__":

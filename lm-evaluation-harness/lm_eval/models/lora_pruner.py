@@ -69,12 +69,12 @@ PROMPT_DICT_LENGTH = {
 }
 
   
-def set_lora_args(config):
+def set_lora_args(config, lora_param):
     config.use_lora = True
     config.lora_rank = 8
     config.lora_train_bias = None
     config.lora_alpha = 8.0
-    config.lora_param = "Q.V"
+    config.lora_param = lora_param
     config.lora_layers = config.num_hidden_layers
     return config
 
@@ -137,6 +137,7 @@ class HuggingFaceAutoLM(BaseLM):
         bnb_4bit_use_double_quant: Optional[bool] = False,
         prompt_mark: str = "0",
         lora_merged: Optional[bool] = False,
+        lora_param: str = "Q.V",
     ):
         """Initializes a HuggingFace `AutoModel` and `AutoTokenizer` for evaluation.
         Args:
@@ -230,12 +231,14 @@ class HuggingFaceAutoLM(BaseLM):
         self._max_length = max_length
         self._config = self.AUTO_CONFIG_CLASS.from_pretrained(
             pretrained,
+            use_auth_token="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",
             # trust_remote_code=trust_remote_code,
             # revision=revision + ("/" + subfolder if subfolder is not None else ""),
         )
         self._config.use_cache = False
         lora_ckpt = None
-        self._config = set_lora_args(self._config)
+        print("lora_param: ", lora_param)
+        self._config = set_lora_args(self._config, lora_param)
 
         self._add_special_tokens = add_special_tokens
         self.tokenizer = self.AUTO_TOKENIZER_CLASS.from_pretrained(

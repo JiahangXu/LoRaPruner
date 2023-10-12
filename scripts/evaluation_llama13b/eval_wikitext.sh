@@ -33,4 +33,5 @@ python ./eval_ppl/eval_ppl.py \
     --base_model ./llama-13b-hf \
     --model_type lora_pruner \
     --lora_ckpt ${1} \
-    --prompt_mark ${2}
+    --prompt_mark ${2} \
+    --lora_param ${3}

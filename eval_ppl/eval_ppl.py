@@ -28,21 +28,23 @@ def main(args):
     zs = {}
     if args.model_type == 'lora_pruner':
 
-        def set_lora_args(config):
+        def set_lora_args(config, lora_param):
             config.use_lora = True
             config.lora_rank = 8
             config.lora_train_bias = None
             config.lora_alpha = 8.0
-            config.lora_param = "Q.V"
+            config.lora_param = lora_param
             config.lora_layers = config.num_hidden_layers
             return config
         
         _config = LlamaConfig.from_pretrained(
             args.base_model,
+            use_auth_token="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",
         )
         _config.use_cache = False
         lora_ckpt = None
-        _config = set_lora_args(_config)
+        print("lora_param: ", args.lora_param)
+        _config = set_lora_args(_config, args.lora_param)
         
         tokenizer = LlamaTokenizer.from_pretrained(
             args.base_model,
@@ -56,6 +58,7 @@ def main(args):
         if args.lora_ckpt is not None:
             if not args.lora_merged:
                 lora_ckpt = os.path.join(args.lora_ckpt, 'lora_weights.pt')
+                print("load lora ckpt!")
             from models.l0_module import L0Module
             l0_module = L0Module(config=_config)
             zs = torch.load(os.path.join(args.lora_ckpt, 'zs.pt'), map_location="cpu")
@@ -178,7 +181,7 @@ def main(args):
                 torch_dtype=torch.float16,
             )
         
-        description = "Model Type: {}\n Finetuned LpRa-Pruner in LLM-Pruner way. Model: {}\n LORA ckpt: {}".format(args.model_type, args.ckpt, args.lora_ckpt)
+        description = "Model Type: {}\n Finetuned LoRa-Pruner in LLM-Pruner way. Model: {}\n LORA ckpt: {}".format(args.model_type, args.ckpt, args.lora_ckpt)
 
     else:
         raise NotImplementedError
@@ -192,7 +195,7 @@ def main(args):
     if args.eval_c4:
         ppl = PPLMetric(model, tokenizer, ['c4'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=args.prompt_mark)
     else:
-        ppl = PPLMetric(model, tokenizer, ['wikitext2', 'ptb'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=args.prompt_mark)
+        ppl = PPLMetric(model, tokenizer, ['wikitext2'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=args.prompt_mark)
     print("Prompt mark: {}; PPL: {}".format(args.prompt_mark, ppl))
 
 
@@ -205,6 +208,7 @@ if __name__ == "__main__":
     parser.add_argument('--ckpt', type=str, default=None)
     parser.add_argument('--lora_ckpt', type=str, default=None)
     parser.add_argument('--prompt_mark', type=str, default="0", help='prompt mark')
+    parser.add_argument('--lora_param', type=str, default="Q.V", help='lora param')
     parser.add_argument('--max_seq_len', type=int, default=None, help='max sequence length')
     parser.add_argument('--device', type=str, default="cuda", help='device')
     parser.add_argument('--eval_device', type=str, default="cuda", help='eval device')

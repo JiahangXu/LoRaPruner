@@ -51,13 +51,8 @@ eval_job_template = \
 """- name: {job_name}
   sku: G{node_num}
   priority: high
- # process_count_per_node: 1
-#   execution_mode: managed
   command:
-  #- bash setup2.sh
-  #- python sleep.py
-  #- bash ./itp/flash_attn_env.sh
-  - bash ./scripts/{file} {ckpt_dir} {prompt_type}
+  - bash ./scripts/{file} {ckpt_dir} {prompt_type} {lora_param}
   #- python ./itp/sleep.py
   submit_args: 
     env:
@@ -71,7 +66,7 @@ eval_harness_job_template = \
   priority: high
   command:
   - bash ./itp/harness_env.sh
-  - bash ./scripts/{file} {ckpt_dir} {prompt_type}
+  - bash ./scripts/{file} {ckpt_dir} {prompt_type} {lora_param}
   #- python ./itp/sleep.py
   submit_args: 
     env:
@@ -85,7 +80,7 @@ eval_mmlu_job_template = \
   priority: high
   command:
   - bash ./itp/instruct_eval_env.sh
-  - bash ./scripts/{file} {ckpt_dir} {prompt_type}
+  - bash ./scripts/{file} {ckpt_dir} {prompt_type} {lora_param}
   #- python ./itp/sleep.py
   submit_args: 
     env:
@@ -154,6 +149,7 @@ def main():
     ])
     parser.add_argument("--ckpt_dir", type=str, required=False)
     parser.add_argument("--prompt_type", type=str, required=False)
+    parser.add_argument("--lora_param", type=str, required=False)
     parser.add_argument("--mark", type=str, required=False)
     parser.add_argument("--node_num", type=int, default=2, required=False)
     
@@ -178,7 +174,8 @@ def main():
             file = args.file,
             ckpt_dir = args.ckpt_dir,
             prompt_type = args.prompt_type,
-            node_num = args.node_num
+            node_num = args.node_num,
+            lora_param = args.lora_param,
         )
     elif args.task_name in ["harness", "nqopen", "reasoning", "triviaqa", "squad", "race", "race_high", "race_middle"]:
         job_template = eval_harness_job_template
@@ -190,7 +187,8 @@ def main():
             file = args.file,
             ckpt_dir = args.ckpt_dir,
             prompt_type = args.prompt_type,
-            node_num = args.node_num
+            node_num = args.node_num,
+            lora_param = args.lora_param,
         )
     elif args.task_name in ["mmlu", "bbh"]:
         job_template = eval_mmlu_job_template
@@ -202,7 +200,8 @@ def main():
             file = args.file,
             ckpt_dir = args.ckpt_dir,
             prompt_type = args.prompt_type,
-            node_num = args.node_num
+            node_num = args.node_num,
+            lora_param = args.lora_param,
         )
     else:
         job_template = job_eight_nodes
