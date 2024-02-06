@@ -21,7 +21,6 @@ from peft import (
 )
 from finetune import Prompter
 
-# sys.path.append("/home/jiahangxu/working/LoRaPruner")
 from models.modeling_llama import LlamaConfig
 from models.tokenization_llama import LlamaTokenizer
 from models.modeling_llama import LlamaForCausalLM
@@ -193,7 +192,7 @@ def main(args):
     # }
     # dataset initialize
     from tasks import get_data_module
-    args.train_file = "/home/jiahangxu/working/LoRaPruner_506/data/alpaca_gpt4_data.json"
+    args.train_file = "./data/alpaca_gpt4_data.json"
     train_data = get_data_module("alpaca-gpt4")(tokenizer, args, args, args, model)["train_dataset"]
 
     # test_data = load_dataset('wikitext', 'wikitext-2-raw-v1', split='test')

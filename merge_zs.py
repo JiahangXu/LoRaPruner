@@ -315,11 +315,5 @@ def main():
 
 
 if __name__ == "__main__":
-    '''
-    example command:
-    
-    # wikitext-2
-    python train.py --output_dir ./.tmp --model_name_or_path /home/jiahangxu/working/llama/7B_converted --dataset_name wikitext --dataset_config_name wikitext-2-raw-v1 --max_seq_length 1024 --do_train --training_objective LM
-    '''
     os.environ["WANDB_DISABLED"] = "true"
     main()

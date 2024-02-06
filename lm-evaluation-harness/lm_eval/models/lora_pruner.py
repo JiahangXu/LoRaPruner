@@ -94,7 +94,6 @@ def _get_dtype(
 
 class HuggingFaceAutoLM(BaseLM):
     import sys
-    # sys.path.append("/home/jiahangxu/working/LoRaPruner")
     from models.modeling_llama import LlamaConfig
     from models.tokenization_llama import LlamaTokenizer
     from models.modeling_llama import LlamaForCausalLM
