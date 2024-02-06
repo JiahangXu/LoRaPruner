@@ -37,7 +37,7 @@ def set_lora_args(config, modeling_args):
     config.lora_layers = modeling_args.lora_layers
     return config
 
-refered_files_path = "/mnt/data/LoRaPruner/gpt4alpaca_llama7b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-7-31-21-23/epoch4/llama_pruned"
+refered_files_path = "~/working2/myfastnn/LoRaPruner/gpt4alpaca_llama7b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-7-31-21-23/epoch4/llama_pruned"
 
 def main():
     # # Used for profiling, usage:
@@ -108,7 +108,7 @@ def main():
             #finetuning_task=data_args.task_name,
             cache_dir=model_args.cache_dir,
             revision=model_args.model_revision,
-            use_auth_token="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",
+            use_auth_token=True,
         )
         config.use_cache = False
         lora_ckpt = None
@@ -120,7 +120,7 @@ def main():
             cache_dir=model_args.cache_dir,
             use_fast=model_args.use_fast_tokenizer,
             revision=model_args.model_revision,
-            use_auth_token="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",
+            use_auth_token=True,
             padding_side="left",
             truncation_side="left",
         )
@@ -132,13 +132,12 @@ def main():
                 )
         else:
             model = LlamaForCausalLM.from_pretrained(
-                LlamaForCausalLM,
                 model_args.model_name_or_path,
                 from_tf=bool(".ckpt" in model_args.model_name_or_path),
                 config=config,
                 cache_dir=model_args.cache_dir,
                 revision=model_args.model_revision,
-                use_auth_token="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",
+                use_auth_token=True,
                 ignore_mismatched_sizes=model_args.ignore_mismatched_sizes,
                 lora_ckpt = lora_ckpt
             )
@@ -146,8 +145,8 @@ def main():
         raise ValueError("Training objective should be either cls or clm")
     
     config.use_lora = False
-    llama = LlamaForCausalLM.from_pretrained(LlamaForCausalLM, model_args.model_name_or_path, config=config)
-    output_path = "./llama_pruned"
+    llama = LlamaForCausalLM.from_pretrained(model_args.model_name_or_path, config=config)
+    output_path = "./llama_pruned" if training_args.output_dir == "./" else training_args.output_dir
     llama.load_state_dict(model.state_dict(), strict=False)
     llama.save_pretrained(output_path)
     os.system(f"cp {refered_files_path}/tokenizer.model {output_path}")

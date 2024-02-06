@@ -48,7 +48,7 @@ def main():
             #finetuning_task=data_args.task_name,
             cache_dir=model_args.cache_dir,
             revision=model_args.model_revision,
-            use_auth_token="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",
+            use_auth_token=True,
         )
         config = set_lora_args(config, model_args)
         lora_ckpt = None
@@ -62,7 +62,7 @@ def main():
             config=config,
             cache_dir=model_args.cache_dir,
             revision=model_args.model_revision,
-            use_auth_token="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",
+            use_auth_token=True,
             ignore_mismatched_sizes=model_args.ignore_mismatched_sizes,
             lora_ckpt = lora_ckpt
         )
@@ -89,7 +89,7 @@ def main():
             model_args.config_name if model_args.config_name else model_args.model_name_or_path,
             cache_dir=model_args.cache_dir,
             revision=model_args.model_revision,
-            use_auth_token="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",
+            use_auth_token=True,
         )
         config.use_cache = False
         l0_module = L0Module(config=config, pruning_type="structured_heads+structured_mlp+hidden+mlp_layer+head_layer")

@@ -46,7 +46,7 @@ def main(args):
         
         tokenizer = LlamaTokenizer.from_pretrained(
             args.base_model,
-            use_auth_token="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",
+            use_auth_token=True,
             padding_side="left",
             truncation_side="left",
         )
@@ -91,11 +91,10 @@ def main(args):
             print(f"Sparsity: {1 - (sparsity_info['remaining_params'] + embedding_parmas) / model_params}")
 
         model = LlamaForCausalLM.from_pretrained(
-            LlamaForCausalLM,
             args.base_model,
             from_tf=False,
             config=_config,
-            use_auth_token="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",
+            use_auth_token=True,
             lora_ckpt = lora_ckpt
         )
         description = "Model Type: {}\n LoRaPruner Model: {}\n LORA ckpt: {}".format(args.model_type, args.base_model, args.lora_ckpt)
@@ -116,7 +115,7 @@ def main(args):
 
         tokenizer = LlamaTokenizer.from_pretrained(
             args.ckpt,
-            use_auth_token="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",
+            use_auth_token=True,
             padding_side="left",
             truncation_side="left",
         )
@@ -167,7 +166,7 @@ def main(args):
                 args.ckpt,
                 from_tf=False,
                 config=config,
-                use_auth_token="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",
+                use_auth_token=True,
                 lora_ckpt = lora_ckpt
             )
         
@@ -192,7 +191,7 @@ def main(args):
     if args.eval_c4:
         ppl = PPLMetric(model, tokenizer, ['c4'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=args.prompt_mark)
     else:
-        ppl = PPLMetric(model, tokenizer, ['wikitext2', 'ptb'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=args.prompt_mark)
+        ppl = PPLMetric(model, tokenizer, ['wikitext2'], args.max_seq_len, device=args.device, batch_size=1, zs=zs, prompt_mark=args.prompt_mark)
     print("Prompt mark: {}; PPL: {}".format(args.prompt_mark, ppl))
 
 

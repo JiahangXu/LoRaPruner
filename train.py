@@ -108,7 +108,7 @@ def main():
             #finetuning_task=data_args.task_name,
             cache_dir=model_args.cache_dir,
             revision=model_args.model_revision,
-            use_auth_token="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",
+            use_auth_token=True,
         )
         config.use_cache = False
         lora_ckpt = None
@@ -122,7 +122,7 @@ def main():
             cache_dir=model_args.cache_dir,
             use_fast=model_args.use_fast_tokenizer,
             revision=model_args.model_revision,
-            use_auth_token="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",
+            use_auth_token=True,
             padding_side="left",
             truncation_side="left",
         )
@@ -134,13 +134,12 @@ def main():
                 )
         else:
             model = LlamaForCausalLM.from_pretrained(
-                LlamaForCausalLM,
                 model_args.model_name_or_path,
                 from_tf=bool(".ckpt" in model_args.model_name_or_path),
                 config=config,
                 cache_dir=model_args.cache_dir,
                 revision=model_args.model_revision,
-                use_auth_token="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",
+                use_auth_token=True,
                 ignore_mismatched_sizes=model_args.ignore_mismatched_sizes,
                 lora_ckpt = lora_ckpt
             )
@@ -232,7 +231,8 @@ def main():
     # Evaluating
     if training_args.do_eval:
         metrics = trainer.evaluate(eval_dataset=data_module["eval_dataset"])
-        trainer.log_metrics("eval", metrics)
+        for metric in metrics:
+            print(metric, metrics[metric])
 
 
 if __name__ == "__main__":

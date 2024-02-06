@@ -155,7 +155,7 @@ def main():
             #finetuning_task=data_args.task_name,
             cache_dir=model_args.cache_dir,
             revision=model_args.model_revision,
-            use_auth_token="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",
+            use_auth_token=True,
         )
         config.use_cache = False
         lora_ckpt = None
@@ -166,7 +166,7 @@ def main():
             cache_dir=model_args.cache_dir,
             use_fast=model_args.use_fast_tokenizer,
             revision=model_args.model_revision,
-            use_auth_token="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",
+            use_auth_token=True,
             padding_side="left",
             truncation_side="left",
         )
@@ -184,7 +184,7 @@ def main():
                 config=config,
                 cache_dir=model_args.cache_dir,
                 revision=model_args.model_revision,
-                use_auth_token="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",
+                use_auth_token=True,
                 ignore_mismatched_sizes=model_args.ignore_mismatched_sizes,
                 lora_ckpt = lora_ckpt
             )

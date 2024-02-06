@@ -415,8 +415,8 @@ def get_task_name_from_object(task_object):
 
 def get_task_dict(task_name_list: List[Union[str, lm_eval.base.Task]]):
     dir_map = {
-        "storycloze_2018": "/mnt/data/LPM/storycloze",
-        "hellaswag": "/mnt/data/LPM/hellaswag"
+        "storycloze_2018": "./data/storycloze",
+        "hellaswag": "./data/hellaswag"
     }
     task_name_dict = {
         task_name: get_task(task_name)() if \

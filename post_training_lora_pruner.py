@@ -45,7 +45,7 @@ def main(args):
 
     tokenizer = LlamaTokenizer.from_pretrained(
         args.prune_model,
-        use_auth_token="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",
+        use_auth_token=True,
         padding_side="left",
         truncation_side="left",
     )
@@ -70,11 +70,10 @@ def main(args):
             zs[key] = zs[key].cuda().detach().half()
 
     model = LlamaForCausalLM.from_pretrained(
-            LlamaForCausalLM,
             args.prune_model,
             from_tf=False,
             config=config,
-            use_auth_token="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",
+            use_auth_token=True,
             lora_ckpt = lora_ckpt
         )
 
@@ -177,7 +176,7 @@ def main(args):
     # }
     # dataset initialize
     from tasks import get_data_module
-    args.train_file = "/home/jiahangxu/working/LoRaPruner/data/alpaca_gpt4_data.json"
+    args.train_file = "./data/alpaca_gpt4_data.json"
     train_data = get_data_module("alpaca-gpt4")(tokenizer, args, args, args, model)["train_dataset"]
 
     # test_data = load_dataset('wikitext', 'wikitext-2-raw-v1', split='test')
@@ -198,7 +197,7 @@ def main(args):
             warmup_steps=100,
             num_train_epochs=args.num_epochs,
             learning_rate=args.learning_rate,
-            fp16=True,
+            bf16=True,
             logging_steps=10,
             logging_first_step=True,
             optim="adamw_torch",

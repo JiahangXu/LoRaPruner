@@ -634,6 +634,8 @@ class LlamaPreTrainedModel(PreTrainedModel):
     def _set_gradient_checkpointing(self, module, value=False):
         if isinstance(module, LlamaModel):
             module.gradient_checkpointing = value
+    
+    @classmethod
     def from_pretrained(cls, pretrained_model_name_or_path: Optional[Union[str, os.PathLike]], *model_args, **kwargs):
         r"""
         Instantiate a pretrained pytorch model from a pre-trained model configuration.
@@ -1334,7 +1336,7 @@ class LlamaPreTrainedModel(PreTrainedModel):
                 offload_folder=offload_folder,
                 offload_state_dict=offload_state_dict,
                 dtype=torch_dtype,
-                load_in_8bit=load_in_8bit,
+                # load_in_8bit=load_in_8bit,
             )
 
         model.is_loaded_in_8bit = load_in_8bit
@@ -1745,6 +1747,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
         "Hey, are you consciours? Can you talk to me?\nI'm not consciours, but I can talk to you."
         ```"""
 
+        # assert hidden_z != None
         output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
         output_hidden_states = (
             output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states

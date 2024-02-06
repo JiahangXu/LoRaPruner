@@ -264,7 +264,7 @@ class CoFiTrainer(Trainer):
 
         import datetime
         now = datetime.datetime.now()
-        self.args.output_dir = '/mnt/data/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}'.format(
+        self.args.output_dir = './output/LoRaPruner/{}-s{}-lr{}-reglr{}-warmup{}/{}-{}-{}-{}-{}'.format(
             self.additional_args.task_name,
             self.additional_args.target_sparsity*100,
             self.args.learning_rate,
@@ -322,7 +322,7 @@ class CoFiTrainer(Trainer):
 
         # the value of self.prepruning_finetune_steps is zero if finetune
         if self.additional_args.pretrained_pruned_model is None:
-            self.prepruning_finetune_steps = len_dataloader * self.additional_args.prepruning_finetune_epochs
+            self.prepruning_finetune_steps = num_update_steps_per_epoch * self.additional_args.prepruning_finetune_epochs
         if self.l0_module is not None:
             lagrangian_warmup_steps = self.additional_args.lagrangian_warmup_epochs * num_update_steps_per_epoch #! 24544
             self.l0_module.set_lagrangian_warmup_steps(lagrangian_warmup_steps)
@@ -378,7 +378,7 @@ class CoFiTrainer(Trainer):
         train_pbar = trange(epochs_trained, int(
             np.ceil(num_train_epochs)), desc="Epoch", disable=disable_tqdm)
 
-        self.evaluate()
+        # self.evaluate()
 
         # training
         for epoch in range(epochs_trained, int(np.ceil(num_train_epochs))): #! 20 epoch
@@ -399,7 +399,7 @@ class CoFiTrainer(Trainer):
             # self.eval_counter.clear()
             # self.celoss_counter.clear()
             for step, inputs in enumerate(epoch_iterator):
-                if (self.l0_module is not None and self.prepruning_finetune_steps > 0 and self.global_step == self.prepruning_finetune_steps) or \
+                if (self.l0_module is not None and self.prepruning_finetune_steps > 0 and self.global_step == self.prepruning_finetune_steps and self.start_prune == False) or \
                     (self.l0_module is not None and self.prepruning_finetune_steps == 0 and self.start_prune == False): 
                     self.start_prune = True
                     lr_steps = self.t_total - self.global_step
@@ -487,7 +487,7 @@ class CoFiTrainer(Trainer):
                         logging_lag_loss_scalar = lag_loss_scalar
 
                         # self.log(logs)
-                        if self.args.local_rank == 0:
+                        if True:
                             for k, v in logs.items():
                                 try:
                                     mlflow.log_metric(k, v, step=self.state.global_step)
@@ -501,15 +501,15 @@ class CoFiTrainer(Trainer):
                         except:
                             pruned_model_size_info = {}
 
-                        logger.info(f"{logs}, {pruned_model_size_info}")
-                        if self.args.local_rank == 0:
+                        # logger.info(f"{logs}, {pruned_model_size_info}")
+                        if True:
                             for k, v in pruned_model_size_info.items():
                                 try:
                                     mlflow.log_metric(k, v, step=self.state.global_step)
                                 except:
                                     pass
 
-                        logger.info(f"{logs}, {pruned_model_size_info}")
+                        logger.info(f"{logs}, {pruned_model_size_info}, {self.global_step}/{num_update_steps_per_epoch}")
 
                         if self.l0_module is None and self.zs is not None:
                             best_so_far = self.celoss_counter.update(
@@ -528,7 +528,7 @@ class CoFiTrainer(Trainer):
                                     "best_epoch": self.celoss_counter.epoch
                                 }
 
-                                if self.args.local_rank == 0:
+                                if True:
                                     for k, v in best_loss_log.items():
                                         try:
                                             mlflow.log_metric(k, v, step=self.global_step)
@@ -542,7 +542,7 @@ class CoFiTrainer(Trainer):
                                         gather = lora.should_gather(m)
                                         with gather:
                                             lora_weights[n.replace('module.','')] = m.data
-                                if self.args.local_rank == 0:
+                                if True:
                                     torch.save(lora_weights, './best/lora_weights.pt')
                                 logger.info(f"Saving the best model so far: [Epoch {int(self.epoch)} | Step: {self.global_step} | Score: {round(self.celoss_counter.best_ce_loss, 5)}]")
 
@@ -552,7 +552,7 @@ class CoFiTrainer(Trainer):
                     break
 
             epoch_end = time.time()
-            self.evaluate()
+            # self.evaluate()
             torch.cuda.empty_cache()
             os.system(f"cp -r ./best/ {self.args.output_dir}")
 
@@ -563,7 +563,7 @@ class CoFiTrainer(Trainer):
                     gather = lora.should_gather(m)
                     with gather:
                         lora_weights[n.replace('module.','')] = m.data
-            if self.args.local_rank == 0:
+            if True:
                 try:
                     epoch_output_dir = '{}/epoch{}'.format(self.args.output_dir, epoch)
                     print("Epoch folder: ", epoch_output_dir)
@@ -869,7 +869,7 @@ class CoFiTrainer(Trainer):
 
             loggable_output_metrics = {k: v for k, v in output_metrics.items() if not isinstance(v, list)}
             # self.log(loggable_output_metrics)
-            if self.args.local_rank == 0:
+            if True:
                 for k, v in loggable_output_metrics.items():
                     try:
                         mlflow.log_metric(k, v, step=self.global_step)
@@ -902,7 +902,7 @@ class CoFiTrainer(Trainer):
         #             "best_epoch": self.eval_counter.epoch
         #         }
         #         # self.log(best_eval_score_log)
-        #         if self.args.local_rank == 0:
+        #         if True:
         #             for k, v in best_eval_score_log.items():
         #                 try:
         #                     mlflow.log_metric(k, v, step=self.global_step)
