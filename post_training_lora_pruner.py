@@ -28,6 +28,22 @@ from models.modeling_llama import LlamaForCausalLM
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
+class TrainerNew(transformers.Trainer):
+    def __init__(
+        self, **kwargs
+    ):
+        super().__init__(**kwargs)
+        self.zs = None
+
+    # def fill_inputs_with_zs(self, zs, inputs):
+    #     for key in zs:
+    #         inputs[key] = zs[key]
+
+    # def get_train_dataloader(self):
+    #     # import pdb; pdb.set_trace()
+    #     return super().get_train_dataloader()
+
+
 def main(args):
 
     # # Load Pruned Model
@@ -48,6 +64,7 @@ def main(args):
         use_auth_token=True,
         padding_side="left",
         truncation_side="left",
+        torch_dtype=torch.bfloat16,
     )
     tokenizer.pad_token = tokenizer.eos_token
     # tokenizer.model_max_length = max_length
@@ -176,7 +193,7 @@ def main(args):
     # }
     # dataset initialize
     from tasks import get_data_module
-    args.train_file = "./data/alpaca_gpt4_data.json"
+    args.train_file = "/home/jiahangxu/working/LoRaPruner_506/data/alpaca_gpt4_data.json"
     train_data = get_data_module("alpaca-gpt4")(tokenizer, args, args, args, model)["train_dataset"]
 
     # test_data = load_dataset('wikitext', 'wikitext-2-raw-v1', split='test')
@@ -186,8 +203,8 @@ def main(args):
     from eval_ppl.ppl_new import get_wikitext_data_module
     test_data = get_wikitext_data_module("wikitext2", tokenizer, seq_len=1024, batch_size=1)
     val_data = {"wikitext": test_data}
-
-    trainer = transformers.Trainer(
+    
+    trainer = TrainerNew(
         model=model,
         train_dataset=train_data,
         eval_dataset=val_data,
