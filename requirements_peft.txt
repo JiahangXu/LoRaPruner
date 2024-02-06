@@ -1,5 +1,5 @@
 torch==2.0.0
-accelerate==0.15.0
+accelerate==0.26.1
 transformers==4.25.1
 tensorboard
 tensorboardX
@@ -9,12 +9,14 @@ tqdm
 mlflow
 azureml-mlflow
 protobuf==3.19.0
-deepspeed
+deepspeed==0.8.3
 evaluate 
-datasets==2.8.0 
+datasets==2.16.1
 sentencepiece==0.1.97 
 scipy 
 scikit-learn 
 py-spy
 pydantic==1.10.7
 zstandard
+peft==0.8.2
+wandb

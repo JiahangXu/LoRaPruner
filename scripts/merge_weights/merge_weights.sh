@@ -7,7 +7,7 @@ export TQDM_DISABLED=true
 pruned_lorazs_path=$1 # mark25
 finetune_lora_path=$2 # mark25FT9 / mark25FT15
 
-deepspeed --num_nodes=1 --num_gpus=1 --master_port=16112 merge_weights.py \
+python merge_weights.py \
   --pruning_type None \
   --target_sparsity 0. \
   --sparsity_epsilon 0.005 \
@@ -17,7 +17,7 @@ deepspeed --num_nodes=1 --num_gpus=1 --master_port=16112 merge_weights.py \
   --training_objective LM \
   --overwrite_output_dir \
   --output_dir ./ \
-  --cache_dir /dev/shm/ \
+  --cache_dir ../cache \
   --use_lora True \
   --lora_rank 8 \
   --lora_train_bias none \

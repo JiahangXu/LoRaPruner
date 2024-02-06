@@ -22,11 +22,11 @@ from models.modeling_llama import LlamaConfig
 from models.tokenization_llama import LlamaTokenizer
 from models.model_args import ModelArguments
 import torch
-import deepspeed
+import os
 
+teamdrive_path = os.environ.get('TEAMDRIVE')
 logger = logging.getLogger(__name__)
 
-ALPACA_TASK = ["alpaca", "alpaca-gpt4", "alpaca-gpt4-zh", "unnatural_instruction_gpt4", "math", "open_orca"]
 
 def set_lora_args(config, modeling_args):
     config.use_lora = modeling_args.use_lora
@@ -37,7 +37,8 @@ def set_lora_args(config, modeling_args):
     config.lora_layers = modeling_args.lora_layers
     return config
 
-refered_files_path = "~/working2/myfastnn/LoRaPruner/gpt4alpaca_llama7b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-7-31-21-23/epoch4/llama_pruned"
+
+refered_files_path = teamdrive_path + "LoRaPruner/gpt4alpaca_llama7b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-7-31-21-23/epoch4/llama_pruned"
 
 def main():
     # # Used for profiling, usage:
@@ -124,23 +125,16 @@ def main():
             padding_side="left",
             truncation_side="left",
         )
-        if model_args.random_init:
-            from transformers.deepspeed import deepspeed_config
-            with deepspeed.zero.Init(config_dict_or_path=deepspeed_config()):
-                model = LlamaForCausalLM(
-                    config=config,
-                )
-        else:
-            model = LlamaForCausalLM.from_pretrained(
-                model_args.model_name_or_path,
-                from_tf=bool(".ckpt" in model_args.model_name_or_path),
-                config=config,
-                cache_dir=model_args.cache_dir,
-                revision=model_args.model_revision,
-                use_auth_token=True,
-                ignore_mismatched_sizes=model_args.ignore_mismatched_sizes,
-                lora_ckpt = lora_ckpt
-            )
+        model = LlamaForCausalLM.from_pretrained(
+            model_args.model_name_or_path,
+            from_tf=bool(".ckpt" in model_args.model_name_or_path),
+            config=config,
+            cache_dir=model_args.cache_dir,
+            revision=model_args.model_revision,
+            use_auth_token=True,
+            ignore_mismatched_sizes=model_args.ignore_mismatched_sizes,
+            lora_ckpt = lora_ckpt
+        )
     else:
         raise ValueError("Training objective should be either cls or clm")
     
