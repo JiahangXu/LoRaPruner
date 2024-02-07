@@ -10,14 +10,13 @@ from typing import List
 
 import torch
 import transformers
-from datasets import load_dataset
+from trainer.finetune_trainer import CoFiTrainer
 
 from peft import (
     LoraConfig,
     get_peft_model,
     get_peft_model_state_dict,
     prepare_model_for_int8_training,
-    set_peft_model_state_dict,
 )
 from finetune import Prompter
 
@@ -26,21 +25,6 @@ from models.tokenization_llama import LlamaTokenizer
 from models.modeling_llama import LlamaForCausalLM
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-
-class TrainerNew(transformers.Trainer):
-    def __init__(
-        self, **kwargs
-    ):
-        super().__init__(**kwargs)
-        self.zs = None
-
-    # def fill_inputs_with_zs(self, zs, inputs):
-    #     for key in zs:
-    #         inputs[key] = zs[key]
-
-    # def get_train_dataloader(self):
-    #     # import pdb; pdb.set_trace()
-    #     return super().get_train_dataloader()
 
 
 def main(args):
@@ -202,8 +186,8 @@ def main(args):
     from eval_ppl.ppl_new import get_wikitext_data_module
     test_data = get_wikitext_data_module("wikitext2", tokenizer, seq_len=1024, batch_size=1)
     val_data = {"wikitext": test_data}
-    
-    trainer = TrainerNew(
+
+    trainer = CoFiTrainer(
         model=model,
         train_dataset=train_data,
         eval_dataset=val_data,

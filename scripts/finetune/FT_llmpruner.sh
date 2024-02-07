@@ -1,9 +1,10 @@
-lr=$1
-mark=${2}_lr${lr}
-ckpt_path=$3
+base_model_path=${1}
+lr=$2
+mark=${3}_lr${lr}
+ckpt_path=$4
 
 CUDA_VISIBLE_DEVICES=0 python post_training_lora_pruner.py \
-    --prune_model ./llama_pruned \
+    --prune_model $base_model_path \
     --pretrained_pruned_model $ckpt_path \
     --output_dir finetune_results/${mark}_bs8_AlpacaGPT4 \
     --wandb_project vLoRaPruner \
