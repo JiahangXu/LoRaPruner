@@ -33,7 +33,7 @@ def main(task_name: str, **kwargs):
         print("Using lm-eval")
         model_name = kwargs.pop("model_name")
         results = evaluator.simple_evaluate(
-            model="hf" if model_name in ["causal", "seq_to_seq"] else "llama",
+            model=model_name,
             model_args=f"pretrained={kwargs.pop('model_path')},tokenizer={kwargs.pop('tokenizer')}",
             tasks=[task_name],
             num_fewshot=kwargs.get("ntrain", 0),

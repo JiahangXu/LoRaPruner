@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import transformers
 #import peft
 import sys
-# sys.path.append("../LLM-Pruner")
+sys.path.append("../LLM-Pruner")
 try:
     import peft
 except:

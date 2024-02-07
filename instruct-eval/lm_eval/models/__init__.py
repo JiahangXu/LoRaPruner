@@ -7,6 +7,7 @@ from . import llama
 MODEL_REGISTRY = {
     "hf": gpt2.HFLM,
     "llama": llama.LlamaLM,
+    "llmpruner": llama.LLMPrunerLM,
     "gpt2": gpt2.GPT2LM,
     "gpt3": gpt3.GPT3LM,
     "textsynth": textsynth.TextSynthLM,

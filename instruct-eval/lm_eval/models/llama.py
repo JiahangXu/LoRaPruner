@@ -96,3 +96,60 @@ class LlamaLM(BaseLM):
         return self.model.generate(
             context, max_length=max_length, eos_token_id=eos_token_id, do_sample=False
         )
+
+
+class LLMPrunerLM(LlamaLM):
+    def __init__(
+        self,
+        device="cuda",
+        pretrained="huggyllama/llama-7b",
+        revision="main",
+        subfolder=None,
+        tokenizer=None,
+        batch_size=1,
+        load_8bit=True,
+        peft=None
+    ):
+        super().__init__()
+
+        assert isinstance(device, str)
+        assert isinstance(pretrained, str)
+        assert isinstance(batch_size, int)
+        self.batch_size_per_gpu = batch_size
+
+        if device:
+            if device not in ["cuda", "cpu"]:
+                device = int(device)
+            self._device = torch.device(device)
+            print(f"Using device '{device}'")
+        else:
+            print("Device not specified")
+            print(f"Cuda Available? {torch.cuda.is_available()}")
+            self._device = (
+                torch.device("cuda")
+                if torch.cuda.is_available()
+                else torch.device("cpu")
+            )
+
+        revision = revision + ("/" + subfolder if subfolder is not None else "")
+
+        pruned_dict = torch.load(pretrained, map_location='cpu')
+        tokenizer_backup, self.model = pruned_dict['tokenizer'], pruned_dict['model']
+        self.model.eval()
+
+        if tokenizer != None:
+            self.tokenizer = LlamaTokenizer.from_pretrained(
+                pretrained if tokenizer is None else tokenizer,
+                revision=revision,
+            )
+        else:
+            self.tokenizer = tokenizer_backup
+        self.vocab_size = len(self.tokenizer)
+
+        if peft is not None:
+            from peft import PeftModel
+            self.model = PeftModel.from_pretrained(
+                self.model,
+                peft,
+                torch_dtype=torch.bfloat16,
+            )

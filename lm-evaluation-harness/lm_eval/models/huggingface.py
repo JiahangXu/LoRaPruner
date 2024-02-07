@@ -8,10 +8,7 @@ from pathlib import Path
 from typing import List, Mapping, NewType, Optional, Tuple, Union
 from tqdm import tqdm
 
-from transformers import BatchEncoding
-from models.modeling_llama import LlamaConfig
-from models.tokenization_llama import LlamaTokenizer
-from models.modeling_llama import LlamaForCausalLM
+from transformers import BatchEncoding, LlamaTokenizer
 
 from lm_eval import utils
 from lm_eval.base import BaseLM

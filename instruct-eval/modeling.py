@@ -302,6 +302,27 @@ class LlamaModel(SeqToSeqModel):
         return A, B
 
 
+class LLMPrunerModel(LlamaModel):
+    import sys
+    sys.path.append("../LLM-Pruner")
+    use_template: bool = False
+
+    def load(self):
+        if self.tokenizer is None:
+            self.tokenizer = LlamaTokenizer.from_pretrained(self.model_path)
+        elif isinstance(self.tokenizer, str):
+            self.tokenizer = LlamaTokenizer.from_pretrained(self.tokenizer)
+        if self.model is None:
+            pruned_dict = torch.load(self.model_path, map_location='cpu')
+            self.model = pruned_dict['model']
+            if self.lora_path:
+                self.model = PeftModel.from_pretrained(self.model, self.lora_path)
+            self.model.eval()
+            self.model.half()
+            if not self.load_8bit:
+                self.model.to(self.device)
+
+
 def find_layers(module, layers=(nn.Conv2d, nn.Linear), name=""):
     if type(module) in layers:
         return {name: module}
@@ -497,6 +518,7 @@ def select_model(model_name: str, **kwargs) -> EvalModel:
         seq_to_seq=SeqToSeqModel,
         causal=CausalModel,
         llama=LlamaModel,
+        llmpruner=LLMPrunerModel,
         chatglm=ChatGLMModel,
         openai=OpenAIModel,
         rwkv=RWKVModel,
