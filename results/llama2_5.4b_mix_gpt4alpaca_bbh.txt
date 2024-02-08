@@ -1,0 +1,41 @@
+nohup: ignoring input
+prompt_mark 0
+{'data_dir': 'lukaemon/bbh', 'ntrain': 3, 'prompt_mark': 0, 'kwargs': {'model_name': 'llmpruner', 'model_path': '../LLM-Pruner/prune_log/llama2_prune_5.4b_mix/pytorch_model.bin', 'tokenizer': 'meta-llama/Llama-2-7b-hf', 'lora_path': '../LLM-Pruner/tune_log/llama2_5.4b_mix_gpt4alpaca'}, 'args': Namespace(data_dir='lukaemon/bbh', ntrain=3, prompt_mark=0, kwargs={'model_name': 'llmpruner', 'model_path': '../LLM-Pruner/prune_log/llama2_prune_5.4b_mix/pytorch_model.bin', 'tokenizer': 'meta-llama/Llama-2-7b-hf', 'lora_path': '../LLM-Pruner/tune_log/llama2_5.4b_mix_gpt4alpaca'}), 'model': LLMPrunerModel(model_path='../LLM-Pruner/prune_log/llama2_prune_5.4b_mix/pytorch_model.bin', max_input_length=2048, max_output_length=32, model=None, tokenizer='meta-llama/Llama-2-7b-hf', lora_path='../LLM-Pruner/tune_log/llama2_5.4b_mix_gpt4alpaca', device='cuda', load_8bit=False, do_sample=False, use_template=False, sys=<module 'sys' (built-in)>)}
+  0%|          | 0/27 [00:00<?, ?it/s]
+('lukaemon/bbh', 'test'):   0%|          | 0/250 [00:00<?, ?it/s][A('lukaemon/bbh', 'test'): 100%|██████████| 250/250 [00:00<00:00, 31981.46it/s]
+  0%|          | 0/27 [00:16<?, ?it/s]
+Traceback (most recent call last):
+  File "/mnt/jiahang/LoRaPruner/./instruct-eval/main.py", line 98, in <module>
+    Fire(main)
+  File "/home/aisilicon/miniconda3/envs/llm-pruner/lib/python3.10/site-packages/fire/core.py", line 141, in Fire
+    component_trace = _Fire(component, args, parsed_flag_args, context, name)
+  File "/home/aisilicon/miniconda3/envs/llm-pruner/lib/python3.10/site-packages/fire/core.py", line 475, in _Fire
+    component, remaining_args = _CallAndUpdateTrace(
+  File "/home/aisilicon/miniconda3/envs/llm-pruner/lib/python3.10/site-packages/fire/core.py", line 691, in _CallAndUpdateTrace
+    component = fn(*varargs, **kwargs)
+  File "/mnt/jiahang/LoRaPruner/./instruct-eval/main.py", line 30, in main
+    score = task_fn(**kwargs)
+  File "/mnt/jiahang/LoRaPruner/instruct-eval/bbh.py", line 143, in main
+    result = evaluate(model, data, ntrain=ntrain, prompt_mark=prompt_mark)
+  File "/mnt/jiahang/LoRaPruner/instruct-eval/bbh.py", line 85, in evaluate
+    while not model.check_valid_length(prompt) and k > 0:
+  File "/mnt/jiahang/LoRaPruner/instruct-eval/modeling.py", line 46, in check_valid_length
+    return self.count_text_length(text) <= self.max_input_length
+  File "/mnt/jiahang/LoRaPruner/instruct-eval/modeling.py", line 165, in count_text_length
+    self.load()
+  File "/mnt/jiahang/LoRaPruner/instruct-eval/modeling.py", line 323, in load
+    self.model.to(self.device)
+  File "/home/aisilicon/miniconda3/envs/llm-pruner/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1145, in to
+    return self._apply(convert)
+  File "/home/aisilicon/miniconda3/envs/llm-pruner/lib/python3.10/site-packages/torch/nn/modules/module.py", line 797, in _apply
+    module._apply(fn)
+  File "/home/aisilicon/miniconda3/envs/llm-pruner/lib/python3.10/site-packages/torch/nn/modules/module.py", line 797, in _apply
+    module._apply(fn)
+  File "/home/aisilicon/miniconda3/envs/llm-pruner/lib/python3.10/site-packages/torch/nn/modules/module.py", line 797, in _apply
+    module._apply(fn)
+  [Previous line repeated 5 more times]
+  File "/home/aisilicon/miniconda3/envs/llm-pruner/lib/python3.10/site-packages/torch/nn/modules/module.py", line 820, in _apply
+    param_applied = fn(param)
+  File "/home/aisilicon/miniconda3/envs/llm-pruner/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1143, in convert
+    return t.to(device, dtype if t.is_floating_point() or t.is_complex() else None, non_blocking)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 66.00 MiB (GPU 0; 79.15 GiB total capacity; 3.35 GiB already allocated; 53.94 MiB free; 3.38 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF

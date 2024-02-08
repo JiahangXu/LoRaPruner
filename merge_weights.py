@@ -38,7 +38,7 @@ def set_lora_args(config, modeling_args):
     return config
 
 
-refered_files_path = teamdrive_path + "LoRaPruner/gpt4alpaca_llama7b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-7-31-21-23/epoch4/llama_pruned"
+refered_files_path = teamdrive_path + "/LoRaPruner/gpt4alpaca_llama7b_promptlong_closeinit_gate2_0.5lagST-s30.0-lr5e-05-reglr0.05-warmup2/2023-7-31-21-23/epoch4/llama_pruned"
 
 def main():
     # # Used for profiling, usage:

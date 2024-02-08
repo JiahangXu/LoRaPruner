@@ -1,0 +1,77 @@
+nohup: ignoring input
+0
+The tokenizer class you load from this checkpoint is not the same type as the class this function is called from. It may result in unexpected tokenization. 
+The tokenizer class you load from this checkpoint is 'LLaMATokenizer'. 
+The class this function is called from is 'LlamaTokenizer'.
+/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/peft/utils/other.py:143: FutureWarning: prepare_model_for_int8_training is deprecated and will be removed in a future version. Use prepare_model_for_kbit_training instead.
+  warnings.warn(
+WARNING:root:Loading data...
+WARNING:root:Formatting inputs...
+WARNING:root:Tokenizing inputs... This may take some time...
+8
+trainable params: 19,988,480 || all params: 6,758,404,096 || trainable%: 0.2957573965106688
+prompt_mark:  None
+Running tokenizer on dataset:   0%|          | 0/4358 [00:00<?, ? examples/s]Running tokenizer on dataset:  23%|██▎       | 1000/4358 [00:00<00:01, 1844.80 examples/s]Running tokenizer on dataset:  46%|████▌     | 2000/4358 [00:01<00:01, 2010.30 examples/s]Running tokenizer on dataset:  69%|██████▉   | 3000/4358 [00:01<00:00, 1998.28 examples/s]Running tokenizer on dataset:  92%|█████████▏| 4000/4358 [00:01<00:00, 2164.46 examples/s]Running tokenizer on dataset: 100%|██████████| 4358/4358 [00:02<00:00, 2206.66 examples/s]Running tokenizer on dataset: 100%|██████████| 4358/4358 [00:02<00:00, 2111.31 examples/s]
+Running tokenizer on dataset:   0%|          | 0/36718 [00:00<?, ? examples/s]Running tokenizer on dataset:   3%|▎         | 1000/36718 [00:00<00:15, 2260.67 examples/s]Running tokenizer on dataset:   5%|▌         | 2000/36718 [00:00<00:16, 2045.10 examples/s]Running tokenizer on dataset:   8%|▊         | 3000/36718 [00:01<00:15, 2165.89 examples/s]Running tokenizer on dataset:  11%|█         | 4000/36718 [00:01<00:15, 2159.11 examples/s]Running tokenizer on dataset:  14%|█▎        | 5000/36718 [00:02<00:13, 2303.53 examples/s]Running tokenizer on dataset:  16%|█▋        | 6000/36718 [00:02<00:13, 2346.95 examples/s]Running tokenizer on dataset:  19%|█▉        | 7000/36718 [00:03<00:13, 2132.29 examples/s]Running tokenizer on dataset:  22%|██▏       | 8000/36718 [00:03<00:13, 2121.02 examples/s]Running tokenizer on dataset:  25%|██▍       | 9000/36718 [00:04<00:12, 2150.17 examples/s]Running tokenizer on dataset:  27%|██▋       | 10000/36718 [00:04<00:12, 2183.74 examples/s]Running tokenizer on dataset:  30%|██▉       | 11000/36718 [00:05<00:11, 2166.13 examples/s]Running tokenizer on dataset:  33%|███▎      | 12000/36718 [00:05<00:11, 2189.14 examples/s]Running tokenizer on dataset:  35%|███▌      | 13000/36718 [00:05<00:10, 2162.56 examples/s]Running tokenizer on dataset:  38%|███▊      | 14000/36718 [00:06<00:10, 2211.88 examples/s]Running tokenizer on dataset:  41%|████      | 15000/36718 [00:06<00:09, 2243.91 examples/s]Running tokenizer on dataset:  44%|████▎     | 16000/36718 [00:07<00:09, 2147.52 examples/s]Running tokenizer on dataset:  46%|████▋     | 17000/36718 [00:07<00:09, 2153.32 examples/s]Running tokenizer on dataset:  49%|████▉     | 18000/36718 [00:08<00:08, 2177.32 examples/s]Running tokenizer on dataset:  52%|█████▏    | 19000/36718 [00:08<00:07, 2238.30 examples/s]Running tokenizer on dataset:  54%|█████▍    | 20000/36718 [00:09<00:07, 2249.49 examples/s]Running tokenizer on dataset:  57%|█████▋    | 21000/36718 [00:09<00:07, 2206.12 examples/s]Running tokenizer on dataset:  60%|█████▉    | 22000/36718 [00:10<00:06, 2172.25 examples/s]Running tokenizer on dataset:  63%|██████▎   | 23000/36718 [00:10<00:06, 2218.08 examples/s]Running tokenizer on dataset:  65%|██████▌   | 24000/36718 [00:11<00:06, 1980.76 examples/s]Running tokenizer on dataset:  68%|██████▊   | 25000/36718 [00:11<00:05, 2092.67 examples/s]Running tokenizer on dataset:  71%|███████   | 26000/36718 [00:11<00:05, 2117.96 examples/s]Running tokenizer on dataset:  74%|███████▎  | 27000/36718 [00:12<00:04, 2073.33 examples/s]Running tokenizer on dataset:  76%|███████▋  | 28000/36718 [00:12<00:04, 2065.99 examples/s]Running tokenizer on dataset:  79%|███████▉  | 29000/36718 [00:13<00:03, 2177.17 examples/s]Running tokenizer on dataset:  82%|████████▏ | 30000/36718 [00:13<00:03, 2199.77 examples/s]Running tokenizer on dataset:  84%|████████▍ | 31000/36718 [00:14<00:02, 2085.86 examples/s]Running tokenizer on dataset:  87%|████████▋ | 32000/36718 [00:14<00:02, 2095.54 examples/s]Running tokenizer on dataset:  90%|████████▉ | 33000/36718 [00:15<00:01, 2080.61 examples/s]Running tokenizer on dataset:  93%|█████████▎| 34000/36718 [00:15<00:01, 2085.12 examples/s]Running tokenizer on dataset:  95%|█████████▌| 35000/36718 [00:16<00:00, 2145.16 examples/s]Running tokenizer on dataset:  98%|█████████▊| 36000/36718 [00:16<00:00, 2115.74 examples/s]Running tokenizer on dataset: 100%|██████████| 36718/36718 [00:17<00:00, 2149.76 examples/s]Running tokenizer on dataset: 100%|██████████| 36718/36718 [00:17<00:00, 2153.52 examples/s]
+Running tokenizer on dataset:   0%|          | 0/3760 [00:00<?, ? examples/s]Running tokenizer on dataset:  27%|██▋       | 1000/3760 [00:00<00:01, 2585.53 examples/s]Running tokenizer on dataset:  53%|█████▎    | 2000/3760 [00:00<00:00, 2196.67 examples/s]Running tokenizer on dataset:  80%|███████▉  | 3000/3760 [00:01<00:00, 2103.62 examples/s]Running tokenizer on dataset: 100%|██████████| 3760/3760 [00:01<00:00, 2140.49 examples/s]Running tokenizer on dataset: 100%|██████████| 3760/3760 [00:01<00:00, 2168.17 examples/s]
+Grouping texts in chunks of 1024:   0%|          | 0/4358 [00:00<?, ? examples/s]Grouping texts in chunks of 1024:  23%|██▎       | 1000/4358 [00:00<00:00, 9432.08 examples/s]Grouping texts in chunks of 1024:  69%|██████▉   | 3000/4358 [00:00<00:00, 9844.60 examples/s]Grouping texts in chunks of 1024: 100%|██████████| 4358/4358 [00:00<00:00, 10567.50 examples/s]Grouping texts in chunks of 1024: 100%|██████████| 4358/4358 [00:00<00:00, 10294.08 examples/s]
+Grouping texts in chunks of 1024:   0%|          | 0/36718 [00:00<?, ? examples/s]Grouping texts in chunks of 1024:   5%|▌         | 2000/36718 [00:00<00:03, 9814.77 examples/s]Grouping texts in chunks of 1024:  11%|█         | 4000/36718 [00:00<00:03, 10380.40 examples/s]Grouping texts in chunks of 1024:  16%|█▋        | 6000/36718 [00:00<00:02, 11151.53 examples/s]Grouping texts in chunks of 1024:  22%|██▏       | 8000/36718 [00:00<00:02, 10325.80 examples/s]Grouping texts in chunks of 1024:  27%|██▋       | 10000/36718 [00:00<00:02, 10444.93 examples/s]Grouping texts in chunks of 1024:  33%|███▎      | 12000/36718 [00:01<00:02, 10441.83 examples/s]Grouping texts in chunks of 1024:  38%|███▊      | 14000/36718 [00:01<00:02, 10478.96 examples/s]Grouping texts in chunks of 1024:  44%|████▎     | 16000/36718 [00:01<00:02, 10357.02 examples/s]Grouping texts in chunks of 1024:  49%|████▉     | 18000/36718 [00:01<00:01, 10330.31 examples/s]Grouping texts in chunks of 1024:  54%|█████▍    | 20000/36718 [00:01<00:01, 10557.71 examples/s]Grouping texts in chunks of 1024:  60%|█████▉    | 22000/36718 [00:02<00:01, 10287.49 examples/s]Grouping texts in chunks of 1024:  65%|██████▌   | 24000/36718 [00:02<00:01, 10669.42 examples/s]Grouping texts in chunks of 1024:  71%|███████   | 26000/36718 [00:02<00:00, 10791.90 examples/s]Grouping texts in chunks of 1024:  76%|███████▋  | 28000/36718 [00:02<00:00, 10397.65 examples/s]Grouping texts in chunks of 1024:  82%|████████▏ | 30000/36718 [00:02<00:00, 10636.99 examples/s]Grouping texts in chunks of 1024:  87%|████████▋ | 32000/36718 [00:03<00:00, 10195.07 examples/s]Grouping texts in chunks of 1024:  93%|█████████▎| 34000/36718 [00:03<00:00, 10030.34 examples/s]Grouping texts in chunks of 1024:  98%|█████████▊| 36000/36718 [00:03<00:00, 10074.02 examples/s]Grouping texts in chunks of 1024: 100%|██████████| 36718/36718 [00:03<00:00, 10335.00 examples/s]
+Grouping texts in chunks of 1024:   0%|          | 0/3760 [00:00<?, ? examples/s]Grouping texts in chunks of 1024:  53%|█████▎    | 2000/3760 [00:00<00:00, 10468.54 examples/s]Grouping texts in chunks of 1024: 100%|██████████| 3760/3760 [00:00<00:00, 10095.73 examples/s]Grouping texts in chunks of 1024: 100%|██████████| 3760/3760 [00:00<00:00, 10076.18 examples/s]
+Automatic Weights & Biases logging enabled, to disable set os.environ["WANDB_DISABLED"] = "true"
+wandb: Currently logged in as: jiahangxu (jiahangxuwork). Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.16.3 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.2
+wandb: Run data is saved locally in /mnt/jiahang/LoRaPruner/wandb/run-20240208_153511-jyzbp95r
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run mark25_LoRaApplyAll_lr2e-4_bs8_AlpacaGPT4
+wandb: ⭐️ View project at https://wandb.ai/jiahangxuwork/huggingface
+wandb: 🚀 View run at https://wandb.ai/jiahangxuwork/huggingface/runs/jyzbp95r
+  0%|          | 0/13000 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "/mnt/jiahang/LoRaPruner/post_training_lora_pruner.py", line 278, in <module>
+    main(args)
+  File "/mnt/jiahang/LoRaPruner/post_training_lora_pruner.py", line 231, in main
+    trainer.train(resume_from_checkpoint=args.resume_from_checkpoint)
+  File "/mnt/jiahang/LoRaPruner/trainer/finetune_trainer.py", line 1528, in train
+    return inner_training_loop(
+  File "/mnt/jiahang/LoRaPruner/trainer/finetune_trainer.py", line 1784, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs)
+  File "/mnt/jiahang/LoRaPruner/trainer/finetune_trainer.py", line 2532, in training_step
+    loss = self.compute_loss(model, inputs)
+  File "/mnt/jiahang/LoRaPruner/trainer/finetune_trainer.py", line 2564, in compute_loss
+    outputs = model(**inputs)
+  File "/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/peft/peft_model.py", line 1083, in forward
+    return self.base_model(
+  File "/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/peft/tuners/tuners_utils.py", line 161, in forward
+    return self.model.forward(*args, **kwargs)
+  File "/mnt/jiahang/LoRaPruner/models/modeling_llama.py", line 1758, in forward
+    outputs = self.model(
+  File "/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/mnt/jiahang/LoRaPruner/models/modeling_llama.py", line 1601, in forward
+    layer_outputs = decoder_layer(
+  File "/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/mnt/jiahang/LoRaPruner/models/modeling_llama.py", line 576, in forward
+    hidden_states = self.mlp(hidden_states, intermediate_z, mlp_z)
+  File "/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/mnt/jiahang/LoRaPruner/models/modeling_llama.py", line 355, in forward
+    up_output = self.up_proj(x)
+  File "/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/peft/tuners/lora/layer.py", line 316, in forward
+    result += lora_B(lora_A(dropout(x))) * scaling
+  File "/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/aisilicon/miniconda3/envs/compresso/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 114, in forward
+    return F.linear(input, self.weight, self.bias)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB (GPU 0; 79.15 GiB total capacity; 26.66 GiB already allocated; 7.75 MiB free; 26.67 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+wandb: - 0.012 MB of 0.012 MB uploadedwandb: \ 0.012 MB of 0.012 MB uploadedwandb: | 0.012 MB of 0.012 MB uploadedwandb: / 0.012 MB of 0.012 MB uploadedwandb: - 0.033 MB of 0.041 MB uploaded (0.003 MB deduped)wandb: \ 0.053 MB of 0.053 MB uploaded (0.003 MB deduped)wandb: 🚀 View run mark25_LoRaApplyAll_lr2e-4_bs8_AlpacaGPT4 at: https://wandb.ai/jiahangxuwork/huggingface/runs/jyzbp95r
+wandb: ️⚡ View job at https://wandb.ai/jiahangxuwork/huggingface/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjEzNzg2MDU0Ng==/version_details/v3
+wandb: Synced 6 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240208_153511-jyzbp95r/logs

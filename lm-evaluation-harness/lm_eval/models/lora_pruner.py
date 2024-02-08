@@ -270,7 +270,6 @@ class HuggingFaceAutoLM(BaseLM):
             self.zs = zs
 
         self.model = self.AUTO_MODEL_CLASS.from_pretrained(
-                self.AUTO_MODEL_CLASS,
                 pretrained,
                 from_tf=False,
                 config=self._config,

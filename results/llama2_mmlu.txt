@@ -1,0 +1,90 @@
+nohup: ignoring input
+prompt_mark 0
+{'data_dir': 'data/mmlu', 'ntrain': 5, 'prompt_mark': 0, 'kwargs': {'model_name': 'llama', 'model_path': 'meta-llama/Llama-2-7b-hf'}, 'args': Namespace(data_dir='data/mmlu', ntrain=5, prompt_mark=0, kwargs={'model_name': 'llama', 'model_path': 'meta-llama/Llama-2-7b-hf'}), 'model': LlamaModel(model_path='meta-llama/Llama-2-7b-hf', max_input_length=2048, max_output_length=2, model=None, tokenizer=None, lora_path='', device='cuda', load_8bit=False, do_sample=False, use_template=False)}
+  0%|          | 0/57 [00:00<?, ?it/s]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s][A
+Loading checkpoint shards:  50%|█████     | 1/2 [00:04<00:04,  4.55s/it][A
+Loading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  2.83s/it][ALoading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  3.09s/it]
+  2%|▏         | 1/57 [00:32<30:11, 32.35s/it]  4%|▎         | 2/57 [00:46<20:00, 21.82s/it]  5%|▌         | 3/57 [01:14<22:04, 24.53s/it]  7%|▋         | 4/57 [01:32<19:20, 21.90s/it]  9%|▉         | 5/57 [02:10<24:07, 27.84s/it] 11%|█         | 6/57 [02:32<22:01, 25.92s/it] 12%|█▏        | 7/57 [02:49<18:58, 22.78s/it] 14%|█▍        | 8/57 [03:12<18:43, 22.92s/it] 16%|█▌        | 9/57 [03:29<16:50, 21.04s/it] 18%|█▊        | 10/57 [03:57<18:16, 23.32s/it] 19%|█▉        | 11/57 [04:13<16:02, 20.93s/it] 21%|██        | 12/57 [04:26<14:00, 18.68s/it] 23%|██▎       | 13/57 [04:54<15:34, 21.24s/it] 25%|██▍       | 14/57 [05:14<15:05, 21.05s/it] 26%|██▋       | 15/57 [05:35<14:44, 21.07s/it] 28%|██▊       | 16/57 [06:40<23:21, 34.17s/it] 30%|██▉       | 17/57 [07:04<20:51, 31.29s/it] 32%|███▏      | 18/57 [07:20<17:15, 26.56s/it] 33%|███▎      | 19/57 [08:14<21:59, 34.71s/it] 35%|███▌      | 20/57 [08:48<21:23, 34.68s/it] 37%|███▋      | 21/57 [09:16<19:35, 32.64s/it] 39%|███▊      | 22/57 [10:54<30:27, 52.22s/it] 40%|████      | 23/57 [11:23<25:35, 45.16s/it] 42%|████▏     | 24/57 [11:53<22:25, 40.77s/it] 44%|████▍     | 25/57 [12:51<24:25, 45.80s/it] 46%|████▌     | 26/57 [13:35<23:21, 45.21s/it] 47%|████▋     | 27/57 [14:10<21:08, 42.27s/it] 49%|████▉     | 28/57 [14:36<18:03, 37.35s/it] 51%|█████     | 29/57 [16:06<24:44, 53.02s/it] 53%|█████▎    | 30/57 [16:58<23:47, 52.88s/it] 54%|█████▍    | 31/57 [18:57<31:31, 72.74s/it] 56%|█████▌    | 32/57 [20:47<34:54, 83.78s/it] 58%|█████▊    | 33/57 [21:14<26:42, 66.77s/it] 60%|█████▉    | 34/57 [21:31<19:50, 51.76s/it] 61%|██████▏   | 35/57 [21:54<15:49, 43.18s/it] 63%|██████▎   | 36/57 [22:09<12:13, 34.91s/it] 65%|██████▍   | 37/57 [22:34<10:34, 31.72s/it] 67%|██████▋   | 38/57 [22:55<09:04, 28.66s/it] 68%|██████▊   | 39/57 [23:07<07:04, 23.59s/it] 70%|███████   | 40/57 [23:41<07:33, 26.69s/it] 72%|███████▏  | 41/57 [23:54<06:03, 22.74s/it] 74%|███████▎  | 42/57 [25:27<10:55, 43.67s/it] 75%|███████▌  | 43/57 [26:20<10:53, 46.66s/it] 77%|███████▋  | 44/57 [29:15<18:24, 84.94s/it] 79%|███████▉  | 45/57 [30:14<15:25, 77.13s/it] 81%|████████  | 46/57 [30:53<12:02, 65.67s/it] 82%|████████▏ | 47/57 [31:47<10:24, 62.44s/it] 84%|████████▍ | 48/57 [32:50<09:22, 62.49s/it] 86%|████████▌ | 49/57 [47:00<39:49, 298.66s/it] 88%|████████▊ | 50/57 [48:40<27:53, 239.13s/it] 89%|████████▉ | 51/57 [50:30<20:02, 200.41s/it] 91%|█████████ | 52/57 [50:47<12:06, 145.31s/it] 93%|█████████▎| 53/57 [52:23<08:42, 130.56s/it] 95%|█████████▍| 54/57 [52:54<05:02, 100.82s/it] 96%|█████████▋| 55/57 [53:10<02:30, 75.16s/it]  98%|█████████▊| 56/57 [53:33<00:59, 59.48s/it]100%|██████████| 57/57 [53:53<00:00, 47.72s/it]100%|██████████| 57/57 [53:53<00:00, 56.73s/it]
+Average accuracy 0.330 - abstract_algebra
+Average accuracy 0.452 - anatomy
+Average accuracy 0.401 - astronomy
+Average accuracy 0.460 - business_ethics
+Average accuracy 0.426 - clinical_knowledge
+Average accuracy 0.444 - college_biology
+Average accuracy 0.300 - college_chemistry
+Average accuracy 0.350 - college_computer_science
+Average accuracy 0.360 - college_mathematics
+Average accuracy 0.399 - college_medicine
+Average accuracy 0.225 - college_physics
+Average accuracy 0.550 - computer_security
+Average accuracy 0.421 - conceptual_physics
+Average accuracy 0.263 - econometrics
+Average accuracy 0.386 - electrical_engineering
+Average accuracy 0.251 - elementary_mathematics
+Average accuracy 0.270 - formal_logic
+Average accuracy 0.270 - global_facts
+Average accuracy 0.432 - high_school_biology
+Average accuracy 0.286 - high_school_chemistry
+Average accuracy 0.380 - high_school_computer_science
+Average accuracy 0.491 - high_school_european_history
+Average accuracy 0.424 - high_school_geography
+Average accuracy 0.596 - high_school_government_and_politics
+Average accuracy 0.431 - high_school_macroeconomics
+Average accuracy 0.200 - high_school_mathematics
+Average accuracy 0.387 - high_school_microeconomics
+Average accuracy 0.258 - high_school_physics
+Average accuracy 0.556 - high_school_psychology
+Average accuracy 0.282 - high_school_statistics
+Average accuracy 0.500 - high_school_us_history
+Average accuracy 0.489 - high_school_world_history
+Average accuracy 0.484 - human_aging
+Average accuracy 0.450 - human_sexuality
+Average accuracy 0.587 - international_law
+Average accuracy 0.481 - jurisprudence
+Average accuracy 0.472 - logical_fallacies
+Average accuracy 0.312 - machine_learning
+Average accuracy 0.515 - management
+Average accuracy 0.662 - marketing
+Average accuracy 0.490 - medical_genetics
+Average accuracy 0.604 - miscellaneous
+Average accuracy 0.454 - moral_disputes
+Average accuracy 0.269 - moral_scenarios
+Average accuracy 0.415 - nutrition
+Average accuracy 0.566 - philosophy
+Average accuracy 0.460 - prehistory
+Average accuracy 0.294 - professional_accounting
+Average accuracy 0.315 - professional_law
+Average accuracy 0.434 - professional_medicine
+Average accuracy 0.415 - professional_psychology
+Average accuracy 0.536 - public_relations
+Average accuracy 0.416 - security_studies
+Average accuracy 0.602 - sociology
+Average accuracy 0.610 - us_foreign_policy
+Average accuracy 0.373 - virology
+Average accuracy 0.608 - world_religions
+Average accuracy 0.262 - math
+Average accuracy 0.431 - health
+Average accuracy 0.347 - physics
+Average accuracy 0.581 - business
+Average accuracy 0.436 - biology
+Average accuracy 0.290 - chemistry
+Average accuracy 0.396 - computer science
+Average accuracy 0.391 - economics
+Average accuracy 0.386 - engineering
+Average accuracy 0.392 - philosophy
+Average accuracy 0.500 - other
+Average accuracy 0.482 - history
+Average accuracy 0.424 - geography
+Average accuracy 0.520 - politics
+Average accuracy 0.481 - psychology
+Average accuracy 0.542 - culture
+Average accuracy 0.344 - law
+------------
+Average accuracy 0.333 - STEM
+Average accuracy 0.392 - humanities
+Average accuracy 0.471 - social sciences
+Average accuracy 0.476 - other (business, health, misc.)
+Average accuracy: 0.416
+{'mmlu': 41.6}
+mmlu: 41.6

@@ -1,0 +1,25 @@
+{
+  "results": {
+    "openbookqa": {
+      "acc": 0.156,
+      "acc_stderr": 0.01624363602839109,
+      "acc_norm": 0.298,
+      "acc_norm_stderr": 0.020475118092988978
+    }
+  },
+  "versions": {
+    "openbookqa": 0
+  },
+  "config": {
+    "model": "lora-pruner",
+    "model_args": "pretrained=./llama_pruned_5B,peft=./finetune_results/mark28-2_LoRaApplyAll_lr1e-5_bs8_AlpacaGPT4,prompt_mark=0,peft_mode=True",
+    "num_fewshot": 0,
+    "batch_size": null,
+    "batch_sizes": [],
+    "device": "cuda:0",
+    "no_cache": true,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "description_dict": {}
+  }
+}

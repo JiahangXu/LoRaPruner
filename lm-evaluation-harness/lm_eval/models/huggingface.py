@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import List, Mapping, NewType, Optional, Tuple, Union
 from tqdm import tqdm
 
-from transformers import BatchEncoding, LlamaTokenizer
+from transformers import BatchEncoding
 
 from lm_eval import utils
 from lm_eval.base import BaseLM
@@ -60,6 +60,12 @@ def _get_dtype(
 
 
 class HuggingFaceAutoLM(BaseLM):
+    try:
+        from transformers import LlamaTokenizer
+    except:
+        LlamaTokenizer = None
+        print("Please install transformer>=4.29 to use huggingface model!")
+
     AUTO_CONFIG_CLASS: transformers.AutoConfig = transformers.AutoConfig
     AUTO_TOKENIZER_CLASS: transformers.AutoTokenizer = LlamaTokenizer
     AUTO_MODEL_CLASS: transformers.AutoModel = None

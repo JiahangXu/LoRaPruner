@@ -5,7 +5,7 @@ tune_ckpt_name=$2
 prune_ckpt=$3
 tune_id="${tune_ckpt_name##*/}"
 
-CUDA_VISIBLE_DEVICES=1 python ./instruct-eval/main.py bbh \
+python ./instruct-eval/main.py bbh \
     --model_name llmpruner \
     --model_path  $prune_ckpt/pytorch_model.bin \
     --tokenizer $base_model \
