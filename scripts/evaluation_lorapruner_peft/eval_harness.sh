@@ -16,6 +16,6 @@ python ./lm-evaluation-harness/main.py \
     --output_path results/llama2_${peft_mark}_${prompt_mark}.json \
     --no_cache
 
-python ./lm-evaluation-harness/generate.py results/llama2_${peft_mark}_${prompt_mark}.json
+python ./lm-evaluation-harness/summary.py results/llama2_${peft_mark}_${prompt_mark}.json
 
 # nohup bash eval_harness.sh > eval_log.txt 2>&1 &

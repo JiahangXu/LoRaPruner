@@ -15,5 +15,5 @@ python ./lm-evaluation-harness/main.py \
     --output_path results/${tune_id}_nopeft.json \
     --no_cache
 
-python ./lm-evaluation-harness/generate.py results/${tune_id}_nopeft.json
+python ./lm-evaluation-harness/summary.py results/${tune_id}_nopeft.json
 

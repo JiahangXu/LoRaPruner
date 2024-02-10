@@ -8,5 +8,5 @@ python ./lm-evaluation-harness/main.py \
     --output_path results/llama2.json \
     --no_cache
 
-python ./lm-evaluation-harness/generate.py results/llama2.json
+python ./lm-evaluation-harness/summary.py results/llama2.json
 

@@ -74,7 +74,7 @@ def set_lora_args(config):
     config.lora_rank = 8
     config.lora_train_bias = None
     config.lora_alpha = 8.0
-    config.lora_param = "Q.V"
+    config.lora_param = "Q.K.V.O.F"
     config.lora_layers = config.num_hidden_layers
     return config
 
@@ -268,6 +268,20 @@ class HuggingFaceAutoLM(BaseLM):
             for key in zs:
                 zs[key] = zs[key].cuda().detach().half()
             self.zs = zs
+
+            from models.l0_module import L0Module
+            l0_module = L0Module(config=self._config)
+            sparsity_info = l0_module.calculate_model_size(zs)
+            if "decapoda-research/llama-13b-hf" in pretrained:
+                embedding_parmas = 334648320
+                model_params = 13022417920
+            else:
+                embedding_parmas = 262410240
+                model_params = 6738415616
+            print(f"Model path: {lora_ckpt}")
+            print(f"Sparsity: {sparsity_info['pruned_model_sparsity']}")
+            print(f"Ramaining Params: {sparsity_info['remaining_params'] + embedding_parmas}")
+            print(f"Sparsity: {1 - (sparsity_info['remaining_params'] + embedding_parmas) / model_params}")
 
         self.model = self.AUTO_MODEL_CLASS.from_pretrained(
                 pretrained,
