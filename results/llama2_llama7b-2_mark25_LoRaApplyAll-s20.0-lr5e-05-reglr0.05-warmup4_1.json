@@ -1,0 +1,73 @@
+{
+  "results": {
+    "arc_challenge": {
+      "acc": 0.3839590443686007,
+      "acc_stderr": 0.01421244498065189,
+      "acc_norm": 0.4069965870307167,
+      "acc_norm_stderr": 0.014356399418009126
+    },
+    "arc_easy": {
+      "acc": 0.6936026936026936,
+      "acc_stderr": 0.009459453573398332,
+      "acc_norm": 0.625,
+      "acc_norm_stderr": 0.009933992677987828
+    },
+    "boolq": {
+      "acc": 0.7330275229357798,
+      "acc_stderr": 0.007737237462219765
+    },
+    "hellaswag": {
+      "acc": 0.5241983668591914,
+      "acc_stderr": 0.0049839343432504565,
+      "acc_norm": 0.6936865166301533,
+      "acc_norm_stderr": 0.004600194559865527
+    },
+    "openbookqa": {
+      "acc": 0.314,
+      "acc_stderr": 0.020776701920308997,
+      "acc_norm": 0.43,
+      "acc_norm_stderr": 0.02216263442665284
+    },
+    "piqa": {
+      "acc": 0.7578890097932536,
+      "acc_stderr": 0.009994371269104376,
+      "acc_norm": 0.7546245919477693,
+      "acc_norm_stderr": 0.010039831320422386
+    },
+    "race_high": {
+      "acc": 0.39712918660287083,
+      "acc_stderr": 0.015143553050563112
+    },
+    "storycloze_2018": {
+      "acc": 0.8022447888829503,
+      "acc_stderr": 0.009210784413665784
+    },
+    "winogrande": {
+      "acc": 0.6890292028413575,
+      "acc_stderr": 0.01300953473628607
+    }
+  },
+  "versions": {
+    "arc_challenge": 0,
+    "arc_easy": 0,
+    "boolq": 1,
+    "hellaswag": 0,
+    "openbookqa": 0,
+    "piqa": 0,
+    "race_high": 1,
+    "storycloze_2018": 0,
+    "winogrande": 0
+  },
+  "config": {
+    "model": "lora-pruner",
+    "model_args": "pretrained=meta-llama/Llama-2-7b-hf,peft=/home/aisilicon/yiran/teamdrive/LoRaPruner/A100_pruning_ckpt/llama7b-2_mark25_LoRaApplyAll-s20.0-lr5e-05-reglr0.05-warmup4/2024-2-4-2-51/epoch6,prompt_mark=1",
+    "num_fewshot": 0,
+    "batch_size": null,
+    "batch_sizes": [],
+    "device": "cuda:0",
+    "no_cache": true,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "description_dict": {}
+  }
+}
