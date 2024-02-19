@@ -1,0 +1,73 @@
+{
+  "results": {
+    "arc_challenge": {
+      "acc": 0.2090443686006826,
+      "acc_stderr": 0.01188274698740645,
+      "acc_norm": 0.26023890784982934,
+      "acc_norm_stderr": 0.012821930225112564
+    },
+    "arc_easy": {
+      "acc": 0.2916666666666667,
+      "acc_stderr": 0.009326752065621158,
+      "acc_norm": 0.2882996632996633,
+      "acc_norm_stderr": 0.009294774252029615
+    },
+    "boolq": {
+      "acc": 0.5434250764525994,
+      "acc_stderr": 0.008712010793695305
+    },
+    "hellaswag": {
+      "acc": 0.312885879306911,
+      "acc_stderr": 0.00462720707317128,
+      "acc_norm": 0.3556064528978291,
+      "acc_norm_stderr": 0.004777183508949809
+    },
+    "openbookqa": {
+      "acc": 0.206,
+      "acc_stderr": 0.01810479403733354,
+      "acc_norm": 0.324,
+      "acc_norm_stderr": 0.020950557312477452
+    },
+    "piqa": {
+      "acc": 0.5832426550598476,
+      "acc_stderr": 0.011503015163618313,
+      "acc_norm": 0.5750816104461371,
+      "acc_norm_stderr": 0.011533547946654777
+    },
+    "race_high": {
+      "acc": 0.24688995215311005,
+      "acc_stderr": 0.013345371852595456
+    },
+    "storycloze_2018": {
+      "acc": 0.5419561731694281,
+      "acc_stderr": 0.01152165316822473
+    },
+    "winogrande": {
+      "acc": 0.5288082083662194,
+      "acc_stderr": 0.014029141615909624
+    }
+  },
+  "versions": {
+    "arc_challenge": 0,
+    "arc_easy": 0,
+    "boolq": 1,
+    "hellaswag": 0,
+    "openbookqa": 0,
+    "piqa": 0,
+    "race_high": 1,
+    "storycloze_2018": 0,
+    "winogrande": 0
+  },
+  "config": {
+    "model": "lora-pruner",
+    "model_args": "pretrained=meta-llama/Llama-2-7b-hf,peft=/home/aisilicon/yiran/teamdrive/LoRaPruner/A100_pruning_ckpt/llama2-7b_mark28-5-s34.56-lr5e-05-reglr0.05-warmup4/2024-2-6-15-58/epoch6,prompt_mark=0",
+    "num_fewshot": 0,
+    "batch_size": null,
+    "batch_sizes": [],
+    "device": "cuda:0",
+    "no_cache": true,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "description_dict": {}
+  }
+}

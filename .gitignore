@@ -155,3 +155,4 @@ llama_pruned*/
 finetune_results/
 instruct-eval/data/
 data/mmlu/
+finetune_log/

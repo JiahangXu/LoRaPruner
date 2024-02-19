@@ -1,4 +1,8 @@
+# meta-llama/Llama-2-7b-hf
+model_path=$1
+prompt_mark=$2
+
 python ./instruct-eval/main.py bbh \
     --model_name llama \
-    --model_path  meta-llama/Llama-2-7b-hf \
-    --prompt_mark 0
+    --model_path $model_path \
+    --prompt_mark $prompt_mark

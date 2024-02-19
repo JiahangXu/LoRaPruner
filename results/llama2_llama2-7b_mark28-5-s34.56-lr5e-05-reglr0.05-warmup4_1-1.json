@@ -1,0 +1,73 @@
+{
+  "results": {
+    "arc_challenge": {
+      "acc": 0.35409556313993173,
+      "acc_stderr": 0.013975454122756557,
+      "acc_norm": 0.3779863481228669,
+      "acc_norm_stderr": 0.0141696645203031
+    },
+    "arc_easy": {
+      "acc": 0.6325757575757576,
+      "acc_stderr": 0.009892552616211553,
+      "acc_norm": 0.5715488215488216,
+      "acc_norm_stderr": 0.010154195733990968
+    },
+    "boolq": {
+      "acc": 0.671559633027523,
+      "acc_stderr": 0.00821415881958262
+    },
+    "hellaswag": {
+      "acc": 0.45688109938259314,
+      "acc_stderr": 0.004971192387202445,
+      "acc_norm": 0.5975901214897431,
+      "acc_norm_stderr": 0.004893814890208307
+    },
+    "openbookqa": {
+      "acc": 0.294,
+      "acc_stderr": 0.020395095484936593,
+      "acc_norm": 0.39,
+      "acc_norm_stderr": 0.0218346858693692
+    },
+    "piqa": {
+      "acc": 0.7306855277475517,
+      "acc_stderr": 0.010350004070588758,
+      "acc_norm": 0.7377584330794341,
+      "acc_norm_stderr": 0.010262502565172445
+    },
+    "race_high": {
+      "acc": 0.35023923444976074,
+      "acc_stderr": 0.014764164998575972
+    },
+    "storycloze_2018": {
+      "acc": 0.7525387493319081,
+      "acc_stderr": 0.009979234591920147
+    },
+    "winogrande": {
+      "acc": 0.5887924230465666,
+      "acc_stderr": 0.013829128358676872
+    }
+  },
+  "versions": {
+    "arc_challenge": 0,
+    "arc_easy": 0,
+    "boolq": 1,
+    "hellaswag": 0,
+    "openbookqa": 0,
+    "piqa": 0,
+    "race_high": 1,
+    "storycloze_2018": 0,
+    "winogrande": 0
+  },
+  "config": {
+    "model": "lora-pruner",
+    "model_args": "pretrained=meta-llama/Llama-2-7b-hf,peft=/home/aisilicon/yiran/teamdrive/LoRaPruner/A100_pruning_ckpt/llama2-7b_mark28-5-s34.56-lr5e-05-reglr0.05-warmup4/2024-2-6-15-58/epoch6,prompt_mark=1-1",
+    "num_fewshot": 0,
+    "batch_size": null,
+    "batch_sizes": [],
+    "device": "cuda:0",
+    "no_cache": true,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "description_dict": {}
+  }
+}

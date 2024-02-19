@@ -33,7 +33,7 @@ def main(args):
             config.lora_rank = 8
             config.lora_train_bias = None
             config.lora_alpha = 8.0
-            config.lora_param = "Q.V"
+            config.lora_param = "Q.K.V.O.F"
             config.lora_layers = config.num_hidden_layers
             return config
         
@@ -41,9 +41,11 @@ def main(args):
             args.base_model,
         )
         _config.use_cache = False
-        lora_ckpt = None
-        _config = set_lora_args(_config)
-        
+        if args.lora_ckpt is not None:
+            _config = set_lora_args(_config)
+        else:
+            _config.use_lora = False
+
         tokenizer = LlamaTokenizer.from_pretrained(
             args.base_model,
             use_auth_token=True,
@@ -53,6 +55,7 @@ def main(args):
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.model_max_length = 1024
 
+        lora_ckpt = None
         if args.lora_ckpt is not None:
             if not args.lora_merged:
                 lora_ckpt = os.path.join(args.lora_ckpt, 'lora_weights.pt')
@@ -74,7 +77,6 @@ def main(args):
                 zs.pop('layer_z')
             for key in zs:
                 zs[key] = zs[key].cuda().detach().half()
-            zs = zs
 
             sparsity_info = l0_module.calculate_model_size(zs)
 
@@ -104,13 +106,8 @@ def main(args):
             from peft import PeftModel
         except:
             raise NotImplementedError
-        config = LlamaConfig.from_pretrained(
-            args.ckpt,
-            # trust_remote_code=trust_remote_code,
-            # revision=revision + ("/" + subfolder if subfolder is not None else ""),
-        )
+        config = LlamaConfig.from_pretrained(args.ckpt)
         config.use_cache = False
-        lora_ckpt = None
         config.use_lora = False
 
         tokenizer = LlamaTokenizer.from_pretrained(
@@ -122,11 +119,8 @@ def main(args):
         tokenizer.pad_token = tokenizer.eos_token
         # tokenizer.model_max_length = max_length
 
-        
         zs = {}
         if args.lora_ckpt is not None:
-            if not args.lora_merged:
-                lora_ckpt = os.path.join(args.lora_ckpt, 'lora_weights.pt')
             from models.l0_module import L0Module
             l0_module = L0Module(config=config)
             zs = torch.load(os.path.join(args.lora_ckpt, 'zs.pt'), map_location="cpu")
@@ -162,22 +156,19 @@ def main(args):
             print(f"Sparsity: {1 - (sparsity_info['remaining_params'] + embedding_parmas) / model_params}")
 
         model = LlamaForCausalLM.from_pretrained(
-                LlamaForCausalLM,
                 args.ckpt,
                 from_tf=False,
                 config=config,
                 use_auth_token=True,
-                lora_ckpt = lora_ckpt
             )
-        
+
         if args.lora_ckpt is not None:
             model = PeftModel.from_pretrained(
                 model,
                 args.lora_ckpt,
                 torch_dtype=torch.float16,
             )
-        
-        description = "Model Type: {}\n Finetuned LpRa-Pruner in LLM-Pruner way. Model: {}\n LORA ckpt: {}".format(args.model_type, args.ckpt, args.lora_ckpt)
+        description = "Model Type: {}\n Finetuned LoRa-Pruner in LLM-Pruner way. Model: {}\n LORA ckpt: {}".format(args.model_type, args.ckpt, args.lora_ckpt)
 
     else:
         raise NotImplementedError
