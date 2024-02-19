@@ -1,0 +1,160 @@
+prompt_mark 0
+{'data_dir': 'data/mmlu', 'ntrain': 5, 'prompt_mark': 0, 'kwargs': {'model_name': 'llama', 'model_path': 'a100_updatetokenizer_mark25_LoRaApplyAll_lr1e-4_bs8_AlpacaGPT4'}, 'args': Namespace(data_dir='data/mmlu', ntrain=5, prompt_mark=0, kwargs={'model_name': 'llama', 'model_path': 'a100_updatetokenizer_mark25_LoRaApplyAll_lr1e-4_bs8_AlpacaGPT4'}), 'model': LlamaModel(model_path='a100_updatetokenizer_mark25_LoRaApplyAll_lr1e-4_bs8_AlpacaGPT4', max_input_length=2048, max_output_length=2, model=None, tokenizer=None, lora_path='', device='cuda', load_8bit=False, do_sample=False, use_template=False)}
+
+  0%|          | 0/57 [00:00<?, ?it/s]
+
+Loading checkpoint shards:   0%|          | 0/6 [00:00<?, ?it/s][A
+
+Loading checkpoint shards:  17%|█▋        | 1/6 [00:01<00:06,  1.28s/it][A
+
+Loading checkpoint shards:  33%|███▎      | 2/6 [00:02<00:05,  1.27s/it][A
+
+Loading checkpoint shards:  50%|█████     | 3/6 [00:03<00:03,  1.26s/it][A
+
+Loading checkpoint shards:  67%|██████▋   | 4/6 [00:05<00:02,  1.26s/it][A
+
+Loading checkpoint shards:  83%|████████▎ | 5/6 [00:06<00:01,  1.25s/it][A
+
+Loading checkpoint shards: 100%|██████████| 6/6 [00:06<00:00,  1.04s/it][A
+Loading checkpoint shards: 100%|██████████| 6/6 [00:06<00:00,  1.16s/it]
+
+  2%|▏         | 1/57 [00:31<29:44, 31.87s/it]
+  4%|▎         | 2/57 [00:44<19:04, 20.81s/it]
+  5%|▌         | 3/57 [01:07<19:25, 21.58s/it]
+  7%|▋         | 4/57 [01:21<16:36, 18.80s/it]
+  9%|▉         | 5/57 [01:50<19:24, 22.40s/it]
+ 11%|█         | 6/57 [02:08<17:35, 20.70s/it]
+ 12%|█▏        | 7/57 [02:21<15:09, 18.19s/it]
+ 14%|█▍        | 8/57 [02:41<15:23, 18.85s/it]
+ 16%|█▌        | 9/57 [02:55<13:46, 17.21s/it]
+ 18%|█▊        | 10/57 [03:19<15:17, 19.53s/it]
+ 19%|█▉        | 11/57 [03:31<13:14, 17.27s/it]
+ 21%|██        | 12/57 [03:41<11:18, 15.08s/it]
+ 23%|██▎       | 13/57 [04:00<11:55, 16.26s/it]
+ 25%|██▍       | 14/57 [04:17<11:45, 16.41s/it]
+ 26%|██▋       | 15/57 [04:33<11:21, 16.22s/it]
+ 28%|██▊       | 16/57 [05:21<17:38, 25.81s/it]
+ 30%|██▉       | 17/57 [05:40<15:45, 23.63s/it]
+ 32%|███▏      | 18/57 [05:51<12:53, 19.83s/it]
+ 33%|███▎      | 19/57 [06:34<17:04, 26.96s/it]
+ 35%|███▌      | 20/57 [07:00<16:23, 26.57s/it]
+ 37%|███▋      | 21/57 [07:23<15:19, 25.55s/it]
+ 39%|███▊      | 22/57 [08:53<26:08, 44.83s/it]
+ 40%|████      | 23/57 [09:14<21:18, 37.59s/it]
+ 42%|████▏     | 24/57 [09:36<18:14, 33.16s/it]
+ 44%|████▍     | 25/57 [10:18<19:00, 35.65s/it]
+ 46%|████▌     | 26/57 [10:51<18:05, 35.02s/it]
+ 47%|████▋     | 27/57 [11:17<16:03, 32.12s/it]
+ 49%|████▉     | 28/57 [11:37<13:45, 28.45s/it]
+ 51%|█████     | 29/57 [12:46<19:03, 40.84s/it]
+ 53%|█████▎    | 30/57 [13:31<18:55, 42.05s/it]
+ 54%|█████▍    | 31/57 [15:22<27:08, 62.62s/it]
+ 56%|█████▌    | 32/57 [17:03<30:57, 74.31s/it]
+ 58%|█████▊    | 33/57 [17:22<23:03, 57.64s/it]
+ 60%|█████▉    | 34/57 [17:35<16:53, 44.07s/it]
+ 61%|██████▏   | 35/57 [17:54<13:24, 36.58s/it]
+ 63%|██████▎   | 36/57 [18:05<10:10, 29.07s/it]
+ 65%|██████▍   | 37/57 [18:24<08:37, 25.88s/it]
+ 67%|██████▋   | 38/57 [18:41<07:25, 23.45s/it]
+ 68%|██████▊   | 39/57 [18:50<05:39, 18.89s/it]
+ 70%|███████   | 40/57 [19:15<05:54, 20.83s/it]
+ 72%|███████▏  | 41/57 [19:25<04:41, 17.57s/it]
+ 74%|███████▎  | 42/57 [20:30<07:55, 31.67s/it]
+ 75%|███████▌  | 43/57 [21:11<08:04, 34.62s/it]
+ 77%|███████▋  | 44/57 [23:33<14:27, 66.76s/it]
+ 79%|███████▉  | 45/57 [24:20<12:09, 60.77s/it]
+ 81%|████████  | 46/57 [24:47<09:16, 50.63s/it]
+ 82%|████████▏ | 47/57 [25:29<08:02, 48.23s/it]
+ 84%|████████▍ | 48/57 [26:21<07:23, 49.27s/it]
+ 86%|████████▌ | 49/57 [39:28<36:05, 270.73s/it]
+ 88%|████████▊ | 50/57 [40:57<25:13, 216.18s/it]
+ 89%|████████▉ | 51/57 [42:23<17:42, 177.13s/it]
+ 91%|█████████ | 52/57 [42:36<10:39, 127.85s/it]
+ 93%|█████████▎| 53/57 [44:02<07:40, 115.21s/it]
+ 95%|█████████▍| 54/57 [44:25<04:22, 87.59s/it] 
+ 96%|█████████▋| 55/57 [44:36<02:09, 64.61s/it]
+ 98%|█████████▊| 56/57 [44:52<00:50, 50.01s/it]
+100%|██████████| 57/57 [45:05<00:00, 38.99s/it]
+100%|██████████| 57/57 [45:05<00:00, 47.47s/it]
+Average accuracy 0.330 - abstract_algebra
+Average accuracy 0.407 - anatomy
+Average accuracy 0.342 - astronomy
+Average accuracy 0.450 - business_ethics
+Average accuracy 0.343 - clinical_knowledge
+Average accuracy 0.347 - college_biology
+Average accuracy 0.330 - college_chemistry
+Average accuracy 0.340 - college_computer_science
+Average accuracy 0.340 - college_mathematics
+Average accuracy 0.283 - college_medicine
+Average accuracy 0.245 - college_physics
+Average accuracy 0.490 - computer_security
+Average accuracy 0.362 - conceptual_physics
+Average accuracy 0.272 - econometrics
+Average accuracy 0.366 - electrical_engineering
+Average accuracy 0.272 - elementary_mathematics
+Average accuracy 0.206 - formal_logic
+Average accuracy 0.310 - global_facts
+Average accuracy 0.361 - high_school_biology
+Average accuracy 0.227 - high_school_chemistry
+Average accuracy 0.450 - high_school_computer_science
+Average accuracy 0.412 - high_school_european_history
+Average accuracy 0.379 - high_school_geography
+Average accuracy 0.466 - high_school_government_and_politics
+Average accuracy 0.338 - high_school_macroeconomics
+Average accuracy 0.244 - high_school_mathematics
+Average accuracy 0.311 - high_school_microeconomics
+Average accuracy 0.219 - high_school_physics
+Average accuracy 0.505 - high_school_psychology
+Average accuracy 0.315 - high_school_statistics
+Average accuracy 0.402 - high_school_us_history
+Average accuracy 0.477 - high_school_world_history
+Average accuracy 0.439 - human_aging
+Average accuracy 0.344 - human_sexuality
+Average accuracy 0.537 - international_law
+Average accuracy 0.472 - jurisprudence
+Average accuracy 0.405 - logical_fallacies
+Average accuracy 0.339 - machine_learning
+Average accuracy 0.388 - management
+Average accuracy 0.628 - marketing
+Average accuracy 0.410 - medical_genetics
+Average accuracy 0.498 - miscellaneous
+Average accuracy 0.379 - moral_disputes
+Average accuracy 0.267 - moral_scenarios
+Average accuracy 0.379 - nutrition
+Average accuracy 0.418 - philosophy
+Average accuracy 0.386 - prehistory
+Average accuracy 0.319 - professional_accounting
+Average accuracy 0.297 - professional_law
+Average accuracy 0.386 - professional_medicine
+Average accuracy 0.386 - professional_psychology
+Average accuracy 0.409 - public_relations
+Average accuracy 0.363 - security_studies
+Average accuracy 0.403 - sociology
+Average accuracy 0.560 - us_foreign_policy
+Average accuracy 0.355 - virology
+Average accuracy 0.474 - world_religions
+Average accuracy 0.286 - math
+Average accuracy 0.374 - health
+Average accuracy 0.305 - physics
+Average accuracy 0.531 - business
+Average accuracy 0.357 - biology
+Average accuracy 0.261 - chemistry
+Average accuracy 0.403 - computer science
+Average accuracy 0.319 - economics
+Average accuracy 0.366 - engineering
+Average accuracy 0.334 - philosophy
+Average accuracy 0.439 - other
+Average accuracy 0.417 - history
+Average accuracy 0.379 - geography
+Average accuracy 0.432 - politics
+Average accuracy 0.442 - psychology
+Average accuracy 0.380 - culture
+Average accuracy 0.324 - law
+------------
+Average accuracy 0.318 - STEM
+Average accuracy 0.347 - humanities
+Average accuracy 0.399 - social sciences
+Average accuracy 0.419 - other (business, health, misc.)
+Average accuracy: 0.369
+{'mmlu': 36.87}
+mmlu: 36.87

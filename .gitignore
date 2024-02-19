@@ -151,6 +151,7 @@ output/
 
 *.pt
 llama_pruned/
+a100*/
 llama_pruned*/
 finetune_results/
 instruct-eval/data/

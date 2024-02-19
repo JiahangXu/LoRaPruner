@@ -121,6 +121,7 @@ def parse_all(path_0=None, path_1_1=None, path_1=None):
 
 if __name__ == "__main__":
     log_file = sys.argv[1]
+    print("----------", log_file)
     if log_file.endswith(".txt"):
         output = parse_one_file(log_file)
         for task in ["NLP", "Algorithms", "Total"]:
