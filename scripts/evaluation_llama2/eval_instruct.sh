@@ -1,3 +1,6 @@
+source /home/aisilicon/miniconda3/bin/activate llm-pruner
+which python
+
 model_path=$1
 
 bash ./scripts/evaluation_llama2/eval_mmlu.sh $model_path 0

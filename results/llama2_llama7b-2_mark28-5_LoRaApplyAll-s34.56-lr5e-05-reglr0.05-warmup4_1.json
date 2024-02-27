@@ -1,0 +1,73 @@
+{
+  "results": {
+    "arc_challenge": {
+      "acc": 0.34982935153583616,
+      "acc_stderr": 0.013936809212158289,
+      "acc_norm": 0.3447098976109215,
+      "acc_norm_stderr": 0.013888816286782112
+    },
+    "arc_easy": {
+      "acc": 0.6178451178451179,
+      "acc_stderr": 0.009970747281292436,
+      "acc_norm": 0.5601851851851852,
+      "acc_norm_stderr": 0.010185185185185323
+    },
+    "boolq": {
+      "acc": 0.6831804281345566,
+      "acc_stderr": 0.008137036219808476
+    },
+    "hellaswag": {
+      "acc": 0.45578570005974905,
+      "acc_stderr": 0.004970234032728294,
+      "acc_norm": 0.5896235809599681,
+      "acc_norm_stderr": 0.004908967278222478
+    },
+    "openbookqa": {
+      "acc": 0.272,
+      "acc_stderr": 0.019920483209566082,
+      "acc_norm": 0.398,
+      "acc_norm_stderr": 0.021912377885779964
+    },
+    "piqa": {
+      "acc": 0.720348204570185,
+      "acc_stderr": 0.01047189953030656,
+      "acc_norm": 0.7306855277475517,
+      "acc_norm_stderr": 0.010350004070588758
+    },
+    "race_high": {
+      "acc": 0.3521531100478469,
+      "acc_stderr": 0.014782629897202271
+    },
+    "storycloze_2018": {
+      "acc": 0.7338321753073223,
+      "acc_stderr": 0.010220104800551206
+    },
+    "winogrande": {
+      "acc": 0.5730071033938438,
+      "acc_stderr": 0.013901878072575057
+    }
+  },
+  "versions": {
+    "arc_challenge": 0,
+    "arc_easy": 0,
+    "boolq": 1,
+    "hellaswag": 0,
+    "openbookqa": 0,
+    "piqa": 0,
+    "race_high": 1,
+    "storycloze_2018": 0,
+    "winogrande": 0
+  },
+  "config": {
+    "model": "lora-pruner",
+    "model_args": "pretrained=meta-llama/Llama-2-7b-hf,peft=/home/aisilicon/yiran/teamdrive/LoRaPruner/A100_pruning_ckpt/llama7b-2_mark28-5_LoRaApplyAll-s34.56-lr5e-05-reglr0.05-warmup4/2024-2-11-0-25/epoch6,prompt_mark=1",
+    "num_fewshot": 0,
+    "batch_size": null,
+    "batch_sizes": [],
+    "device": "cuda:0",
+    "no_cache": true,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "description_dict": {}
+  }
+}

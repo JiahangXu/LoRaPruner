@@ -1,3 +1,6 @@
+source /home/aisilicon/miniconda3/bin/activate compresso
+which python
+
 export PYTHONPATH='.'
 
 merged_prune_model=$1

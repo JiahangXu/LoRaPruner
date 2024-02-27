@@ -1,3 +1,6 @@
+source /home/aisilicon/miniconda3/bin/activate compresso
+which python
+
 export PYTHONPATH='.'
 
 base_model=meta-llama/Llama-2-7b-hf

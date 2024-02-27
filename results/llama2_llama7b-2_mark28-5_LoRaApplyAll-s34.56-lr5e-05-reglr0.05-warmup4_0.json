@@ -1,0 +1,73 @@
+{
+  "results": {
+    "arc_challenge": {
+      "acc": 0.23720136518771331,
+      "acc_stderr": 0.01243039982926084,
+      "acc_norm": 0.2764505119453925,
+      "acc_norm_stderr": 0.013069662474252425
+    },
+    "arc_easy": {
+      "acc": 0.45202020202020204,
+      "acc_stderr": 0.010212436978834115,
+      "acc_norm": 0.4234006734006734,
+      "acc_norm_stderr": 0.010138671005289045
+    },
+    "boolq": {
+      "acc": 0.572782874617737,
+      "acc_stderr": 0.008651907722486103
+    },
+    "hellaswag": {
+      "acc": 0.3759211312487552,
+      "acc_stderr": 0.004833699243292333,
+      "acc_norm": 0.47769368651663013,
+      "acc_norm_stderr": 0.004984813391016209
+    },
+    "openbookqa": {
+      "acc": 0.172,
+      "acc_stderr": 0.01689386887634748,
+      "acc_norm": 0.29,
+      "acc_norm_stderr": 0.02031317923174519
+    },
+    "piqa": {
+      "acc": 0.6659412404787813,
+      "acc_stderr": 0.011004613886336735,
+      "acc_norm": 0.6779107725788901,
+      "acc_norm_stderr": 0.010902341695103445
+    },
+    "race_high": {
+      "acc": 0.3167464114832536,
+      "acc_stderr": 0.014397814139910611
+    },
+    "storycloze_2018": {
+      "acc": 0.5713522180652058,
+      "acc_stderr": 0.011444094780077095
+    },
+    "winogrande": {
+      "acc": 0.5311760063141279,
+      "acc_stderr": 0.014025142640639515
+    }
+  },
+  "versions": {
+    "arc_challenge": 0,
+    "arc_easy": 0,
+    "boolq": 1,
+    "hellaswag": 0,
+    "openbookqa": 0,
+    "piqa": 0,
+    "race_high": 1,
+    "storycloze_2018": 0,
+    "winogrande": 0
+  },
+  "config": {
+    "model": "lora-pruner",
+    "model_args": "pretrained=meta-llama/Llama-2-7b-hf,peft=/home/aisilicon/yiran/teamdrive/LoRaPruner/A100_pruning_ckpt/llama7b-2_mark28-5_LoRaApplyAll-s34.56-lr5e-05-reglr0.05-warmup4/2024-2-11-0-25/epoch6,prompt_mark=0",
+    "num_fewshot": 0,
+    "batch_size": null,
+    "batch_sizes": [],
+    "device": "cuda:0",
+    "no_cache": true,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "description_dict": {}
+  }
+}

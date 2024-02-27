@@ -2,12 +2,13 @@
 export PYTHONPATH='.'
 
 pruned_lorazs_path=$1 # mark25
+output_dir=$2
 
-python utils/merge_weights.py \
+python merge_weights.py \
   --model_name_or_path meta-llama/Llama-2-7b-hf  \
   --pretrained_pruned_model $pruned_lorazs_path \
   --training_objective LM \
-  --output_dir ./ \
+  --output_dir $output_dir \
   --cache_dir ../cache \
   --use_lora True \
   --lora_rank 8 \

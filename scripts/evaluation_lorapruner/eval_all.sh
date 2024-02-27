@@ -1,3 +1,6 @@
+source /home/aisilicon/miniconda3/bin/activate compresso
+which python
+
 pruned_path=$1
 result_mark=$2
 

@@ -1,0 +1,162 @@
+prompt_mark 1-1
+{'data_dir': 'data/mmlu', 'ntrain': 5, 'prompt_mark': '1-1', 'kwargs': {'model_name': 'llama', 'model_path': 'a100_updatetokenizer_mark28-2_LoRaApplyAll_lr2e-4_bs8_AlpacaGPT4'}, 'args': Namespace(data_dir='data/mmlu', ntrain=5, prompt_mark='1-1', kwargs={'model_name': 'llama', 'model_path': 'a100_updatetokenizer_mark28-2_LoRaApplyAll_lr2e-4_bs8_AlpacaGPT4'}), 'model': LlamaModel(model_path='a100_updatetokenizer_mark28-2_LoRaApplyAll_lr2e-4_bs8_AlpacaGPT4', max_input_length=2048, max_output_length=2, model=None, tokenizer=None, lora_path='', device='cuda', load_8bit=False, do_sample=False, use_template=False)}
+
+  0%|          | 0/57 [00:00<?, ?it/s]/home/aisilicon/miniconda3/envs/llm-pruner/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:1900: FutureWarning: The `use_auth_token` argument is deprecated and will be removed in v5 of Transformers. Please use `token` instead.
+  warnings.warn(
+
+
+Loading checkpoint shards:   0%|          | 0/6 [00:00<?, ?it/s][A
+
+Loading checkpoint shards:  17%|█▋        | 1/6 [00:01<00:06,  1.26s/it][A
+
+Loading checkpoint shards:  33%|███▎      | 2/6 [00:02<00:05,  1.31s/it][A
+
+Loading checkpoint shards:  50%|█████     | 3/6 [00:03<00:03,  1.31s/it][A
+
+Loading checkpoint shards:  67%|██████▋   | 4/6 [00:05<00:02,  1.31s/it][A
+
+Loading checkpoint shards:  83%|████████▎ | 5/6 [00:06<00:01,  1.30s/it][A
+
+Loading checkpoint shards: 100%|██████████| 6/6 [00:07<00:00,  1.07s/it][A
+Loading checkpoint shards: 100%|██████████| 6/6 [00:07<00:00,  1.19s/it]
+
+  2%|▏         | 1/57 [00:34<32:05, 34.39s/it]
+  4%|▎         | 2/57 [00:52<22:40, 24.73s/it]
+  5%|▌         | 3/57 [01:23<24:55, 27.70s/it]
+  7%|▋         | 4/57 [01:43<21:54, 24.80s/it]
+  9%|▉         | 5/57 [02:24<26:26, 30.52s/it]
+ 11%|█         | 6/57 [02:48<24:09, 28.42s/it]
+ 12%|█▏        | 7/57 [03:07<21:04, 25.29s/it]
+ 14%|█▍        | 8/57 [03:34<21:08, 25.90s/it]
+ 16%|█▌        | 9/57 [03:54<19:06, 23.88s/it]
+ 18%|█▊        | 10/57 [04:26<20:41, 26.41s/it]
+ 19%|█▉        | 11/57 [04:43<18:04, 23.59s/it]
+ 21%|██        | 12/57 [04:57<15:26, 20.59s/it]
+ 23%|██▎       | 13/57 [05:26<16:53, 23.03s/it]
+ 25%|██▍       | 14/57 [05:49<16:36, 23.16s/it]
+ 26%|██▋       | 15/57 [06:11<16:01, 22.90s/it]
+ 28%|██▊       | 16/57 [07:21<25:21, 37.10s/it]
+ 30%|██▉       | 17/57 [07:48<22:32, 33.81s/it]
+ 32%|███▏      | 18/57 [08:03<18:21, 28.25s/it]
+ 33%|███▎      | 19/57 [09:00<23:18, 36.81s/it]
+ 35%|███▌      | 20/57 [09:35<22:20, 36.24s/it]
+ 37%|███▋      | 21/57 [10:04<20:28, 34.11s/it]
+ 39%|███▊      | 22/57 [11:31<29:14, 50.12s/it]
+ 40%|████      | 23/57 [12:00<24:44, 43.67s/it]
+ 42%|████▏     | 24/57 [12:31<21:58, 39.96s/it]
+ 44%|████▍     | 25/57 [13:28<24:03, 45.10s/it]
+ 46%|████▌     | 26/57 [14:16<23:45, 45.99s/it]
+ 47%|████▋     | 27/57 [14:51<21:20, 42.70s/it]
+ 49%|████▉     | 28/57 [15:20<18:34, 38.44s/it]
+ 51%|█████     | 29/57 [16:59<26:29, 56.76s/it]
+ 53%|█████▎    | 30/57 [17:58<25:50, 57.43s/it]
+ 54%|█████▍    | 31/57 [19:50<31:54, 73.64s/it]
+ 56%|█████▌    | 32/57 [21:48<36:16, 87.07s/it]
+ 58%|█████▊    | 33/57 [22:16<27:43, 69.31s/it]
+ 60%|█████▉    | 34/57 [22:33<20:35, 53.70s/it]
+ 61%|██████▏   | 35/57 [23:00<16:44, 45.64s/it]
+ 63%|██████▎   | 36/57 [23:16<12:50, 36.71s/it]
+ 65%|██████▍   | 37/57 [23:42<11:07, 33.39s/it]
+ 67%|██████▋   | 38/57 [24:06<09:45, 30.84s/it]
+ 68%|██████▊   | 39/57 [24:19<07:35, 25.30s/it]
+ 70%|███████   | 40/57 [24:55<08:02, 28.40s/it]
+ 72%|███████▏  | 41/57 [25:08<06:21, 23.85s/it]
+ 74%|███████▎  | 42/57 [26:44<11:23, 45.56s/it]
+ 75%|███████▌  | 43/57 [27:41<11:27, 49.14s/it]
+ 77%|███████▋  | 44/57 [31:04<20:35, 95.03s/it]
+ 79%|███████▉  | 45/57 [32:08<17:09, 85.81s/it]
+ 81%|████████  | 46/57 [32:48<13:13, 72.17s/it]
+ 82%|████████▏ | 47/57 [33:49<11:29, 68.91s/it]
+ 84%|████████▍ | 48/57 [34:59<10:21, 69.09s/it]
+ 86%|████████▌ | 49/57 [47:41<36:56, 277.07s/it]
+ 88%|████████▊ | 50/57 [49:29<26:24, 226.32s/it]
+ 89%|████████▉ | 51/57 [51:30<19:28, 194.75s/it]
+ 91%|█████████ | 52/57 [51:47<11:47, 141.41s/it]
+ 93%|█████████▎| 53/57 [53:30<08:38, 129.70s/it]
+ 95%|█████████▍| 54/57 [54:01<05:00, 100.33s/it]
+ 96%|█████████▋| 55/57 [54:17<02:29, 74.85s/it] 
+ 98%|█████████▊| 56/57 [54:39<00:58, 58.96s/it]
+100%|██████████| 57/57 [54:58<00:00, 47.19s/it]
+100%|██████████| 57/57 [54:58<00:00, 57.88s/it]
+Average accuracy 0.250 - abstract_algebra
+Average accuracy 0.363 - anatomy
+Average accuracy 0.289 - astronomy
+Average accuracy 0.360 - business_ethics
+Average accuracy 0.340 - clinical_knowledge
+Average accuracy 0.250 - college_biology
+Average accuracy 0.270 - college_chemistry
+Average accuracy 0.250 - college_computer_science
+Average accuracy 0.210 - college_mathematics
+Average accuracy 0.289 - college_medicine
+Average accuracy 0.176 - college_physics
+Average accuracy 0.380 - computer_security
+Average accuracy 0.336 - conceptual_physics
+Average accuracy 0.219 - econometrics
+Average accuracy 0.317 - electrical_engineering
+Average accuracy 0.275 - elementary_mathematics
+Average accuracy 0.238 - formal_logic
+Average accuracy 0.290 - global_facts
+Average accuracy 0.306 - high_school_biology
+Average accuracy 0.266 - high_school_chemistry
+Average accuracy 0.320 - high_school_computer_science
+Average accuracy 0.388 - high_school_european_history
+Average accuracy 0.278 - high_school_geography
+Average accuracy 0.342 - high_school_government_and_politics
+Average accuracy 0.290 - high_school_macroeconomics
+Average accuracy 0.259 - high_school_mathematics
+Average accuracy 0.286 - high_school_microeconomics
+Average accuracy 0.245 - high_school_physics
+Average accuracy 0.301 - high_school_psychology
+Average accuracy 0.208 - high_school_statistics
+Average accuracy 0.368 - high_school_us_history
+Average accuracy 0.401 - high_school_world_history
+Average accuracy 0.381 - human_aging
+Average accuracy 0.298 - human_sexuality
+Average accuracy 0.537 - international_law
+Average accuracy 0.380 - jurisprudence
+Average accuracy 0.362 - logical_fallacies
+Average accuracy 0.268 - machine_learning
+Average accuracy 0.311 - management
+Average accuracy 0.436 - marketing
+Average accuracy 0.280 - medical_genetics
+Average accuracy 0.430 - miscellaneous
+Average accuracy 0.295 - moral_disputes
+Average accuracy 0.241 - moral_scenarios
+Average accuracy 0.382 - nutrition
+Average accuracy 0.338 - philosophy
+Average accuracy 0.318 - prehistory
+Average accuracy 0.309 - professional_accounting
+Average accuracy 0.293 - professional_law
+Average accuracy 0.287 - professional_medicine
+Average accuracy 0.312 - professional_psychology
+Average accuracy 0.409 - public_relations
+Average accuracy 0.416 - security_studies
+Average accuracy 0.388 - sociology
+Average accuracy 0.420 - us_foreign_policy
+Average accuracy 0.313 - virology
+Average accuracy 0.363 - world_religions
+Average accuracy 0.249 - math
+Average accuracy 0.335 - health
+Average accuracy 0.278 - physics
+Average accuracy 0.389 - business
+Average accuracy 0.289 - biology
+Average accuracy 0.267 - chemistry
+Average accuracy 0.303 - computer science
+Average accuracy 0.278 - economics
+Average accuracy 0.317 - engineering
+Average accuracy 0.285 - philosophy
+Average accuracy 0.389 - other
+Average accuracy 0.362 - history
+Average accuracy 0.278 - geography
+Average accuracy 0.394 - politics
+Average accuracy 0.307 - psychology
+Average accuracy 0.352 - culture
+Average accuracy 0.315 - law
+------------
+Average accuracy 0.274 - STEM
+Average accuracy 0.312 - humanities
+Average accuracy 0.321 - social sciences
+Average accuracy 0.362 - other (business, health, misc.)
+Average accuracy: 0.317
+{'mmlu': 31.7}
+mmlu: 31.7

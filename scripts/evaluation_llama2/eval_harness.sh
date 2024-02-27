@@ -1,3 +1,6 @@
+source /home/aisilicon/miniconda3/bin/activate llm-pruner
+which python
+
 export PYTHONPATH='.'
 
 python ./lm-evaluation-harness/main.py \
