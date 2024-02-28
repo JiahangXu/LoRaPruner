@@ -118,7 +118,8 @@ def main():
             lora_ckpt = os.path.join(additional_args.pretrained_pruned_model, 'lora_weights.pt')
             logger.info(f"load lora ckpt from {lora_ckpt}")
         tokenizer = LlamaTokenizer.from_pretrained(
-            model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,
+            # model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,
+            "meta-llama/Llama-2-7b-hf",
             cache_dir=model_args.cache_dir,
             use_fast=model_args.use_fast_tokenizer,
             revision=model_args.model_revision,

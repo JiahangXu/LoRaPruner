@@ -47,7 +47,8 @@ def main(args):
             _config.use_lora = False
 
         tokenizer = LlamaTokenizer.from_pretrained(
-            args.base_model,
+            # args.base_model,
+            "meta-llama/Llama-2-7b-hf",
             use_auth_token=True,
             padding_side="left",
             truncation_side="left",
@@ -111,7 +112,8 @@ def main(args):
         config.use_lora = False
 
         tokenizer = LlamaTokenizer.from_pretrained(
-            args.ckpt,
+            # args.ckpt,
+            "meta-llama/Llama-2-7b-hf",
             use_auth_token=True,
             padding_side="left",
             truncation_side="left",

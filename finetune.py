@@ -162,7 +162,8 @@ def main():
         config = set_lora_args(config, model_args)
         
         tokenizer = LlamaTokenizer.from_pretrained(
-            model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,
+            # model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,
+            "meta-llama/Llama-2-7b-hf",
             cache_dir=model_args.cache_dir,
             use_fast=model_args.use_fast_tokenizer,
             revision=model_args.model_revision,

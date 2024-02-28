@@ -46,7 +46,8 @@ class LlamaLM(BaseLM):
         self.model.eval()
 
         self.tokenizer = LlamaTokenizer.from_pretrained(
-            pretrained if tokenizer is None else tokenizer,
+            # pretrained if tokenizer is None else tokenizer,
+            "meta-llama/Llama-2-7b-hf", use_auth_token=True,
             revision=revision,
         )
         self.vocab_size = len(self.tokenizer)
@@ -139,7 +140,8 @@ class LLMPrunerLM(LlamaLM):
 
         if tokenizer != None:
             self.tokenizer = LlamaTokenizer.from_pretrained(
-                pretrained if tokenizer is None else tokenizer,
+                # pretrained if tokenizer is None else tokenizer,
+                "meta-llama/Llama-2-7b-hf", use_auth_token=True,
                 revision=revision,
             )
         else:

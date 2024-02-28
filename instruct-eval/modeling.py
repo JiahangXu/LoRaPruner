@@ -242,9 +242,9 @@ class LlamaModel(SeqToSeqModel):
 
     def load(self):
         if self.tokenizer is None:
-            self.tokenizer = LlamaTokenizer.from_pretrained(self.model_path)
+            self.tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_auth_token=True,)
         elif isinstance(self.tokenizer, str):
-            self.tokenizer = LlamaTokenizer.from_pretrained(self.tokenizer)
+            self.tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_auth_token=True,)
         if self.model is None:
             args = {}
             if self.load_8bit:
@@ -309,9 +309,9 @@ class LLMPrunerModel(LlamaModel):
 
     def load(self):
         if self.tokenizer is None:
-            self.tokenizer = LlamaTokenizer.from_pretrained(self.model_path)
+            self.tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_auth_token=True,)
         elif isinstance(self.tokenizer, str):
-            self.tokenizer = LlamaTokenizer.from_pretrained(self.tokenizer)
+            self.tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_auth_token=True,)
         if self.model is None:
             pruned_dict = torch.load(self.model_path, map_location='cpu')
             self.model = pruned_dict['model']
@@ -416,7 +416,7 @@ class GPTQModel(LlamaModel):
             self.model.to(self.device)
 
         if self.tokenizer is None:
-            self.tokenizer = LlamaTokenizer.from_pretrained(self.model_path)
+            self.tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_auth_token=True,)
             self.test_max_length()
 
     def test_max_length(self):

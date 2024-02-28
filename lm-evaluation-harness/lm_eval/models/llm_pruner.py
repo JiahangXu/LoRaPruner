@@ -320,7 +320,8 @@ class HuggingFaceAutoLM(BaseLM):
     ) -> transformers.PreTrainedTokenizer:
         """Returns a pre-trained tokenizer from a pre-trained tokenizer configuration."""
         tokenizer = self.AUTO_TOKENIZER_CLASS.from_pretrained(
-            pretrained if tokenizer is None else tokenizer,
+            # pretrained if tokenizer is None else tokenizer,
+            "meta-llama/Llama-2-7b-hf", use_auth_token=True,
             revision=revision + ("/" + subfolder if subfolder is not None else ""),
             trust_remote_code=trust_remote_code,
         )

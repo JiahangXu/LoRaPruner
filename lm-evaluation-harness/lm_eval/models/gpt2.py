@@ -102,7 +102,8 @@ class HFLM(BaseLM):
                 # Get tokenizer
                 model_name = self.model.name_or_path
                 self.tokenizer = transformers.LlamaTokenizer.from_pretrained(
-                        model_name,
+                        # model_name,
+                        "meta-llama/Llama-2-7b-hf", use_auth_token=True,
                         revision=revision,
                         trust_remote_code=trust_remote_code,
                         )
@@ -139,7 +140,8 @@ class HFLM(BaseLM):
             self.model = self.model.half()
             self.model = self.model.to(self.device)
             self.tokenizer = transformers.LlamaTokenizer.from_pretrained(
-                    tokenizer if tokenizer else pretrained,
+                    # tokenizer if tokenizer else pretrained,
+                    "meta-llama/Llama-2-7b-hf", use_auth_token=True,
                     revision=revision,
                     trust_remote_code=trust_remote_code,
                     use_fast=False

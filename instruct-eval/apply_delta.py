@@ -22,9 +22,9 @@ def main(base_model_path, target_model_path, delta_path):
 
     DEFAULT_PAD_TOKEN = "[PAD]"
     try:
-        base_tokenizer = AutoTokenizer.from_pretrained(base_model_path, use_fast=False)
+        base_tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_auth_token=True, use_fast=False)
     except ValueError:
-        base_tokenizer = LlamaTokenizer.from_pretrained(base_model_path, use_fast=False)
+        base_tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_auth_token=True, use_fast=False)
 
     num_new_tokens = base_tokenizer.add_special_tokens(
         dict(pad_token=DEFAULT_PAD_TOKEN)
